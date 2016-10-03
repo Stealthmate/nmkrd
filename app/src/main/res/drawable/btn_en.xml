@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="false" android:state_checked="false">
+        <layer-list>
+            <item android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp">
+                <bitmap android:src="@drawable/en" />
+            </item>
+        </layer-list>
+    </item>
+
+    <item android:state_pressed="true">
+        <layer-list>
+
+            <item android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp">
+                <bitmap android:src="@drawable/en" />
+            </item>
+
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="#AAFFFFFF" />
+                </shape>
+            </item>
+
+        </layer-list>
+    </item>
+
+    <item android:state_checked="true">
+        <layer-list>
+
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/nm_colorPrimary" />
+                </shape>
+            </item>
+
+            <item android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp">
+                <bitmap android:src="@drawable/en" />
+            </item>
+
+
+        </layer-list>
+    </item>
+
+</selector>

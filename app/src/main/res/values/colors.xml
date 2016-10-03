@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="nm_colorPrimary">#8BC34A</color>
+    <color name="nm_colorPrimaryDark">#689F38</color>
+    <color name="nm_colorPrimaryLight">#AED581</color>
+    <color name="nm_colorAccent">#00BCD4</color>
+    <color name="nm_colorAccentLight">#F1F8E9</color>
+    <color name="nm_colorBackground">#DCEDC8</color>
+    <color name="nm_colorText">#212121</color>
+    <color name="nm_colorTextAccent">#006064</color>
+
+    <color name="nm_colorMenuBtn">@color/nm_colorTextAccent</color>
+</resources>

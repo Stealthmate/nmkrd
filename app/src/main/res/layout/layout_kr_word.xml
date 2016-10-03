@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_kr_word"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/kr_word_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="WORD"
+        android:textColor="@color/nm_colorTextAccent"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/kr_word_hanja"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/kr_word_name"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/kr_word_name"
+        android:text="HANJA"
+        android:textColor="@color/nm_colorTextAccent"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/kr_word_pronun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/kr_word_name"
+        android:layout_marginBottom="5dp"
+        android:text="PRONUNCIATION"
+        android:textColor="@color/nm_colorText"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/kr_word_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:text="NOUN"
+        android:textColor="@color/nm_colorText"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/kr_word_meaning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/kr_word_pronun"
+        android:text="DEFINITION"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/nm_colorText" />
+
+</RelativeLayout>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_jp_kanji"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+
+    <TextView
+        android:id="@+id/jp_kanji_ji"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+
+        android:gravity="center"
+
+        android:layout_alignParentLeft="true"
+
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="生"
+        android:textColor="@color/nm_colorTextAccent"
+        android:textSize="60sp" />
+
+    <LinearLayout
+        android:id="@+id/view_jp_entry_kanji_group_strokes"
+
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+
+        android:gravity="end"
+
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_strokes_label"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/jp_entry_kanji_strokes"
+
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_strokes"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text=" 13"
+
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_jp_entry_kanji_group_radical"
+
+        android:layout_width="90dp"
+        android:layout_height="wrap_content"
+
+        android:gravity="end"
+
+        android:layout_below="@id/view_jp_entry_kanji_group_strokes"
+        android:layout_alignRight="@id/view_jp_entry_kanji_group_strokes"
+        android:layout_alignEnd="@id/view_jp_entry_kanji_group_strokes">
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_radical_label"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/jp_entry_kanji_radical"
+
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_radical"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text=" 生"
+
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/view_jp_entry_kanji_group_onyomi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_toLeftOf="@id/view_jp_entry_kanji_group_radical"
+        android:layout_toStartOf="@id/view_jp_entry_kanji_group_radical"
+        android:layout_toRightOf="@id/jp_kanji_ji"
+        android:layout_toEndOf="@id/jp_kanji_ji"
+        >
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_onyomi_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="@string/jp_entry_kanji_onyomi"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_onyomi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:maxLines="1"
+            android:text="セイ ・ ショウ"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_jp_entry_kanji_group_kunyomi"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_below="@id/view_jp_entry_kanji_group_onyomi"
+        android:layout_toLeftOf="@id/view_jp_entry_kanji_group_strokes"
+        android:layout_toRightOf="@id/jp_kanji_ji">
+
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_kunyomi_label"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
+
+            android:text="@string/jp_entry_kanji_kunyomi"
+
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_kunyomi"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:maxLines="2"
+            android:ellipsize="end"
+
+            android:text="いきる・いかす・うむ・うまれる・なま・あいうえお "
+
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_jp_entry_kanji_group_meaning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@id/jp_kanji_ji"
+        android:layout_toRightOf="@id/jp_kanji_ji"
+
+        >
+
+        <TextView
+            android:id="@+id/view_jp_entry_kanji_meaning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="asdlajfldg ; asldgalsdg"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+
+</RelativeLayout>
