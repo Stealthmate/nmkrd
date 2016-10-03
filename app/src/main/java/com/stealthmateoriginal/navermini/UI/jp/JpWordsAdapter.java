@@ -121,10 +121,6 @@ public class JpWordsAdapter extends ResultListAdapter {
         TextView meaning = (TextView) convertView.findViewById(R.id.jp_word_meaning);
         String meaningStr = word.getMeaning();
 
-        Matcher m = RUBY.matcher(meaningStr);
-        while(m.find()) {
-            meaningStr = meaningStr.replace(m.group(0), m.group(1));
-        }
         meaning.setText(meaningStr);
         return convertView;
     }

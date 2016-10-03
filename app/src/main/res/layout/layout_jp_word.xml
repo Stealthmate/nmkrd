@@ -36,7 +36,7 @@
         android:textColor="@color/nm_colorText"
         android:textSize="16sp" />
 
-    <TextView
+    <com.stealthmateoriginal.navermini.UI.jp.FuriganaTextView
         android:id="@+id/jp_word_meaning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

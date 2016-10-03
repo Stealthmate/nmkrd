@@ -1,6 +1,7 @@
 package com.stealthmateoriginal.navermini.state.jp;
 
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.jp.JpWordDetailsAdapter;
 import com.stealthmateoriginal.navermini.state.DetailsDictionary;
 import com.stealthmateoriginal.navermini.state.ResultListItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
@@ -134,6 +135,6 @@ public class JpWordEntry implements ResultListItem {
 
     @Override
     public DetailsAdapter createAdapterFromDetails(StateManager state, String details) {
-        return null;
+        return new JpWordDetailsAdapter(state, this, details);
     }
 }
