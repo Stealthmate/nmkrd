@@ -101,10 +101,12 @@ public class JpKanjiEntry implements ResultListItem {
     }
 
     public String[] getOnyomi() {
+        if(onyomi == null) return new String[0];
         return onyomi;
     }
 
     public String[] getKunyomi() {
+        if(kunyomi == null) return new String[0];
         return kunyomi;
     }
 

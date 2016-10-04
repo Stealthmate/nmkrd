@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.stealthmateoriginal.navermini.UI.jp.FuriganaTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.stealthmateoriginal.navermini.UI.FuriganaTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:textSize="20sp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
-</com.stealthmateoriginal.navermini.UI.jp.FuriganaTextView>
+    android:textSize="15sp"
+    android:padding="5dp"
+    android:background="#FF0000">
+</com.stealthmateoriginal.navermini.UI.FuriganaTextView>

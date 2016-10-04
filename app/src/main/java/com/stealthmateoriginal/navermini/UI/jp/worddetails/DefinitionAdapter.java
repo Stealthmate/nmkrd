@@ -68,36 +68,7 @@ public class DefinitionAdapter extends ArrayAdapter<Definition> {
         for (int i = 0; i <= def.meanings.length - 1; i++) {
             meaningStrs.add(def.meanings[i].meaning);
         }
-        /*meanings.setAdapter(new ArrayAdapter<String>(getContext(), 0, meaningStrs) {
 
-
-            private final Pattern RUBY = Pattern.compile("\\(([^;\\(\\)]+);([^;\\(\\)]+)\\)");
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if(convertView == null) {
-                    convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_detail_jp_definition_meaning, parent, false);
-                }
-
-                String text = getItem(position);
-                Matcher match = RUBY.matcher(text);
-
-                while(match.find()) {
-
-                    String kanji = match.group(1);
-                    String furigana = match.group(2);
-
-                    text = text.replace(match.group(0), "<ruby>" + kanji + "<rt>" + furigana + "</rt></ruby>");
-                }
-
-                System.out.println(text);
-                WebView wv = (WebView) convertView;
-                wv.loadData(text, "text/html; charset=utf-8", "utf-8");
-                wv.setBackgroundColor(Color.TRANSPARENT);
-                System.out.println("watwatwawt");
-                return convertView;
-            }
-        });*/
         meanings.setAdapter(new ArrayAdapter<>(getContext(), R.layout.view_detail_jp_definition_meaning, meaningStrs));
 
         return convertView;
