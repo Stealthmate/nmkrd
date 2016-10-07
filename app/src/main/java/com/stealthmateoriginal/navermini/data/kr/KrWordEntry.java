@@ -132,6 +132,11 @@ public class KrWordEntry implements ResultListItem {
     }
 
     @Override
+    public boolean hasDetails() {
+        return !moreInfo.equals(NO_MORE_INFO);
+    }
+
+    @Override
     public String getLinkToDetails() {
         try {
             return DetailsDictionary.KOREAN_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");

@@ -93,7 +93,7 @@ public class StateManager {
     }
 
     public void loadDetails(final ResultListItem obj) {
-        System.out.println(HOST + obj.getLinkToDetails());
+        if(!obj.hasDetails()) return;
         searchEngine.request(HOST + obj.getLinkToDetails(), new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {

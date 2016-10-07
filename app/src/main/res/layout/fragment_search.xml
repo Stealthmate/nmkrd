@@ -20,12 +20,14 @@
             <Spinner
                 android:id="@+id/view_search_select_dict"
                 android:layout_width="60dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:background="@color/nm_colorPrimary"/>
 
             <Spinner
                 android:id="@+id/spinner_select_enigne"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"/>
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:background="@color/nm_colorPrimaryLight"/>
 
             <EditText
                 android:id="@+id/search_bar"

@@ -96,9 +96,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<ResultListItem> {
             if(!noMoreAvailable) loadMoreIfAvailable();
         }
         else {
-
             state.loadDetails(getItem(position));
-            return true;
         }
 
         return true;

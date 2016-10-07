@@ -3,17 +3,15 @@ package com.stealthmateoriginal.navermini.state;
 import com.stealthmateoriginal.navermini.UI.ResultListAdapter;
 import com.stealthmateoriginal.navermini.UI.jp.JpWordsAdapter;
 import com.stealthmateoriginal.navermini.UI.kr.KrWordsAdapter;
-
-import java.util.ArrayList;
-
-import javax.xml.transform.Result;
+import com.stealthmateoriginal.navermini.UI.kr.KrExamplesAdapter;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
  */
 public enum ResultListDictionary {
     KOREAN("/kr", new SubDictionary[]{
-            new SubDictionary("Words", "", KrWordsAdapter.class)}),
+            new SubDictionary("Words", "", KrWordsAdapter.class),
+            new SubDictionary("Examples", "/ex", KrExamplesAdapter.class)}),
     JAPANESE("/jp", new SubDictionary[]{
             new SubDictionary("Words", "", JpWordsAdapter.class)});
 

@@ -8,6 +8,7 @@ import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
 
 public interface ResultListItem {
 
+    boolean hasDetails();
     String getLinkToDetails();
     DetailsAdapter createAdapterFromDetails(StateManager state, String details);
 

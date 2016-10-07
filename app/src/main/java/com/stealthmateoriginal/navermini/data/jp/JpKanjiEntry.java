@@ -150,6 +150,11 @@ public class JpKanjiEntry implements ResultListItem {
     }
 
     @Override
+    public boolean hasDetails() {
+        return true;
+    }
+
+    @Override
     public String getLinkToDetails() {
         try {
             return "/jp/kanji?q=" + URLEncoder.encode(moreInfo, "utf-8");

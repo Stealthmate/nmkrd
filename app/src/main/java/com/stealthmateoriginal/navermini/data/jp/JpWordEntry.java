@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Objects;
 
 /**
  * Created by Stealthmate on 16/09/20 0020.
@@ -119,6 +120,11 @@ public class JpWordEntry implements ResultListItem {
     @Override
     public String toString() {
         return name + " " + kanji + " " + meaning;
+    }
+
+    @Override
+    public boolean hasDetails() {
+        return !moreInfo.equals(NO_MORE_INFO);
     }
 
     @Override
