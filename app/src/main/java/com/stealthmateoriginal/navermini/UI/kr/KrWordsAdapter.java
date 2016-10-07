@@ -8,9 +8,8 @@ import android.widget.TextView;
 import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.ResultListAdapter;
 import com.stealthmateoriginal.navermini.state.ResultListItem;
-import com.stealthmateoriginal.navermini.state.SearchEngine;
 import com.stealthmateoriginal.navermini.state.StateManager;
-import com.stealthmateoriginal.navermini.state.kr.KrWordEntry;
+import com.stealthmateoriginal.navermini.data.kr.KrWordEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;

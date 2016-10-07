@@ -4,23 +4,32 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.icu.util.Measure;
+import android.text.Editable;
 import android.text.TextPaint;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
+
+import com.stealthmateoriginal.navermini.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static android.R.attr.bottom;
 import static android.R.attr.start;
+import static android.R.attr.text;
+import static com.stealthmateoriginal.navermini.R.id.view_jp_detail_word_definition;
 
 /**
  * Created by Stealthmate on 16/09/29 0029.
  */
 
 public class FuriganaTextView extends TextView {
+
+    private static final float furiganaTextSizeMultiplier = 0.5f;
 
     private static final int MARGIN_RUBY = 1;
 
@@ -39,30 +48,45 @@ public class FuriganaTextView extends TextView {
 
     private ArrayList<TextToken> textTokens;
 
-
-    public FuriganaTextView(Context context) {
-        super(context);
+    private void setup() {
         this.textPaint = new TextPaint(getPaint());
         this.furiganaPaint = new TextPaint(getPaint());
         this.textTokens = new ArrayList<>();
+
+        this.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                FuriganaTextView.this.parseText(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    public FuriganaTextView(Context context) {
+        super(context);
+        this.setup();
     }
 
     public FuriganaTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.textPaint = new TextPaint(getPaint());
-        this.furiganaPaint = new TextPaint(getPaint());
-        this.textTokens = new ArrayList<>();
+        this.setup();
     }
 
     public FuriganaTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.textPaint = new TextPaint(getPaint());
-        this.furiganaPaint = new TextPaint(getPaint());
-        this.textTokens = new ArrayList<>();
+        this.setup();
     }
 
     private static Pattern RUBY = Pattern.compile("\\(([^;\\(\\)]+);([^;\\(\\)]+)\\)");
-    private static Pattern DELIMITER = Pattern.compile("(?=[; \\(\\[\\)\\]])");
+    private static Pattern DELIMITER = Pattern.compile("(?=[; \\(\\[])");
 
     private boolean cannotDrawAll = false;
 
@@ -73,14 +97,15 @@ public class FuriganaTextView extends TextView {
             tokens.add(new TextToken(words[i], null));
         }
         if (tokens.size() == 0) tokens.add(new TextToken(text, null));
-        System.out.println(Arrays.toString(words));
         return tokens;
     }
 
     private void parseText() {
-        this.textTokens = new ArrayList<>();
+        parseText(this.getText().toString());
+    }
 
-        String text = getText().toString();
+    private void parseText(String text) {
+        this.textTokens = new ArrayList<>();
 
         Matcher match = RUBY.matcher(text);
         int lastIndex = 0;
@@ -104,6 +129,8 @@ public class FuriganaTextView extends TextView {
             String rubyless = text.substring(lastIndex);
             this.textTokens.addAll(parseWords(rubyless));
         }
+
+        requestLayout();
     }
 
     private boolean containsFurigana() {
@@ -113,85 +140,96 @@ public class FuriganaTextView extends TextView {
         return false;
     }
 
+    private float calculateTextLength() {
+        float textLength = 0.0f;
+        for (TextToken t : this.textTokens) {
+            float len_upper = furiganaPaint.measureText(t.upper);
+            float len_lower = textPaint.measureText(t.lower);
+            textLength += Math.max(len_lower, len_upper);
+        }
+
+        return textLength;
+    }
+
+    private void initPaints() {
+        textPaint = new TextPaint(getPaint());
+        furiganaPaint = new TextPaint(textPaint);
+        furiganaPaint.setTextSize(textPaint.getTextSize() * furiganaTextSizeMultiplier);
+
+        textPaint.setColor(getTextColors().getDefaultColor());
+        furiganaPaint.setColor(getTextColors().getDefaultColor());
+
+    }
+
+    private float fontHeight(Paint.FontMetrics fm) {
+        return fm.bottom - fm.top;
+    }
+
     @Override
     public void onMeasure(int widthSpec, int heightSpec) {
-        parseText();
-
         if (!containsFurigana()) {
             super.onMeasure(widthSpec, heightSpec);
             return;
         }
 
-        float text_length = 0.0f;
+        initPaints();
 
-        textPaint.setTextSize(getPaint().getTextSize());
-        furiganaPaint.setTextSize(textPaint.getTextSize() / 2.0f);
+        final int providedWidth = MeasureSpec.getSize(widthSpec);
+        final int providedWidthMode = MeasureSpec.getMode(widthSpec);
 
-        for (TextToken t : this.textTokens) {
-            float len_upper = furiganaPaint.measureText(t.upper);
-            float len_lower = textPaint.measureText(t.lower);
-            text_length += Math.max(len_lower, len_upper);
-        }
+        final int providedHeight = MeasureSpec.getSize(heightSpec);
+        final int providedHeightMode = MeasureSpec.getMode(heightSpec);
 
-        int padding_left = getPaddingLeft();
-        int padding_right = getPaddingRight();
-        int padding = padding_left + padding_right;
-        int width = padding + (int) text_length;
+        final int horizontalPadding = getPaddingLeft() + getPaddingRight();
+        final int verticalPadding = getPaddingBottom() + getPaddingTop();
 
-        int heightLower = (int) textPaint.getFontMetrics().bottom - (int) textPaint.getFontMetrics().top;
-        int heightUpper = (int) furiganaPaint.getFontMetrics().bottom - (int) furiganaPaint.getFontMetrics().top;
+        final int furiganaMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN_RUBY, getResources().getDisplayMetrics());
 
-        int padding_top = getPaddingTop();
-        int padding_bottom = getPaddingBottom();
+        float text_width = calculateTextLength();
+        float text_height = (int) (fontHeight(furiganaPaint.getFontMetrics()) + fontHeight(textPaint.getFontMetrics()) + furiganaMargin);
 
-        int height = heightUpper + heightLower + padding_top + padding_bottom + (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN_RUBY, getResources().getDisplayMetrics());
+        int calculatedWidth = horizontalPadding + (int) text_width;
+        int calculatedHeight = (int) (text_height + verticalPadding + furiganaMargin);
 
-        int providedWidth = MeasureSpec.getSize(widthSpec);
-        int providedWidthMode = MeasureSpec.getMode(widthSpec);
+        if(getId() == R.id.view_jp_detail_word_definition) System.out.println(calculatedWidth + " AYYY WTF " + text_width + " " + providedWidth);
+        if ((providedWidthMode == MeasureSpec.EXACTLY && providedWidth > calculatedWidth) || providedWidth == 0)
+            calculatedWidth = providedWidth;
 
-        if (providedWidthMode == MeasureSpec.EXACTLY && providedWidth > width)
-            width = providedWidth;
+        else if (providedWidthMode != MeasureSpec.UNSPECIFIED && providedWidth < calculatedWidth) {
 
-        int providedHeight = MeasureSpec.getSize(heightSpec);
-        int providedHeightMode = MeasureSpec.getMode(heightSpec);
-
-
-        if (providedWidthMode != MeasureSpec.UNSPECIFIED && providedWidth < width) {
-
-            System.out.println(providedWidth + " " + providedWidthMode + " PROVIDED");
             int maxLines = getMaxLines() > 0 ? getMaxLines() : Integer.MAX_VALUE;
             int currentLine = 1;
-            float cursor = padding;
-            int expandedHeight = height;
+            float cursor = horizontalPadding;
+
+            int expandedHeight = calculatedHeight;
             for (int i = 0; i <= textTokens.size() - 1; i++) {
                 TextToken t = textTokens.get(i);
+
                 float tokenLength = Math.max(textPaint.measureText(t.lower), furiganaPaint.measureText(t.upper));
-                System.out.println(tokenLength + " length");
-                System.out.println("Cursor " + cursor);
-                if ((cursor + tokenLength > providedWidth && currentLine == maxLines) || tokenLength > providedWidth) {
-                    setMeasuredDimension(providedWidth, height * currentLine);
+                cursor += tokenLength;
+
+                if ((cursor > providedWidth && currentLine == maxLines) || tokenLength > providedWidth) {
+                    setMeasuredDimension(providedWidth, (int) (text_height * currentLine) + verticalPadding);
+                    if(getId() == R.id.view_jp_detail_word_definition) System.out.println(cursor + " AYYY WTF " + t.lower);
                     cannotDrawAll = true;
                     return;
                 }
-                if (cursor + tokenLength > providedWidth) {
+
+                if (cursor > providedWidth) {
                     currentLine++;
                     textTokens.get(i - 1).lower += "\n";
-                    cursor = padding;
-                    expandedHeight += height;
-                    System.out.println("New line!");
-                } else {
-                    cursor += tokenLength;
+                    cursor = horizontalPadding;
+                    expandedHeight += text_height;
                 }
             }
+            calculatedHeight = expandedHeight;
+            calculatedWidth = providedWidth;
+        }
 
-            System.out.println(height + " " + expandedHeight);
-            height = expandedHeight;
+        if (providedHeightMode == MeasureSpec.EXACTLY && providedHeight > calculatedHeight)
+            calculatedHeight = providedHeight;
 
-        } else if (providedHeightMode == MeasureSpec.EXACTLY && providedHeight > height)
-            height = providedHeight;
-
-        setMeasuredDimension(width, height);
-
+        setMeasuredDimension(calculatedWidth, calculatedHeight);
     }
 
     @Override
@@ -207,25 +245,31 @@ public class FuriganaTextView extends TextView {
         float cursor = START;
 
         float furiganaMargin = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN_RUBY, getResources().getDisplayMetrics());
-        float fullLowerTextHeight = textPaint.getFontMetrics().bottom - textPaint.getFontMetrics().top;
-        float fullUpperTextHeight = furiganaPaint.getFontMetrics().bottom - furiganaPaint.getFontMetrics().top;
-        float fullTextHeight = fullLowerTextHeight + fullUpperTextHeight + furiganaMargin;
 
-        float baseline = getPaddingTop() + furiganaPaint.getTextSize() - textPaint.getFontMetrics().top + furiganaMargin;
-        float furiganaBaseline = baseline - textPaint.getTextSize() - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN_RUBY, getResources().getDisplayMetrics());
+        float fullTextHeight = fontHeight(textPaint.getFontMetrics()) + fontHeight(furiganaPaint.getFontMetrics()) + furiganaMargin;
+
+        float baseline = getPaddingTop() + fontHeight(furiganaPaint.getFontMetrics()) - textPaint.getFontMetrics().ascent + furiganaMargin;
+        float furiganaBaseline = baseline + textPaint.ascent() - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN_RUBY, getResources().getDisplayMetrics());
 
         for (int i = 0; i <= textTokens.size() - 1; i++) {
             TextToken t = textTokens.get(i);
+
             float len_lower = textPaint.measureText(t.lower);
             float len_upper = furiganaPaint.measureText(t.upper);
+
             float cursor_center = cursor + (Math.abs(len_lower - len_upper) / 2);
-            if (len_lower > len_upper) {
-                canvas.drawText(t.lower, cursor, baseline, textPaint);
-                canvas.drawText(t.upper, cursor_center, furiganaBaseline, furiganaPaint);
-            } else {
-                canvas.drawText(t.lower, cursor_center, baseline, textPaint);
-                canvas.drawText(t.upper, cursor, furiganaBaseline, furiganaPaint);
+
+            float cursor_upper = cursor_center;
+            float cursor_lower = cursor;
+
+            if (len_upper > len_lower) {
+                cursor_upper = cursor;
+                cursor_lower = cursor_center;
             }
+
+
+            canvas.drawText(t.lower, cursor_lower, baseline, textPaint);
+            canvas.drawText(t.upper, cursor_upper, furiganaBaseline, furiganaPaint);
 
             if (t.lower.contains("\n")) {
                 baseline = baseline + fullTextHeight;

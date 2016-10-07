@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 
 import com.stealthmateoriginal.navermini.state.StateManager;
 
+import static android.R.attr.width;
+
 /**
  * Created by Stealthmate on 16/09/22 0022.
  */
@@ -63,6 +65,8 @@ public class CustomViewPager extends ViewPager {
         this.adapter = new CustomPagerAdapter(state.getActivity().getSupportFragmentManager());
         this.setAdapter(this.adapter);
     }
+
+
 
     @Override
     public boolean onTouchEvent(MotionEvent evt) {

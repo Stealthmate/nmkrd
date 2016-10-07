@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.stealthmateoriginal.navermini.UI.FuriganaTextView
+        android:id="@+id/view_jp_detail_definition_meaning_gloss_ex_original"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/nm_colorText"
+        android:text="ORIGINAL"/>
+    
+    <com.stealthmateoriginal.navermini.UI.FuriganaTextView
+        android:id="@+id/view_jp_detail_definition_meaning_gloss_ex_translation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/nm_colorTextLight"
+        android:text="TRANSLATION"/>
+    
+</LinearLayout>

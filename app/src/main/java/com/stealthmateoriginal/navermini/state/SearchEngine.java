@@ -37,6 +37,7 @@ public class SearchEngine {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        System.out.println("RESPONSE !" + response);
                         callback.responseReady(response);
                     }
                 }, new Response.ErrorListener() {

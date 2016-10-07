@@ -1,8 +1,8 @@
 package com.stealthmateoriginal.navermini.state;
 
 import com.stealthmateoriginal.navermini.MainActivity;
-import com.stealthmateoriginal.navermini.UI.DetailsFragment;
-import com.stealthmateoriginal.navermini.UI.SearchFragment;
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
+import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

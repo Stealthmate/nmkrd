@@ -9,8 +9,8 @@ import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.ResultListAdapter;
 import com.stealthmateoriginal.navermini.state.ResultListItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
-import com.stealthmateoriginal.navermini.state.jp.JpKanjiEntry;
-import com.stealthmateoriginal.navermini.state.jp.JpWordEntry;
+import com.stealthmateoriginal.navermini.data.jp.JpKanjiEntry;
+import com.stealthmateoriginal.navermini.data.jp.JpWordEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +18,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**

@@ -124,4 +124,8 @@ public abstract class ResultListAdapter extends ArrayAdapter<ResultListItem> {
         });
         setLoading(true);
     }
+
+    public String getQuery() {
+        return query;
+    }
 }

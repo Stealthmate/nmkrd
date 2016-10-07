@@ -43,6 +43,6 @@
         android:layout_marginTop="5dp"
         android:layout_below="@id/jp_word_name"
         android:text="日本人が話す言語。"
-        android:textColor="@color/nm_colorText" />
+        android:textColor="@color/nm_colorText"/>
 
 </RelativeLayout>

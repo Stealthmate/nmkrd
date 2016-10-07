@@ -2,7 +2,6 @@ package com.stealthmateoriginal.navermini.UI;
 
 import android.view.View;
 
-import com.stealthmateoriginal.navermini.state.kr.KrWordEntry;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
 /**

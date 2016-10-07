@@ -6,16 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
-import com.stealthmateoriginal.navermini.UI.ExpandableListLayout;
 import com.stealthmateoriginal.navermini.state.StateManager;
-import com.stealthmateoriginal.navermini.state.kr.KrWordEntry;
+import com.stealthmateoriginal.navermini.data.kr.KrWordEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,14 +126,12 @@ public class KrDetailsAdapter extends DetailsAdapter {
         TextView pronun = (TextView) container.findViewById(R.id.kr_detail_pronun);
         pronun.setText(word.getPronunciation());
 
-        LinearLayout top = (LinearLayout) container.findViewById(R.id.viewid_kr_detail_def_container);
-
-        final ListView deflist = (ListView) container.findViewById(R.id.view_detail_kr_deflist);
+        ListView deflist = (ListView) container.findViewById(R.id.view_detail_kr_deflist);
         deflist.removeAllViewsInLayout();
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        final DefinitionsAdapter adapter = new DefinitionsAdapter(state.getActivity(), defs);
+        DefinitionsAdapter adapter = new DefinitionsAdapter(state.getActivity(), defs);
         deflist.setAdapter(adapter);
 
         setDefinition(adapter.getItem(0));

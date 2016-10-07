@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Naver Mini</string>
     <string name="dict_name_kr">KR</string>
-    <string name="dict_name_en">JP</string>
-    <string name="dict_name_jp">EN</string>
+    <string name="dict_name_jp">JP</string>
+    <string name="dict_name_en">EN</string>
 
-    <string name="heading_definition">Definition</string>
+    <string name="heading_definition">Definition and Examples</string>
 
     <string name="searchresults_more">Load more</string>
     <string name="view_kr_detail_collapseAll">Collapse</string>

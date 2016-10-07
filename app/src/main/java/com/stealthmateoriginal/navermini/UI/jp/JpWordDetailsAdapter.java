@@ -8,18 +8,16 @@ import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
-import com.stealthmateoriginal.navermini.UI.jp.worddetails.Definition;
-import com.stealthmateoriginal.navermini.UI.jp.worddetails.DefinitionAdapter;
-import com.stealthmateoriginal.navermini.UI.kr.KrDetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.jp.worddetails.GlossAdapter;
+import com.stealthmateoriginal.navermini.UI.jp.worddetails.WordclassAdapter;
+import com.stealthmateoriginal.navermini.data.jp.JpWordEntry;
+import com.stealthmateoriginal.navermini.data.jp.worddetails.Meaning;
+import com.stealthmateoriginal.navermini.data.jp.worddetails.WordDetails;
 import com.stealthmateoriginal.navermini.state.StateManager;
-import com.stealthmateoriginal.navermini.state.jp.JpWordEntry;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.
@@ -27,36 +25,34 @@ import java.util.List;
 
 public class JpWordDetailsAdapter extends DetailsAdapter {
 
-    private final JpWordEntry word;
-    private ArrayList<Definition> definitions;
+    private final WordDetails details;
 
     public JpWordDetailsAdapter(StateManager state, JpWordEntry word, String response) {
         super(state, response);
-        this.word = word;
+        WordDetails details = null;
         try {
-            this.definitions = new ArrayList<>(parseResponse(response));
+            details = new WordDetails(word, response);
         } catch (JSONException e) {
             e.printStackTrace();
             System.out.println("JSON ERROR");
-            this.definitions = null;
-        }
-    }
-
-    private List<Definition> parseResponse(String response) throws
-            JSONException {
-        JSONArray defarr = new JSONArray(response);
-
-        ArrayList<Definition> defs = new ArrayList<>(defarr.length());
-
-        for (int i = 0; i <= defarr.length() - 1; i++) {
-            defs.add(new Definition(defarr.getJSONObject(i)));
         }
 
-        return defs;
+        System.out.println("Details initialized. ");
+        System.out.println(response);
+        if(response.equals("[]")) details = new WordDetails(word);
+
+        this.details = details;
     }
 
-    private void setDefinition(Definition def) {
+    public void setDefinition(Meaning meaning) {
 
+        ViewGroup root = (ViewGroup) state.getDetailsFragment().getView();
+        TextView meaningView = (TextView) root.findViewById(R.id.view_jp_detail_word_definition);
+        meaningView.setText(meaning.getMeaning());
+
+        ListView glossList = (ListView) root.findViewById(R.id.view_jp_detail_word_definition_gloss);
+        glossList.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        glossList.setAdapter(new GlossAdapter(state.getActivity(), meaning.getGlosses()));
     }
 
     @Override
@@ -64,19 +60,20 @@ public class JpWordDetailsAdapter extends DetailsAdapter {
         ViewGroup.inflate(state.getActivity(), R.layout.layout_jp_detail_word, (ViewGroup) container);
 
         TextView name = (TextView) container.findViewById(R.id.view_jp_detail_word_name);
-        name.setText(word.getName());
+        name.setText(details.word.getName());
 
         TextView kanji = (TextView) container.findViewById(R.id.view_jp_detail_word_kanji);
-        kanji.setText(word.getKanji());
+        kanji.setText(details.word.getKanji());
 
         final ListView deflist = (ListView) container.findViewById(R.id.view_jp_detail_word_deflist);
         deflist.removeAllViewsInLayout();
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        DefinitionAdapter adapter = new DefinitionAdapter(state.getActivity(), definitions);
+        WordclassAdapter adapter = new WordclassAdapter(state.getActivity(), this, details);
         deflist.setAdapter(adapter);
 
-        setDefinition(adapter.getItem(0));
+        System.out.println(Arrays.toString(details.getWordclasses().toArray()));
+        setDefinition(details.getMeaningsForWordclass(adapter.getItem(0)).get(0));
     }
 }

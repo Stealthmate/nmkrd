@@ -43,7 +43,6 @@ public class ListLayout extends LinearLayout {
     public void populate(Adapter adapter) {
         int count = adapter.getCount();
         for (int i = 0; i <= count - 1; i++) {
-            System.out.println("Adding view " + i);
             addView(adapter.getView(i, null, this));
         }
     }
@@ -51,7 +50,6 @@ public class ListLayout extends LinearLayout {
     public void clear() {
         this.removeAllViewsInLayout();
         this.removeAllViews();
-        System.out.println(this.getChildCount());
         invalidate();
     }
 
