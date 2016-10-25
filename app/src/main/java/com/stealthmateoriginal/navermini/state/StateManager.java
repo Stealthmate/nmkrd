@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v4.app.Fragment;
 
 import com.stealthmateoriginal.navermini.MainActivity;
+import com.stealthmateoriginal.navermini.PackageData;
 import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 
@@ -16,7 +17,7 @@ import java.net.URLEncoder;
  */
 public class StateManager {
 
-    private static final String HOST = "http://naver-mini.herokuapp.com";
+    private static final String HOST = PackageData.HOST;
     private static final String PARAM_QUERY = "q";
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_PAGESIZE = "pagesize";
