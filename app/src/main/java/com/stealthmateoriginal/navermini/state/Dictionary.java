@@ -9,9 +9,9 @@ import javax.xml.transform.Result;
  */
 
 public enum Dictionary {
-    KR(R.string.dict_name_kr, R.drawable.ic_kr_48dp, R.drawable.ic_kr_24dp, R.drawable.ic_kr_18dp, ResultListDictionary.KOREAN),
-    JP(R.string.dict_name_jp, R.drawable.ic_jp_48dp, R.drawable.ic_jp_24dp, R.drawable.ic_jp_18dp, ResultListDictionary.JAPANESE),
-    EN(R.string.dict_name_en, R.drawable.ic_en_48dp, R.drawable.ic_en_24dp, R.drawable.ic_en_18dp, ResultListDictionary.JAPANESE);
+    KR(R.string.cc_kr, R.drawable.ic_kr_48dp, R.drawable.ic_kr_24dp, R.drawable.ic_kr_18dp, ResultListDictionary.KOREAN),
+    JP(R.string.cc_jp, R.drawable.ic_jp_48dp, R.drawable.ic_jp_24dp, R.drawable.ic_jp_18dp, ResultListDictionary.JAPANESE),
+    EN(R.string.cc_en, R.drawable.ic_en_48dp, R.drawable.ic_en_24dp, R.drawable.ic_en_18dp, ResultListDictionary.JAPANESE);
 
     public final int name;
     public final int icon_large;

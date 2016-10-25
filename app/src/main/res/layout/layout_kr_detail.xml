@@ -28,6 +28,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_toRightOf="@+id/kr_detail_word"
+            android:layout_toEndOf="@+id/kr_detail_word"
             android:textColor="@color/nm_colorTextAccent"
             android:text="hanja"
             android:textSize="20sp" />
@@ -73,7 +74,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/heading_definition"
+                android:text="@string/label_details_def_ex"
                 android:textSize="20sp"
                 android:layout_centerInParent="true"
                 android:textStyle="bold"
@@ -98,6 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 

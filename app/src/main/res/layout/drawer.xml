@@ -11,6 +11,11 @@
         android:clipChildren="false"
         android:clipToPadding="false" />
 
+    <FrameLayout
+        android:id="@+id/maincontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 
     <ScrollView
         android:layout_width="60dp"

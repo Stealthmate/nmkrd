@@ -1,7 +1,10 @@
 package com.stealthmateoriginal.navermini.data.jp;
 
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
+import com.stealthmateoriginal.navermini.UI.jp.JpKanjiDetailsAdapter;
+import com.stealthmateoriginal.navermini.state.DetailsDictionary;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
 import org.json.JSONArray;
@@ -16,7 +19,7 @@ import java.util.Arrays;
  * Created by Stealthmate on 16/09/29 0029.
  */
 
-public class JpKanjiEntry implements ResultListItem {
+public class JpKanjiEntry implements DetailedItem {
 
     private static final String KANJI = "ji";
     private static final String ONYOMI = "on";
@@ -157,7 +160,7 @@ public class JpKanjiEntry implements ResultListItem {
     @Override
     public String getLinkToDetails() {
         try {
-            return "/jp/kanji?q=" + URLEncoder.encode(moreInfo, "utf-8");
+            return DetailsDictionary.JAPANESE_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
         } catch (UnsupportedEncodingException e) {
             System.out.println("Unsupported utf-8 wtf");
             System.exit(-1);
@@ -168,7 +171,7 @@ public class JpKanjiEntry implements ResultListItem {
     }
 
     @Override
-    public DetailsAdapter createAdapterFromDetails(StateManager state, String details) {
-        return null;
+    public DetailsAdapter createAdapterFromDetails(DetailsFragment fragment, String details) {
+        return new JpKanjiDetailsAdapter(fragment, details);
     }
 }

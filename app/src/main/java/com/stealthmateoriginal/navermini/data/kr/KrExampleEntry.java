@@ -1,14 +1,15 @@
 package com.stealthmateoriginal.navermini.data.kr;
 
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
 /**
  * Created by Stealthmate on 16/10/07 0007.
  */
 
-public class KrExampleEntry implements ResultListItem {
+public class KrExampleEntry implements DetailedItem {
 
     private final String text;
 
@@ -28,7 +29,7 @@ public class KrExampleEntry implements ResultListItem {
     }
 
     @Override
-    public DetailsAdapter createAdapterFromDetails(StateManager state, String details) {
+    public DetailsAdapter createAdapterFromDetails(DetailsFragment fragment, String details) {
         return null;
     }
 

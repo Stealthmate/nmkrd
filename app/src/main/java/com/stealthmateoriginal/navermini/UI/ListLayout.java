@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.LinearLayout;
+import android.widget.Space;
 
 import java.util.ArrayList;
 
@@ -29,15 +30,24 @@ public class ListLayout extends LinearLayout {
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int size = MeasureSpec.getSize(heightMeasureSpec);
-        int mode = MeasureSpec.getMode(heightMeasureSpec);
 
-        if(mode == MeasureSpec.UNSPECIFIED) {
+        final int orient = getOrientation();
+        int spec = 0;
+        if (orient == HORIZONTAL) spec = widthMeasureSpec;
+        else spec = heightMeasureSpec;
+
+        int size = MeasureSpec.getSize(spec);
+        int mode = MeasureSpec.getMode(spec);
+
+        if (mode == MeasureSpec.UNSPECIFIED) {
             size = Integer.MAX_VALUE >> 2;
             mode = MeasureSpec.AT_MOST;
+            spec = MeasureSpec.makeMeasureSpec(size, mode);
         }
 
-        super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(size, mode));
+        if (orient == HORIZONTAL)
+            super.onMeasure(spec, heightMeasureSpec);
+        else super.onMeasure(widthMeasureSpec, spec);
     }
 
     public void populate(Adapter adapter) {

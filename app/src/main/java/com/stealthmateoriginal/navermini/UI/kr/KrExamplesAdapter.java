@@ -8,12 +8,11 @@ import android.widget.TextView;
 import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.ResultListAdapter;
 import com.stealthmateoriginal.navermini.data.kr.KrExampleEntry;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -28,9 +27,9 @@ public class KrExamplesAdapter extends ResultListAdapter {
     }
 
     @Override
-    protected ArrayList<ResultListItem> parseResult(String result) {
+    protected ArrayList<DetailedItem> parseResult(String result) {
 
-        ArrayList<ResultListItem> examples = null;
+        ArrayList<DetailedItem> examples = null;
 
         try {
             JSONArray exarr = new JSONArray(result);

@@ -6,13 +6,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Stealthmate on 16/10/05 0005.
  */
 
-public class Gloss {
+public class Gloss implements Serializable {
 
     private static final String JSON_GLOSS = "g";
     private static final String JSON_EXAMPLES = "ex";

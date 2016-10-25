@@ -1,5 +1,9 @@
 package com.stealthmateoriginal.navermini.state;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v4.app.Fragment;
+
 import com.stealthmateoriginal.navermini.MainActivity;
 import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
@@ -92,17 +96,27 @@ public class StateManager {
         searchEngine.request(url, callback);
     }
 
-    public void loadDetails(final ResultListItem obj) {
+    public void loadDetails(final DetailedItem obj) {
         if(!obj.hasDetails()) return;
+
+        String link = obj.getLinkToDetails();
+        System.out.println(link);
+
+        if(link.startsWith("http")) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+            activity.startActivity(browserIntent);
+            return;
+        }
+
+        final DetailsFragment dfrag = new DetailsFragment();
         searchEngine.request(HOST + obj.getLinkToDetails(), new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
-                System.out.println("RESPONSE!");
-                detailsFragment.populate(obj.createAdapterFromDetails(StateManager.this, response));
+                System.out.println("READY TO POPULATE " + dfrag.getActivity());
+                dfrag.populate(obj.createAdapterFromDetails(dfrag, response));
             }
         });
-        detailsFragment.waitForData();
-        activity.goToDetails();
+        activity.openNewPage(dfrag);
+        //dfrag.waitForData();
     }
-
 }

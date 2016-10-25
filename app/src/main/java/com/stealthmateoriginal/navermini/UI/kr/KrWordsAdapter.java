@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.ResultListAdapter;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
 import com.stealthmateoriginal.navermini.data.kr.KrWordEntry;
 
@@ -30,8 +30,8 @@ public class KrWordsAdapter extends ResultListAdapter {
     }
 
     @Override
-    protected ArrayList<ResultListItem> parseResult(String result) {
-        ArrayList<ResultListItem> wordlist = null;
+    protected ArrayList<DetailedItem> parseResult(String result) {
+        ArrayList<DetailedItem> wordlist = null;
         try {
             this.json = new JSONObject(result);
             JSONArray wordarr = json.getJSONArray("defs");

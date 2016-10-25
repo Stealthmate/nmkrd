@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:background="@color/nm_colorPrimary"
             android:gravity="center"
-            android:text="@string/heading_definition"
+            android:text="@string/label_details_def_ex"
             android:textSize="20sp"
             android:textStyle="bold" />
 

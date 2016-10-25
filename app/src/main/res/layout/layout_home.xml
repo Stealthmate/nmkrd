@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="30sp"
-            android:text="@string/dict_name_kr"/>
+            android:text="@string/cc_kr"/>
     </LinearLayout>
 
     <LinearLayout
@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="30sp"
-            android:text="@string/dict_name_en"/>
+            android:text="@string/cc_en"/>
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +48,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:textSize="30sp"
-            android:text="@string/dict_name_jp"/>
+            android:text="@string/cc_jp"/>
     </LinearLayout>
 
 </LinearLayout>

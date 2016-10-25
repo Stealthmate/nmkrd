@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/jp_entry_kanji_strokes"
+            android:text="@string/label_jp_kanji_strokes"
 
             android:textSize="13sp" />
 
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text=" 13"
+            android:text="13"
 
             android:textSize="13sp" />
     </LinearLayout>
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/jp_entry_kanji_radical"
+            android:text="@string/label_jp_kanji_radical"
 
             android:textSize="13sp" />
 
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text=" 生"
+            android:text="生"
 
             android:textSize="13sp" />
 
@@ -111,7 +111,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
-            android:text="@string/jp_entry_kanji_onyomi"
+            android:layout_marginEnd="10dp"
+            android:text="@string/label_jp_kanji_onyomi"
             android:textSize="13sp" />
 
         <TextView
@@ -132,7 +133,9 @@
 
         android:layout_below="@id/view_jp_entry_kanji_group_onyomi"
         android:layout_toLeftOf="@id/view_jp_entry_kanji_group_strokes"
-        android:layout_toRightOf="@id/jp_kanji_ji">
+        android:layout_toRightOf="@id/jp_kanji_ji"
+        android:layout_toStartOf="@id/view_jp_entry_kanji_group_strokes"
+        android:layout_toEndOf="@id/jp_kanji_ji">
 
 
         <TextView
@@ -144,7 +147,7 @@
             android:layout_marginRight="6dp"
             android:layout_marginEnd="6dp"
 
-            android:text="@string/jp_entry_kanji_kunyomi"
+            android:text="@string/label_jp_kanji_kunyomi"
 
             android:textSize="13sp" />
 
@@ -169,6 +172,7 @@
 
         android:layout_alignBottom="@id/jp_kanji_ji"
         android:layout_toRightOf="@id/jp_kanji_ji"
+        android:layout_toEndOf="@id/jp_kanji_ji"
 
         >
 

@@ -1,9 +1,10 @@
 package com.stealthmateoriginal.navermini.data.jp;
 
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.jp.JpWordDetailsAdapter;
 import com.stealthmateoriginal.navermini.state.DetailsDictionary;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
 import org.json.JSONArray;
@@ -12,12 +13,11 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Objects;
 
 /**
  * Created by Stealthmate on 16/09/20 0020.
  */
-public class JpWordEntry implements ResultListItem {
+public class JpWordEntry implements DetailedItem {
 
     private static final String NAME = "word";
     private static final String KANJI = "kanji";
@@ -129,10 +129,12 @@ public class JpWordEntry implements ResultListItem {
 
     @Override
     public String getLinkToDetails() {
+
+        if(moreInfo.startsWith("http")) return moreInfo;
+
         try {
             return DetailsDictionary.JAPANESE_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            System.out.println("Shit");
             e.printStackTrace();
         }
 
@@ -140,7 +142,7 @@ public class JpWordEntry implements ResultListItem {
     }
 
     @Override
-    public DetailsAdapter createAdapterFromDetails(StateManager state, String details) {
-        return new JpWordDetailsAdapter(state, this, details);
+    public DetailsAdapter createAdapterFromDetails(DetailsFragment fragment, String details) {
+        return new JpWordDetailsAdapter(fragment, details);
     }
 }

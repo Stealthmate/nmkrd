@@ -11,4 +11,25 @@
         <item name="android:windowBackground">@color/nm_colorBackground</item>
     </style>
 
+    <style name="textH1">
+        <item name="android:textSize">@dimen/textSizeH1</item>
+        <item name="android:textColor">@color/nm_colorH1</item>
+    </style>
+
+
+    <style name="textH2">
+        <item name="android:textSize">@dimen/textSizeH2</item>
+        <item name="android:textColor">@color/nm_colorH2</item>
+    </style>
+
+    <style name="textSimple">
+        <item name="android:textSize">@dimen/textSizeMedium</item>
+        <item name="android:textColor">@color/nm_colorText</item>
+    </style>
+
+    <style name="textLesser">
+        <item name="android:textSize">@dimen/textSizeSmall</item>
+        <item name="android:textColor">@color/nm_colorText</item>
+    </style>
+
 </resources>

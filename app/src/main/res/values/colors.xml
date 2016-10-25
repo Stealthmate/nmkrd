@@ -10,6 +10,9 @@
     <color name="nm_colorText">#212121</color>
     <color name="nm_colorTextAccent">#006064</color>
     <color name="nm_colorTextLight">#7000</color>
+    <color name="nm_colorTextLink">#007</color>
 
     <color name="nm_colorMenuBtn">@color/nm_colorAccentLight</color>
+    <color name="nm_colorH1">@color/nm_colorTextAccent</color>
+    <color name="nm_colorH2">@color/nm_colorTextAccent</color>
 </resources>

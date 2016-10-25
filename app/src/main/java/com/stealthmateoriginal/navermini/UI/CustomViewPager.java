@@ -1,5 +1,6 @@
 package com.stealthmateoriginal.navermini.UI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 import com.stealthmateoriginal.navermini.state.StateManager;
+
+import java.util.Stack;
 
 import static android.R.attr.width;
 
@@ -21,52 +25,64 @@ import static android.R.attr.width;
  */
 public class CustomViewPager extends ViewPager {
 
-    private class CustomPagerAdapter extends FragmentPagerAdapter {
+    public class CustomPagerAdapter extends FragmentPagerAdapter {
 
         private static final int PAGE_SEARCH = 0;
         private static final int PAGE_DETAILS = 1;
 
+        private Stack<Fragment> fragStack;
+
         public CustomPagerAdapter(FragmentManager fm) {
             super(fm);
+            this.fragStack = new Stack<>();
         }
 
         @Override
         public Fragment getItem(int position) {
-            switch (position) {
-                case PAGE_SEARCH:
-                    return state.getSearchFragment();
-                case PAGE_DETAILS:
-                    return state.getDetailsFragment();
-                default:
-                    return null;
-            }
+            return fragStack.get(position);
+        }
+
+        public void push(Fragment frag) {
+            fragStack.push(frag);
+            notifyDataSetChanged();
+        }
+
+        public Fragment pop() {
+
+            if(fragStack.size() == 1) return null;
+            Fragment frag = fragStack.pop();
+            notifyDataSetChanged();
+            return frag;
         }
 
         @Override
         public long getItemId(int position) {
-            return position + 100;
+            return fragStack.get(position).toString().hashCode();
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return fragStack.size();
+        }
+
+        @Override
+        public int getItemPosition(Object obj) {
+            if(fragStack.contains(obj)) return fragStack.indexOf(obj);
+            return POSITION_NONE;
         }
     }
 
-    private StateManager state;
     private CustomPagerAdapter adapter;
 
     public CustomViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void initialize(StateManager state) {
-        this.state = state;
-        this.adapter = new CustomPagerAdapter(state.getActivity().getSupportFragmentManager());
+    public void initialize(SearchFragment frag, FragmentManager fm) {
+        this.adapter = new CustomPagerAdapter(fm);
+        adapter.fragStack.push(frag);
         this.setAdapter(this.adapter);
     }
-
-
 
     @Override
     public boolean onTouchEvent(MotionEvent evt) {

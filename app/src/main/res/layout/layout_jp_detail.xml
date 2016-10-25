@@ -26,6 +26,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_toRightOf="@id/view_jp_detail_word"
+            android:layout_toEndOf="@id/view_jp_detail_word"
             android:text="持つ"
             android:textColor="@color/nm_colorTextAccent"
             android:textSize="20sp" />
@@ -56,7 +57,7 @@
             android:layout_height="wrap_content"
             android:background="@color/nm_colorPrimary"
             android:gravity="center"
-            android:text="@string/heading_definition"
+            android:text="@string/label_details_def_ex"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -77,6 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 

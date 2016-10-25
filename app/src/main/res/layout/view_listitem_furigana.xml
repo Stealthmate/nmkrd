@@ -2,6 +2,5 @@
 <com.stealthmateoriginal.navermini.UI.FuriganaTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textColor="@color/nm_colorText"
     android:padding="5dp">
 </com.stealthmateoriginal.navermini.UI.FuriganaTextView>

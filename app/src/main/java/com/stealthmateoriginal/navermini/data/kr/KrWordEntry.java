@@ -1,9 +1,10 @@
 package com.stealthmateoriginal.navermini.data.kr;
 
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.kr.KrDetailsAdapter;
 import com.stealthmateoriginal.navermini.state.DetailsDictionary;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
 import org.json.JSONArray;
@@ -16,7 +17,7 @@ import java.net.URLEncoder;
 /**
  * Created by Stealthmate on 16/09/20 0020.
  */
-public class KrWordEntry implements ResultListItem {
+public class KrWordEntry implements DetailedItem {
 
     private static final String NAME = "word";
     private static final String HANJA = "hanja";
@@ -149,12 +150,12 @@ public class KrWordEntry implements ResultListItem {
     }
 
     @Override
-    public DetailsAdapter createAdapterFromDetails(StateManager state, String details) {
+    public DetailsAdapter createAdapterFromDetails(DetailsFragment fragment, String details) {
 
         if(moreInfo.equals(NO_MORE_INFO)) {
             details = "[{\"def\":\"" + meaning + "\", \"ex\":[]}]";
         }
 
-        return new KrDetailsAdapter(state, this, details);
+        return new KrDetailsAdapter(fragment, details);
     }
 }

@@ -1,18 +1,20 @@
 package com.stealthmateoriginal.navermini;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.stealthmateoriginal.navermini.UI.CustomViewPager;
+import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 import com.stealthmateoriginal.navermini.state.ResultListDictionary;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     private StateManager state;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
+    private FrameLayout container;
+
+    private SearchFragment searchFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +34,14 @@ public class MainActivity extends AppCompatActivity {
 
         this.state = new StateManager(this);
 
+        this.searchFragment = new SearchFragment();
+
         CustomViewPager pager = (CustomViewPager) findViewById(R.id.viewpager);
-        pager.initialize(state);
+        pager.initialize(searchFragment, getSupportFragmentManager());
         this.pager = pager;
+
+        this.container = (FrameLayout) findViewById(R.id.maincontainer);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
@@ -68,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     @Override
     protected void onStop() {
         ViewGroup root = (ViewGroup) findViewById(R.id.view_home_dict_btn_bar);
@@ -99,20 +108,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        // TODO Auto-generated method stub
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-
-            if (pager.getCurrentItem() == 1) {
-                goToSearch();
-            } else {
-                return super.onKeyDown(keyCode, event);
-            }
-            return true;
-        }
-
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
+        if(adapter.getCount() > 1) pager.setCurrentItem(adapter.getCount()-2);
+        adapter.pop();
+        System.out.println("COUNT " + adapter.getCount());
     }
 
     public boolean onSelectDictionary(View v) {
@@ -127,5 +127,13 @@ public class MainActivity extends AppCompatActivity {
         }
         state.getSearchFragment().setSubDictionaryList(state.getCurrentDictionary());
         return true;
+    }
+
+    public void openNewPage(Fragment frag) {
+
+        //getSupportFragmentManager().beginTransaction().add(frag, null).show(frag).addToBackStack(null).commit();
+        CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
+        adapter.push(frag);
+        pager.setCurrentItem(adapter.getCount()-1);
     }
 }

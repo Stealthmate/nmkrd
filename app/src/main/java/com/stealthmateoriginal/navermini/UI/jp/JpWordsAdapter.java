@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.ResultListAdapter;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.StateManager;
 import com.stealthmateoriginal.navermini.data.jp.JpKanjiEntry;
 import com.stealthmateoriginal.navermini.data.jp.JpWordEntry;
@@ -37,8 +37,8 @@ public class JpWordsAdapter extends ResultListAdapter {
     }
 
     @Override
-    protected ArrayList<ResultListItem> parseResult(String result) {
-        ArrayList<ResultListItem> wordlist = null;
+    protected ArrayList<DetailedItem> parseResult(String result) {
+        ArrayList<DetailedItem> wordlist = null;
         try {
             JSONArray wordarr = new JSONArray(result);
             wordlist = new ArrayList<>(wordarr.length());

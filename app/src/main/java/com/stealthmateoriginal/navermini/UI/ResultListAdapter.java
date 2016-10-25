@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.stealthmateoriginal.navermini.R;
-import com.stealthmateoriginal.navermini.UI.jp.JpWordsAdapter;
-import com.stealthmateoriginal.navermini.UI.kr.KrWordsAdapter;
 import com.stealthmateoriginal.navermini.state.ResultListDictionary;
-import com.stealthmateoriginal.navermini.state.ResultListItem;
+import com.stealthmateoriginal.navermini.state.DetailedItem;
 import com.stealthmateoriginal.navermini.state.SearchEngine;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
@@ -20,7 +18,7 @@ import java.util.ArrayList;
 /**
  * Created by Stealthmate on 16/09/23 0023.
  */
-public abstract class ResultListAdapter extends ArrayAdapter<ResultListItem> {
+public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
     private static final int PAGE_SIZE = 10;
 
@@ -50,7 +48,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<ResultListItem> {
     }
 
     public ResultListAdapter(StateManager state, String query, String response) {
-        super(state.getActivity(), 0, new ArrayList<ResultListItem>());
+        super(state.getActivity(), 0, new ArrayList<DetailedItem>());
         this.addAll(parseResult(response));
         this.noMoreAvailable = super.getCount() == 0;
         this.state = state;
@@ -59,7 +57,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<ResultListItem> {
         this.loading = false;
     }
 
-    protected abstract ArrayList<ResultListItem> parseResult(String result);
+    protected abstract ArrayList<DetailedItem> parseResult(String result);
 
     protected abstract View generateItem(int position, View convertView, ViewGroup parent);
 
@@ -112,7 +110,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<ResultListItem> {
             @Override
             public void responseReady(String response) {
                 setLoading(false);
-                ArrayList<ResultListItem> new_entries = parseResult(response);
+                ArrayList<DetailedItem> new_entries = parseResult(response);
                 if(new_entries.size() < PAGE_SIZE ) {
                     setNoMoreAvailable(true);
                 }

@@ -7,13 +7,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Stealthmate on 16/10/05 0005.
  */
 
-public class Meaning {
+public class Meaning implements Serializable {
 
     private static final String JSON_MEANING = "m";
     private static final String JSON_GLOSSES = "gloss";

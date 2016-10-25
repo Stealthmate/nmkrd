@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_jp_detail_kanji"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="7dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/view_detail_jp_kanji_kanji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="花"
+                android:textColor="@color/nm_colorTextAccent"
+                android:textSize="50sp" />
+
+            <RelativeLayout
+                android:id="@+id/view_jp_detail_kanji_strokes_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/view_detail_jp_kanji_kanji"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/view_jp_detail_kanji_label_strokes"
+                    style="@style/textH2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_jp_kanji_strokes" />
+
+                <TextView
+                    android:id="@+id/view_jp_details_kanji_strokes"
+                    style="@style/textSimple"
+                    android:layout_width="20dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignBaseline="@id/view_jp_detail_kanji_label_strokes"
+                    android:layout_toEndOf="@id/view_jp_detail_kanji_label_strokes"
+                    android:layout_toRightOf="@id/view_jp_detail_kanji_label_strokes"
+                    android:gravity="center"
+                    android:text="7" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/view_jp_detail_kanji_strokes_container"
+                android:layout_alignStart="@id/view_jp_detail_kanji_strokes_container"
+                android:layout_below="@id/view_jp_detail_kanji_strokes_container"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/view_jp_detail_kanji_label_radical"
+                    style="@style/textH2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_jp_kanji_radical" />
+
+                <TextView
+                    android:id="@+id/view_detail_jp_kanji_radical"
+                    style="@style/textSimple"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/view_jp_detail_kanji_label_radical"
+                    android:layout_toEndOf="@id/view_jp_detail_kanji_label_radical"
+                    android:layout_toRightOf="@id/view_jp_detail_kanji_label_radical"
+                    android:gravity="center"
+                    android:text="艹" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/view_detail_jp_kanji_label_kr_readings"
+                style="@style/textH2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Korean readings: " />
+
+            <com.stealthmateoriginal.navermini.UI.ListLayout
+                android:id="@+id/view_detail_jp_kanji_kr_readings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/view_detail_jp_kanji_label_kr_readings"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/view_detail_jp_kanji_label_kr_readings"
+                android:layout_toEndOf="@id/view_detail_jp_kanji_label_kr_readings"
+                android:layout_toRightOf="@id/view_detail_jp_kanji_label_kr_readings"
+                android:divider="@drawable/spacedivider"
+                android:orientation="horizontal"
+                android:showDividers="middle">
+
+                <TextView
+                    style="@style/textSimple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="꽃" />
+
+
+                <TextView
+                    style="@style/textSimple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="화" />
+
+            </com.stealthmateoriginal.navermini.UI.ListLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/textH2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_jp_kanji_kunyomi" />
+
+                <com.stealthmateoriginal.navermini.UI.ListLayout
+                    android:id="@+id/view_detail_jp_kanji_kunyomi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/textSimple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="はな" />
+
+                </com.stealthmateoriginal.navermini.UI.ListLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/textH2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_jp_kanji_onyomi" />
+
+                <com.stealthmateoriginal.navermini.UI.ListLayout
+                    android:id="@+id/view_detail_jp_kanji_onyomi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/textSimple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="カ" />
+
+                    <TextView
+                        style="@style/textSimple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ケ" />
+
+                </com.stealthmateoriginal.navermini.UI.ListLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/textH1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_details_def_ex" />
+
+            <com.stealthmateoriginal.navermini.UI.FixedListView
+                android:id="@+id/view_detail_jp_kanji_list_meanings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/textH2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_kunyomi_ex" />
+
+            <com.stealthmateoriginal.navermini.UI.FixedListView
+                android:id="@+id/view_detail_jp_kanji_list_kunex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <TextView
+                style="@style/textH2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_onyomi_ex" />
+
+            <com.stealthmateoriginal.navermini.UI.FixedListView
+                android:id="@+id/view_detail_jp_kanji_list_onex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

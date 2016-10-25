@@ -1,7 +1,11 @@
 package com.stealthmateoriginal.navermini.UI;
 
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.state.StateManager;
 
 /**
@@ -9,13 +13,22 @@ import com.stealthmateoriginal.navermini.state.StateManager;
  */
 public abstract class DetailsAdapter {
 
-    protected final StateManager state;
-    protected final String response;
+    public static final String KEY_DETAILS = "nm_details";
 
-    public DetailsAdapter(StateManager state, String response) {
-        this.state = state;
-        this.response = response;
+    public static DetailsAdapter fromSavedState(Bundle savedState) {
+
+
+
+        return null;
     }
 
-    public abstract void populateContainer(View container);
+    protected final DetailsFragment fragment;
+
+    public DetailsAdapter(DetailsFragment fragment) {
+        this.fragment = fragment;
+    }
+
+    public abstract View getView(ViewGroup container);
+
+    public abstract void save(Bundle outState);
 }

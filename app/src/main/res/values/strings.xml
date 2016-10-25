@@ -1,26 +1,21 @@
 <resources>
     <string name="app_name">Naver Mini</string>
-    <string name="dict_name_kr">KR</string>
-    <string name="dict_name_jp">JP</string>
-    <string name="dict_name_en">EN</string>
+    <string name="cc_kr">KR</string>
+    <string name="cc_jp">JP</string>
+    <string name="cc_en">EN</string>
 
-    <string name="heading_definition">Definition and Examples</string>
+    <string name="label_search_hint">Search...</string>
+    <string name="label_search_more">Load more</string>
 
-    <string name="searchresults_more">Load more</string>
-    <string name="view_kr_detail_collapseAll">Collapse</string>
+    <string name="label_details_def_ex">Definition and Examples</string>
 
-    <string name="jp_entry_kanji_strokes">Strokes: </string>
-    <string name="jp_entry_kanji_radical">Radical: </string>
-    <string name="jp_entry_kanji_onyomi">On: </string>
-    <string name="jp_entry_kanji_kunyomi">Kun: </string>
-    <string name="jp_entry_kanji_meaning">Meaning: </string>
+    <string name="label_jp_kanji_strokes">Strokes: </string>
+    <string name="label_jp_kanji_radical">Radical: </string>
+    <string name="label_jp_kanji_onyomi">Onyomi: </string>
+    <string name="label_jp_kanji_kunyomi">Kunyomi: </string>
+    <string name="label_jp_kanji_meaning">Meaning: </string>
 
-    <string-array name="kr_search_engines">
-        <item>Words</item>
-        <item>Idioms</item>
-        <item>Body</item>
-    </string-array>
-
-
+    <string name="label_kunyomi_ex">Kunyomi examples</string>
+    <string name="label_onyomi_ex">Onyomi examples</string>
 
 </resources>

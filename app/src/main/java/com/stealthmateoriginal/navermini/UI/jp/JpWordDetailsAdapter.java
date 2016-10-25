@@ -1,6 +1,8 @@
 package com.stealthmateoriginal.navermini.UI.jp;
 
 import android.animation.LayoutTransition;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -8,6 +10,7 @@ import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.jp.worddetails.GlossAdapter;
 import com.stealthmateoriginal.navermini.UI.jp.worddetails.WordclassAdapter;
 import com.stealthmateoriginal.navermini.data.jp.JpWordEntry;
@@ -27,53 +30,73 @@ public class JpWordDetailsAdapter extends DetailsAdapter {
 
     private final WordDetails details;
 
-    public JpWordDetailsAdapter(StateManager state, JpWordEntry word, String response) {
-        super(state, response);
+    public JpWordDetailsAdapter(DetailsFragment fragment, String response) {
+        super(fragment);
         WordDetails details = null;
         try {
-            details = new WordDetails(word, response);
+            details = new WordDetails(response);
         } catch (JSONException e) {
             e.printStackTrace();
             System.out.println("JSON ERROR");
         }
 
-        System.out.println("Details initialized. ");
-        System.out.println(response);
-        if(response.equals("[]")) details = new WordDetails(word);
-
         this.details = details;
+    }
+
+    public JpWordDetailsAdapter(DetailsFragment fragment, JpWordEntry word) {
+        super(fragment);
+        this.details = new WordDetails(word);
     }
 
     public void setDefinition(Meaning meaning) {
 
-        ViewGroup root = (ViewGroup) state.getDetailsFragment().getView();
+        ViewGroup root = (ViewGroup) fragment.getView();
         TextView meaningView = (TextView) root.findViewById(R.id.view_jp_detail_word_definition);
         meaningView.setText(meaning.getMeaning());
 
         ListView glossList = (ListView) root.findViewById(R.id.view_jp_detail_word_definition_gloss);
         glossList.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        glossList.setAdapter(new GlossAdapter(state.getActivity(), meaning.getGlosses()));
+        glossList.setAdapter(new GlossAdapter(fragment.getActivity(), meaning.getGlosses()));
     }
 
     @Override
-    public void populateContainer(View container) {
-        ViewGroup.inflate(state.getActivity(), R.layout.layout_jp_detail_word, (ViewGroup) container);
+    public View getView(ViewGroup container) {
 
-        TextView name = (TextView) container.findViewById(R.id.view_jp_detail_word_name);
-        name.setText(details.word.getName());
+        System.out.println("EXCEPTION");
+        System.out.println(fragment);
+        System.out.println(fragment.getActivity());
+        View view = LayoutInflater.from(fragment.getContext()).inflate(R.layout.layout_jp_detail_word, container, false);
 
-        TextView kanji = (TextView) container.findViewById(R.id.view_jp_detail_word_kanji);
-        kanji.setText(details.word.getKanji());
+        TextView name = (TextView) view.findViewById(R.id.view_jp_detail_word_name);
+        name.setText(details.word);
 
-        final ListView deflist = (ListView) container.findViewById(R.id.view_jp_detail_word_deflist);
+        TextView kanji = (TextView) view.findViewById(R.id.view_jp_detail_word_kanji);
+        kanji.setText(details.kanji);
+
+        final ListView deflist = (ListView) view.findViewById(R.id.view_jp_detail_word_deflist);
         deflist.removeAllViewsInLayout();
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        WordclassAdapter adapter = new WordclassAdapter(state.getActivity(), this, details);
+        WordclassAdapter adapter = new WordclassAdapter(fragment.getActivity(), this, details);
         deflist.setAdapter(adapter);
 
-        System.out.println(Arrays.toString(details.getWordclasses().toArray()));
-        setDefinition(details.getMeaningsForWordclass(adapter.getItem(0)).get(0));
+        Meaning meaning = details.getMeaningsForWordclass(adapter.getItem(0)).get(0);
+
+        TextView meaningView = (TextView) view.findViewById(R.id.view_jp_detail_word_definition);
+        meaningView.setText(meaning.getMeaning());
+
+        ListView glossList = (ListView) view.findViewById(R.id.view_jp_detail_word_definition_gloss);
+        glossList.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        glossList.setAdapter(new GlossAdapter(fragment.getActivity(), meaning.getGlosses()));
+
+        return view;
+    }
+
+
+    @Override
+    public void save(Bundle outState) {
+        outState.putString("nm_DETAILS_CLASS", this.getClass().getCanonicalName());
+        outState.putSerializable("nm_DETAILS_DATA", details);
     }
 }

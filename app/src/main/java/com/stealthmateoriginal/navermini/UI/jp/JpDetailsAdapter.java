@@ -19,7 +19,7 @@ import com.stealthmateoriginal.navermini.UI.kr.KrDetailsAdapter;
 /*
 public class JpDetailsAdapter extends DetailsAdapter {
     @Override
-    public void populateContainer(View container) {
+    public void populate(View container) {
         ViewGroup.inflate(state.getActivity(), R.layout.layout_kr_detail, (ViewGroup) container);
 
         TextView name = (TextView) container.findViewById(R.id.kr_detail_word);

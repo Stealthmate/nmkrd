@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NAVERミニ</string>
+    <string name="cc_kr">韓</string>
+    <string name="cc_jp">日</string>
+    <string name="cc_en">英</string>
+
+    <string name="label_details_def_ex">意味・例</string>
+
+    <string name="label_search_more">更にロード</string>
+
+    <string name="label_jp_kanji_strokes">画数: </string>
+    <string name="label_jp_kanji_radical">部首: </string>
+    <string name="label_jp_kanji_onyomi">音読み: </string>
+    <string name="label_jp_kanji_kunyomi">訓読み: </string>
+    <string name="label_jp_kanji_meaning">意味: </string>
+
+    <string name="label_kunyomi_ex">訓読み例</string>
+    <string name="label_onyomi_ex">音読み例</string>
+
+</resources>
