@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,12 @@ import android.view.ViewGroup;
 import com.stealthmateoriginal.navermini.UI.CustomViewPager;
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
 import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
+import com.stealthmateoriginal.navermini.UI.fragments.HistoryFragment;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 import com.stealthmateoriginal.navermini.state.ResultListDictionary;
 import com.stealthmateoriginal.navermini.state.StateManager;
+
+import static com.stealthmateoriginal.navermini.App.APPTAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         if(adapter != null) {
             DetailsFragment frag = new DetailsFragment();
             frag.setCurrentAdapter(adapter);
-            openNewPage(frag);
+            openNewDetailsPage(frag);
         }
 
     }
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    private ViewPager pager;
+    private CustomViewPager pager;
 
 
     public StateManager getState() {
@@ -158,9 +162,88 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void openNewPage(Fragment frag) {
-        CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
+    public void openNewDetailsPage(Fragment frag) {
+        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
         adapter.push(frag);
         pager.setCurrentItem(adapter.getCount()-1);
+    }
+
+    private enum Page {
+        SEEK(),
+        HISTORY(),
+        TRANSITION();
+    }
+
+    Page currentPage = Page.SEEK;
+
+    private void openHistoryPage() {
+        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
+        adapter.push(new HistoryFragment());
+        pager.setCurrentItem(adapter.getCount()-1);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if(state == ViewPager.SCROLL_STATE_IDLE) {
+                    Log.i(APPTAG, "After opening history page " + adapter.getCount());
+                    while(adapter.getCount() > 2) adapter.remove(1);
+                    pager.clearOnPageChangeListeners();
+                    currentPage = Page.HISTORY;
+                }
+            }
+        });
+    }
+
+    private void cleanup() {
+        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
+        pager.setCurrentItem(0);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if(state == ViewPager.SCROLL_STATE_IDLE) {
+                    Log.i(APPTAG, "Cleaning up " + adapter.getCount());
+                    while(adapter.getCount() > 1) adapter.remove(1);
+                    pager.clearOnPageChangeListeners();
+                    currentPage = Page.SEEK;
+                }
+            }
+
+        });
+    }
+
+    public void selectPanel(View view) {
+        if(currentPage == Page.TRANSITION) return;
+        switch(view.getId()) {
+            case R.id.view_main_btn_searchPanel : {
+                if(currentPage == Page.SEEK) return;
+                currentPage = Page.TRANSITION;
+                cleanup();
+            } break;
+            case R.id.view_main_btn_historyPanel : {
+                if(currentPage == Page.HISTORY) return;
+                currentPage = Page.TRANSITION;
+                Log.i(APPTAG, "CURRENT PAGE " + currentPage.toString());
+                openHistoryPage();
+            } break;
+        }
     }
 }

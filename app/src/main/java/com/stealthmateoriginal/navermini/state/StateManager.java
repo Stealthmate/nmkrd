@@ -112,7 +112,7 @@ public class StateManager {
                 dfrag.populate(obj.createAdapterFromDetails(activity, response));
             }
         });
-        activity.openNewPage(dfrag);
+        activity.openNewDetailsPage(dfrag);
         dfrag.waitForData();
     }
 

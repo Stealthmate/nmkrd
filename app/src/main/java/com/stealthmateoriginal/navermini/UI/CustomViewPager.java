@@ -6,11 +6,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 
+import java.util.ArrayDeque;
 import java.util.Stack;
+
+import static com.stealthmateoriginal.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/22 0022.
@@ -32,6 +36,11 @@ public class CustomViewPager extends ViewPager {
         @Override
         public Fragment getItem(int position) {
             return fragStack.get(position);
+        }
+
+        public void remove(int i) {
+            if(i < fragStack.size()) fragStack.remove(i);
+            notifyDataSetChanged();
         }
 
         public void push(Fragment frag) {
@@ -75,6 +84,9 @@ public class CustomViewPager extends ViewPager {
         this.setAdapter(this.adapter);
     }
 
+
+
+/*
     @Override
     public boolean onTouchEvent(MotionEvent evt) {
         return false;
@@ -83,5 +95,6 @@ public class CustomViewPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         return false;
-    }
+    }*/
+
 }
