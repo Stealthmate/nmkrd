@@ -1,4 +1,4 @@
-package com.stealthmateoriginal.navermini.UI;
+package com.stealthmateoriginal.navermini.UI.generic;
 
 import android.view.View;
 import android.view.ViewGroup;

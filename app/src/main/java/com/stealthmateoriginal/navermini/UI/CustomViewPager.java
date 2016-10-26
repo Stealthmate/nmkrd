@@ -1,24 +1,20 @@
 package com.stealthmateoriginal.navermini.UI;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 
+import com.stealthmateoriginal.navermini.App;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
-import com.stealthmateoriginal.navermini.state.StateManager;
 
 import java.util.Stack;
 
-import static android.R.attr.width;
+import static com.stealthmateoriginal.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/22 0022.
@@ -48,7 +44,6 @@ public class CustomViewPager extends ViewPager {
         }
 
         public Fragment pop() {
-
             if(fragStack.size() == 1) return null;
             Fragment frag = fragStack.pop();
             notifyDataSetChanged();
@@ -57,7 +52,7 @@ public class CustomViewPager extends ViewPager {
 
         @Override
         public long getItemId(int position) {
-            return fragStack.get(position).toString().hashCode();
+            return fragStack.get(position).hashCode();
         }
 
         @Override

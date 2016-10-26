@@ -1,6 +1,7 @@
 package com.stealthmateoriginal.navermini.UI;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.stealthmateoriginal.navermini.state.StateManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -43,7 +46,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
             e.printStackTrace();
         }
 
-        System.out.println("REIGNING CHAOS!");
+        Log.e(TAG, "Could not find constructor for class " + dict.resultAdapter.getName());
         return null;
     }
 

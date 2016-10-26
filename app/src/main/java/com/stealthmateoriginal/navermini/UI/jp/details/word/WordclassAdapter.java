@@ -1,4 +1,4 @@
-package com.stealthmateoriginal.navermini.UI.jp.worddetails;
+package com.stealthmateoriginal.navermini.UI.jp.details.word;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,7 +11,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
-import com.stealthmateoriginal.navermini.UI.jp.JpWordDetailsAdapter;
 import com.stealthmateoriginal.navermini.data.jp.worddetails.WordDetails;
 
 import java.util.ArrayList;
@@ -46,10 +45,11 @@ public class WordclassAdapter extends ArrayAdapter<String> {
         ListView meanings = (ListView) convertView.findViewById(R.id.view_jp_detail_word_definition_meaninglist);
 
         meanings.setAdapter(new ArrayAdapter<>(getContext(), R.layout.view_listitem_furigana, details.getCompactMeaningsForWordclass(wordclass)));
+        final View finalConvertView = convertView;
         meanings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                detailsPanel.setDefinition(details.getMeaningsForWordclass(wordclass).get(position));
+                JpWordDetailsAdapter.setDefinition(getContext(), parent.getRootView(), details.getMeaningsForWordclass(wordclass).get(position));
             }
         });
 

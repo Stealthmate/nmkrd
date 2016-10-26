@@ -1,4 +1,4 @@
-package com.stealthmateoriginal.navermini.UI.jp;
+package com.stealthmateoriginal.navermini.UI.jp.search;
 
 import android.view.LayoutInflater;
 import android.view.View;

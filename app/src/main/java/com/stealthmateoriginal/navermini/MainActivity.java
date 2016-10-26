@@ -2,28 +2,33 @@ package com.stealthmateoriginal.navermini;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.stealthmateoriginal.navermini.UI.CustomViewPager;
+import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 import com.stealthmateoriginal.navermini.state.ResultListDictionary;
 import com.stealthmateoriginal.navermini.state.StateManager;
+
+import static com.stealthmateoriginal.navermini.App.APPTAG;
 
 public class MainActivity extends AppCompatActivity {
 
     private StateManager state;
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
-    private FrameLayout container;
 
     private SearchFragment searchFragment;
 
@@ -33,14 +38,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.state = new StateManager(this);
-
-        this.searchFragment = new SearchFragment();
-
-        CustomViewPager pager = (CustomViewPager) findViewById(R.id.viewpager);
-        pager.initialize(searchFragment, getSupportFragmentManager());
-        this.pager = pager;
-
-        this.container = (FrameLayout) findViewById(R.id.maincontainer);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
@@ -52,6 +49,22 @@ public class MainActivity extends AppCompatActivity {
 
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setHomeButtonEnabled(true);
+
+
+        this.searchFragment = new SearchFragment();
+
+        final CustomViewPager pager = (CustomViewPager) findViewById(R.id.viewpager);
+        pager.initialize(searchFragment, getSupportFragmentManager());
+        this.pager = pager;
+
+
+        DetailsAdapter adapter = DetailsAdapter.fromSavedState(this, savedInstanceState);
+        if(adapter != null) {
+            DetailsFragment frag = new DetailsFragment();
+            frag.setCurrentAdapter(adapter);
+            openNewPage(frag);
+        }
+
     }
 
     @Override
@@ -61,12 +74,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if(pager.getAdapter().getCount() > 1) {
+
+            DetailsFragment fragment = (DetailsFragment) ((FragmentPagerAdapter)pager.getAdapter()).getItem(pager.getCurrentItem());
+            fragment.onSaveInstanceState(outState);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i(APPTAG, "CURRENT ITEM " + pager.getCurrentItem());
+        this.pager.setCurrentItem(this.pager.getAdapter().getCount()-1);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
 
         if(!toggle.isDrawerIndicatorEnabled()) {
-            goToSearch();
             return true;
         }
 
@@ -85,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i <= count - 1; i++) {
             root.getChildAt(i).setBackgroundResource(0);
         }
+
         super.onStop();
     }
 
@@ -95,24 +124,29 @@ public class MainActivity extends AppCompatActivity {
         return state;
     }
 
-
-    public void goToDetails() {
-        ((CustomViewPager) findViewById(R.id.viewpager)).setCurrentItem(1);
-        toggle.setDrawerIndicatorEnabled(false);
-    }
-
-    public void goToSearch() {
-        ((CustomViewPager) findViewById(R.id.viewpager)).setCurrentItem(0);
-        toggle.setDrawerIndicatorEnabled(true);
-        toggle.syncState();
-    }
-
     @Override
     public void onBackPressed() {
-        CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
+        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
         if(adapter.getCount() > 1) pager.setCurrentItem(adapter.getCount()-2);
-        adapter.pop();
-        System.out.println("COUNT " + adapter.getCount());
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if(state == ViewPager.SCROLL_STATE_IDLE) {
+                    adapter.pop();
+                    pager.removeOnPageChangeListener(this);
+                }
+            }
+        });
     }
 
     public boolean onSelectDictionary(View v) {
@@ -130,8 +164,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openNewPage(Fragment frag) {
-
-        //getSupportFragmentManager().beginTransaction().add(frag, null).show(frag).addToBackStack(null).commit();
         CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
         adapter.push(frag);
         pager.setCurrentItem(adapter.getCount()-1);

@@ -1,9 +1,9 @@
 package com.stealthmateoriginal.navermini.state;
 
 import com.stealthmateoriginal.navermini.UI.ResultListAdapter;
-import com.stealthmateoriginal.navermini.UI.jp.JpWordsAdapter;
-import com.stealthmateoriginal.navermini.UI.kr.KrWordsAdapter;
-import com.stealthmateoriginal.navermini.UI.kr.KrExamplesAdapter;
+import com.stealthmateoriginal.navermini.UI.jp.search.JpWordsAdapter;
+import com.stealthmateoriginal.navermini.UI.kr.search.KrWordsAdapter;
+import com.stealthmateoriginal.navermini.UI.kr.search.KrExamplesAdapter;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.

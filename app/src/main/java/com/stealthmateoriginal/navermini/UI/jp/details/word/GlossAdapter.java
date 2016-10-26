@@ -1,4 +1,4 @@
-package com.stealthmateoriginal.navermini.UI.jp.worddetails;
+package com.stealthmateoriginal.navermini.UI.jp.details.word;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,18 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
-import com.stealthmateoriginal.navermini.UI.ListLayout;
+import com.stealthmateoriginal.navermini.UI.generic.ListLayout;
 import com.stealthmateoriginal.navermini.UI.TranslatedExampleAdapter;
 import com.stealthmateoriginal.navermini.data.jp.worddetails.Gloss;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static android.R.attr.resource;
 import static android.view.View.GONE;
 
 /**

@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <com.stealthmateoriginal.navermini.UI.FuriganaTextView
+    <com.stealthmateoriginal.navermini.UI.generic.FuriganaTextView
         android:id="@+id/view_jp_detail_definition_meaning_gloss"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/nm_colorTextAccent"/>
 
-    <com.stealthmateoriginal.navermini.UI.ListLayout
+    <com.stealthmateoriginal.navermini.UI.generic.ListLayout
         android:id="@+id/view_jp_detail_definition_meaning_gloss_ex"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

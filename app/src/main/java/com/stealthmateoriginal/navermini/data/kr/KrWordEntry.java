@@ -1,11 +1,11 @@
 package com.stealthmateoriginal.navermini.data.kr;
 
+import android.content.Context;
+
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
-import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
-import com.stealthmateoriginal.navermini.UI.kr.KrDetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.kr.details.KrDetailsAdapter;
 import com.stealthmateoriginal.navermini.state.DetailsDictionary;
 import com.stealthmateoriginal.navermini.state.DetailedItem;
-import com.stealthmateoriginal.navermini.state.StateManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -150,12 +150,12 @@ public class KrWordEntry implements DetailedItem {
     }
 
     @Override
-    public DetailsAdapter createAdapterFromDetails(DetailsFragment fragment, String details) {
+    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
 
         if(moreInfo.equals(NO_MORE_INFO)) {
             details = "[{\"def\":\"" + meaning + "\", \"ex\":[]}]";
         }
 
-        return new KrDetailsAdapter(fragment, details);
+        return new KrDetailsAdapter(context, details);
     }
 }

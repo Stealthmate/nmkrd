@@ -1,11 +1,11 @@
 package com.stealthmateoriginal.navermini.state;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
 
 import com.stealthmateoriginal.navermini.MainActivity;
-import com.stealthmateoriginal.navermini.PackageData;
+import com.stealthmateoriginal.navermini.App;
 import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 
@@ -17,7 +17,7 @@ import java.net.URLEncoder;
  */
 public class StateManager {
 
-    private static final String HOST = PackageData.HOST;
+    private static final String HOST = App.HOST;
     private static final String PARAM_QUERY = "q";
     private static final String PARAM_PAGE = "page";
     private static final String PARAM_PAGESIZE = "pagesize";
@@ -68,11 +68,7 @@ public class StateManager {
 
     public void setCurrentSubDictionary(int i) {
         this.searchEngine.cancellAllQueries();
-        this.searchFragment.clear();
-        this.detailsFragment.clear();
-        this.activity.goToSearch();
         this.currentSubDictionary = currentDictionary.subdicts[i];
-
         this.searchFragment.performSearch();
     }
 
@@ -113,11 +109,14 @@ public class StateManager {
         searchEngine.request(HOST + obj.getLinkToDetails(), new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
-                System.out.println("READY TO POPULATE " + dfrag.getActivity());
-                dfrag.populate(obj.createAdapterFromDetails(dfrag, response));
+                dfrag.populate(obj.createAdapterFromDetails(activity, response));
             }
         });
         activity.openNewPage(dfrag);
-        //dfrag.waitForData();
+        dfrag.waitForData();
+    }
+
+    public static StateManager getState(Context context) {
+        return ((MainActivity)context).getState();
     }
 }

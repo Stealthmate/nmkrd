@@ -183,7 +183,6 @@ public class SearchFragment extends Fragment {
         for(int i=0;i<=subdicts.length-1;i++) {
             subdictStrings.add(subdicts[i].name);
         }
-        System.out.println(Arrays.toString(subdictStrings.toArray()));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, subdictStrings);
         subdictList.setAdapter(adapter);
     }

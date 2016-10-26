@@ -1,4 +1,4 @@
-package com.stealthmateoriginal.navermini.UI;
+package com.stealthmateoriginal.navermini.UI.generic;
 
 import android.content.Context;
 import android.util.AttributeSet;

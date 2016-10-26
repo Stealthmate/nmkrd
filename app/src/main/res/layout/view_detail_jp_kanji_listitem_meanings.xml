@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="싹이 나다." />
 
-    <com.stealthmateoriginal.navermini.UI.FixedListView
+    <com.stealthmateoriginal.navermini.UI.generic.FixedListView
         android:id="@+id/view_detail_jp_kanji_listitem_meaning_ex"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

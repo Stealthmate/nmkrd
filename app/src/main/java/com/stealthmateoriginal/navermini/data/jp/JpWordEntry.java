@@ -1,11 +1,11 @@
 package com.stealthmateoriginal.navermini.data.jp;
 
+import android.content.Context;
+
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
-import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
-import com.stealthmateoriginal.navermini.UI.jp.JpWordDetailsAdapter;
+import com.stealthmateoriginal.navermini.UI.jp.details.word.JpWordDetailsAdapter;
 import com.stealthmateoriginal.navermini.state.DetailsDictionary;
 import com.stealthmateoriginal.navermini.state.DetailedItem;
-import com.stealthmateoriginal.navermini.state.StateManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,7 +142,7 @@ public class JpWordEntry implements DetailedItem {
     }
 
     @Override
-    public DetailsAdapter createAdapterFromDetails(DetailsFragment fragment, String details) {
-        return new JpWordDetailsAdapter(fragment, details);
+    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
+        return new JpWordDetailsAdapter(context, details);
     }
 }

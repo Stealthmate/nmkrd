@@ -1,9 +1,9 @@
 package com.stealthmateoriginal.navermini.data.kr;
 
+import android.content.Context;
+
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
-import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.state.DetailedItem;
-import com.stealthmateoriginal.navermini.state.StateManager;
 
 /**
  * Created by Stealthmate on 16/10/07 0007.
@@ -29,7 +29,7 @@ public class KrExampleEntry implements DetailedItem {
     }
 
     @Override
-    public DetailsAdapter createAdapterFromDetails(DetailsFragment fragment, String details) {
+    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
         return null;
     }
 

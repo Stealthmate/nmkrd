@@ -1,9 +1,8 @@
-package com.stealthmateoriginal.navermini.UI;
+package com.stealthmateoriginal.navermini.UI.generic;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.icu.util.Measure;
 import android.text.Editable;
 import android.text.TextPaint;
 import android.text.TextWatcher;
@@ -14,14 +13,8 @@ import android.widget.TextView;
 import com.stealthmateoriginal.navermini.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static android.R.attr.bottom;
-import static android.R.attr.start;
-import static android.R.attr.text;
-import static com.stealthmateoriginal.navermini.R.id.view_jp_detail_word_definition;
 
 /**
  * Created by Stealthmate on 16/09/29 0029.

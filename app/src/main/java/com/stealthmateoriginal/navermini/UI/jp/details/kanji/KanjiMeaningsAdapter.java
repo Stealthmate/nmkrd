@@ -1,4 +1,4 @@
-package com.stealthmateoriginal.navermini.UI.jp.kanjidetails;
+package com.stealthmateoriginal.navermini.UI.jp.details.kanji;
 
 import android.content.Context;
 import android.util.Pair;
@@ -9,19 +9,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.stealthmateoriginal.navermini.R;
-import com.stealthmateoriginal.navermini.UI.CustomizableArrayAdapter;
-import com.stealthmateoriginal.navermini.UI.FixedListView;
+import com.stealthmateoriginal.navermini.UI.generic.CustomizableArrayAdapter;
+import com.stealthmateoriginal.navermini.UI.generic.FixedListView;
 import com.stealthmateoriginal.navermini.data.jp.kanjidetails.KanjiMeaning;
 
 import java.util.ArrayList;
-
-import static android.R.attr.resource;
 
 /**
  * Created by Stealthmate on 16/10/21 0021.
  */
 
-public class KanjiMeaningsAdapter extends ArrayAdapter<KanjiMeaning> {
+class KanjiMeaningsAdapter extends ArrayAdapter<KanjiMeaning> {
 
     private static class ExAdapter extends CustomizableArrayAdapter<String> {
 
