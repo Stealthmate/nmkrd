@@ -9,11 +9,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.stealthmateoriginal.navermini.UI.CustomViewPager;
 import com.stealthmateoriginal.navermini.UI.DetailsAdapter;
@@ -21,8 +19,6 @@ import com.stealthmateoriginal.navermini.UI.fragments.DetailsFragment;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 import com.stealthmateoriginal.navermini.state.ResultListDictionary;
 import com.stealthmateoriginal.navermini.state.StateManager;
-
-import static com.stealthmateoriginal.navermini.App.APPTAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -85,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(APPTAG, "CURRENT ITEM " + pager.getCurrentItem());
         this.pager.setCurrentItem(this.pager.getAdapter().getCount()-1);
     }
 

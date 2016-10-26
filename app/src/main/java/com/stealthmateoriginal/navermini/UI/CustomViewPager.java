@@ -6,15 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 
-import com.stealthmateoriginal.navermini.App;
 import com.stealthmateoriginal.navermini.UI.fragments.SearchFragment;
 
 import java.util.Stack;
-
-import static com.stealthmateoriginal.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/22 0022.
