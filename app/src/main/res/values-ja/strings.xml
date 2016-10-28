@@ -20,4 +20,6 @@
     <string name="label_kunyomi_ex">訓読み例</string>
     <string name="label_onyomi_ex">音読み例</string>
 
+    <string name="square_brackets">[%s]</string>
+
 </resources>
