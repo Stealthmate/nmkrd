@@ -79,7 +79,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     public ResultListAdapter(StateManager state, String query, String response) {
         super(state.getActivity(), 0, new ArrayList<DetailedItem>());
         this.addAll(parseResult(response));
-        this.noMoreAvailable = super.getCount() < PAGE_SIZE;
+        this.noMoreAvailable = super.getCount() == 0;
         this.state = state;
         this.query = query;
         this.page = 1;
@@ -91,7 +91,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         SerializableRepresentation desData = (SerializableRepresentation) data;
         this.addAll(desData.results);
         this.state = state;
-        this.noMoreAvailable = desData.noMore || desData.results.size() < PAGE_SIZE;
+        this.noMoreAvailable = desData.noMore || desData.results.size() == 0;
         this.query = desData.query;
         this.page = desData.page;
         this.loading = false;
