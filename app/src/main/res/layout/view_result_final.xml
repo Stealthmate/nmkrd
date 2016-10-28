@@ -7,8 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="30dp"
+        android:padding="10dp"
         android:textSize="20sp"
         android:gravity="center"
+        android:background="@drawable/selector_primary_light"
+        android:textColor="@color/nm_colorTextAccent"
         android:text="@string/label_search_more"/>
 
 </FrameLayout>
