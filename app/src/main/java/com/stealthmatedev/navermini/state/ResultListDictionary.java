@@ -2,7 +2,7 @@ package com.stealthmatedev.navermini.state;
 
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.jp.search.JpWordsAdapter;
-import com.stealthmatedev.navermini.UI.kr.search.EnWordsAdapter;
+import com.stealthmatedev.navermini.UI.en.search.EnWordsAdapter;
 import com.stealthmatedev.navermini.UI.kr.search.KrWordsAdapter;
 import com.stealthmatedev.navermini.UI.kr.search.KrExamplesAdapter;
 
@@ -16,7 +16,7 @@ public enum ResultListDictionary {
     JAPANESE("/jp", new SubDictionary[]{
             new SubDictionary("Words", "", JpWordsAdapter.class)}),
     ENGLISH("/en", new SubDictionary[] {
-            new SubDictionary("Words", "", EnWordsAdapter.class));
+            new SubDictionary("Words", "", EnWordsAdapter.class)});
 
     public static class SubDictionary {
         public final String name;

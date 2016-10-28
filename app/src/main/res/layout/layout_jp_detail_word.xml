@@ -63,7 +63,7 @@
             android:textStyle="bold" />
 
 
-        <com.stealthmateoriginal.navermini.UI.generic.FuriganaTextView
+        <com.stealthmatedev.navermini.UI.generic.FuriganaTextView
             android:id="@+id/view_jp_detail_word_definition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

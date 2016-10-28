@@ -5,7 +5,9 @@
     <string name="cc_jp">日</string>
     <string name="cc_en">英</string>
 
+    <string name="label_search_hint">検索...</string>
     <string name="label_details_def_ex">意味・例</string>
+    <string name="label_no_results_found">一致する項目はありませんでした</string>
 
     <string name="label_search_more">更にロード</string>
 

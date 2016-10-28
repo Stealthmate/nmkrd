@@ -12,7 +12,7 @@
         android:textSize="17sp"
         android:text="WORD CLASS"/>
 
-    <com.stealthmateoriginal.navermini.UI.generic.FixedListView
+    <com.stealthmatedev.navermini.UI.generic.FixedListView
         android:id="@+id/view_jp_detail_word_definition_meaninglist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

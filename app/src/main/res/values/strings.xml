@@ -6,6 +6,7 @@
 
     <string name="label_search_hint">Search...</string>
     <string name="label_search_more">Load more</string>
+    <string name="label_no_results_found">No results found</string>
 
     <string name="label_details_def_ex">Definition and Examples</string>
 
@@ -17,5 +18,7 @@
 
     <string name="label_kunyomi_ex">Kunyomi examples</string>
     <string name="label_onyomi_ex">Onyomi examples</string>
+
+    <string name="square_brackets">[%s]</string>
 
 </resources>

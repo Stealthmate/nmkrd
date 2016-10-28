@@ -2,6 +2,7 @@ package com.stealthmatedev.navermini.UI;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,11 @@ public class ResultListSearchVisualizer extends SearchVisualizer {
     @NonNull
     @Override
     public View getView(@NonNull ViewGroup container) {
+
+        if(adapter.getCount() == 0) {
+            return LayoutInflater.from(getContext()).inflate(R.layout.view_no_results, container, false);
+        }
+
         ListView view = (ListView) LayoutInflater.from(getContext()).inflate(R.layout.layout_results, container, false);
         view.setAdapter(adapter);
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {

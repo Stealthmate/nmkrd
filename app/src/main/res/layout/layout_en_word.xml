@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_jp_word"
+    android:id="@+id/layout_en_word"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/jp_word_name"
+        android:id="@+id/en_word_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="にほんご"
+        android:text="남자"
         android:textColor="@color/nm_colorTextAccent"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/jp_word_kanji"
+        android:id="@+id/en_word_extra"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/jp_word_name"
+        android:layout_alignBaseline="@id/en_word_name"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/jp_word_name"
-        android:layout_toRightOf="@id/jp_word_name"
-        android:text="日本語"
+        android:layout_toEndOf="@id/en_word_name"
+        android:layout_toRightOf="@id/en_word_name"
+        android:text="[%s]"
         android:textColor="@color/nm_colorTextAccent"
-        android:textSize="18sp" />
+        android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/jp_word_class"
+        android:id="@+id/en_word_class"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:text="名詞"
+        android:layout_marginTop="5dp"
+        android:text="Noun"
         android:textColor="@color/nm_colorText"
         android:textSize="16sp" />
 
     <com.stealthmatedev.navermini.UI.generic.FuriganaTextView
-        android:id="@+id/jp_word_meaning"
+        android:id="@+id/en_word_meaning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/jp_word_name"
+        android:layout_below="@id/en_word_name"
         android:layout_marginTop="5dp"
-        android:text="日本人が話す言語。"
+        android:text="Boy/Man"
         android:textColor="@color/nm_colorText" />
 
 </RelativeLayout>

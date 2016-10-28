@@ -9,12 +9,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.stealthmatedev.navermini.UI.CustomViewPager;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
+import com.stealthmatedev.navermini.data.HistoryDB;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;
@@ -37,10 +43,21 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle toggle;
     private DrawerLayout drawer;
 
+    private AdView resultListBannerAd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this, "ca-app-pub-3986965759537769~5680737535");
+
+        resultListBannerAd = new AdView(this);
+        resultListBannerAd.setAdSize(AdSize.SMART_BANNER);
+        resultListBannerAd.setAdUnitId("ca-app-pub-3986965759537769/6878269136");
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("47E36A7D3CA090778B4C1BF8682BF772").build();
+        resultListBannerAd.loadAd(adRequest);
+
 
         this.state = new StateManager(this);
 
@@ -49,16 +66,29 @@ public class MainActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
 
         this.drawer = (DrawerLayout) findViewById(R.id.drawer);
+        this.drawer.setEnabled(false);
+        this.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         this.toggle = new ActionBarDrawerToggle(this, drawer, R.string.material_drawer_open, R.string.material_drawer_close);
         this.drawer.addDrawerListener(this.toggle);
 
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setHomeButtonEnabled(true);
+        //ab.setDisplayHomeAsUpEnabled(true);
+        //ab.setHomeButtonEnabled(true);
 
         final CustomViewPager pager = (CustomViewPager) findViewById(R.id.viewpager);
 
         pager.initialize(getSupportFragmentManager());
         this.pager = pager;
+
+
+        HistoryDB db = new HistoryDB(this);
+        db.put("TEST");
+        db.remove("TEST");
+        db.put("hello!");
+        db.put("world!");
+        db.get("TEST");
+
+        Log.i(APPTAG, "DPI " + getResources().getDisplayMetrics().density);
+
     }
 
     @Override
@@ -228,8 +258,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public AdView resultListBannerAd() {
+        return resultListBannerAd;
+    }
+
     public void selectPanel(View view) {
-        Log.i(APPTAG, "Attempt to change page. Current state: " + currentPage.name());
         if(currentPage == Page.TRANSITION) return;
         switch(view.getId()) {
             case R.id.view_main_btn_searchPanel : {

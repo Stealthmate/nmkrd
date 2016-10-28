@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.stealthmateoriginal.navermini.UI.CustomViewPager
+        <com.stealthmatedev.navermini.UI.CustomViewPager
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -21,7 +21,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/nm_colorPrimaryLight">
+            android:background="@color/nm_colorPrimaryLight"
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/view_main_btn_searchPanel"
@@ -42,8 +43,6 @@
                 android:onClick="selectPanel"/>
 
         </LinearLayout>
-        
-        
 
     </LinearLayout>
 
@@ -58,31 +57,6 @@
             android:id="@+id/view_home_dict_btn_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <RadioButton
-                android:id="@+id/view_home_dict_btn_kr"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/btn_kr"
-                android:button="@null"
-                android:onClick="onSelectDictionary" />
-
-            <RadioButton
-                android:id="@+id/view_home_dict_btn_jp"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/btn_jp"
-                android:button="@null"
-                android:onClick="onSelectDictionary" />
-
-            <RadioButton
-                android:id="@+id/view_home_dict_btn_en"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/btn_en"
-                android:button="@null"
-                android:onClick="onSelectDictionary" />
-
         </RadioGroup>
 
     </ScrollView>

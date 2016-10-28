@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.SearchEngine;
@@ -63,6 +66,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
     }
 
+    private static final int AD_POSITION = 4;
     private static final int PAGE_SIZE = 10;
 
     protected final StateManager state;
@@ -75,7 +79,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     public ResultListAdapter(StateManager state, String query, String response) {
         super(state.getActivity(), 0, new ArrayList<DetailedItem>());
         this.addAll(parseResult(response));
-        this.noMoreAvailable = super.getCount() == 0;
+        this.noMoreAvailable = super.getCount() < PAGE_SIZE;
         this.state = state;
         this.query = query;
         this.page = 1;
@@ -87,7 +91,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         SerializableRepresentation desData = (SerializableRepresentation) data;
         this.addAll(desData.results);
         this.state = state;
-        this.noMoreAvailable = desData.noMore;
+        this.noMoreAvailable = desData.noMore || desData.results.size() < PAGE_SIZE;
         this.query = desData.query;
         this.page = desData.page;
         this.loading = false;
@@ -97,26 +101,48 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
     protected abstract View generateItem(int position, View convertView, ViewGroup parent);
 
+
+    private View generateAd(ViewGroup parent) {
+        ViewGroup view = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.view_listitem_ad, parent, false);
+        AdView ad = state.getActivity().resultListBannerAd();
+        if (ad.getParent() != null) ((ViewGroup) ad.getParent()).removeView(ad);
+        view.addView(ad);
+        return view;
+    }
+
     @NonNull
     @Override
     public final View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        if (position == getCount() - 1 && !noMoreAvailable) {
-            if (loading) {
-                View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
-                v.setVisibility(View.VISIBLE);
-                return v;
-            } else
-                return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
+        if (position == getCount() - 1) {
+
+            if(!noMoreAvailable)
+            {
+                if (loading) {
+                    View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
+                    v.setVisibility(View.VISIBLE);
+                    return v;
+                } else
+                    return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
+            } else {
+                if(AD_POSITION > super.getCount() - 1) return generateAd(parent);
+            }
         }
-        return generateItem(position, convertView, parent);
+
+        if (position == AD_POSITION) return generateAd(parent);
+
+        int actualPosition = position;
+
+        if (position > AD_POSITION) actualPosition -= 1;
+
+        return generateItem(actualPosition, convertView, parent);
     }
 
     @Override
     public final int getCount() {
-
-        if (noMoreAvailable) return super.getCount();
-        else return super.getCount() + 1;
+        if(super.getCount() == 0) return 0;
+        if (noMoreAvailable) return super.getCount() + 1;
+        else return super.getCount() + 2;
     }
 
     private void setNoMoreAvailable(boolean b) {
