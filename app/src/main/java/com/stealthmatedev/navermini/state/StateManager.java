@@ -28,62 +28,29 @@ public class StateManager {
     private static final String PARAM_PAGESIZE = "pagesize";
 
     private MainActivity activity;
-    private SearchFragment searchFragment;
-    private DetailsFragment detailsFragment;
     private SearchEngine searchEngine;
-
-    private ResultListDictionary currentDictionary;
-
-    private ResultListDictionary.SubDictionary currentSubDictionary;
 
     public StateManager(MainActivity activity) {
         this.activity = activity;
-        this.searchFragment = new SearchFragment();
-        this.detailsFragment = new DetailsFragment();
         this.searchEngine = new SearchEngine(this);
-        this.currentDictionary = ResultListDictionary.KOREAN;
-        this.currentSubDictionary = currentDictionary.subdicts[0];
     }
 
     public MainActivity getActivity() {
         return activity;
     }
 
-    public SearchFragment getSearchFragment() {
-        return searchFragment;
-    }
-    public void setCurrentDictionary(ResultListDictionary dict) {
-
-        this.currentDictionary = dict;
-        setCurrentSubDictionary(0);
-    }
-
-    public ResultListDictionary getCurrentDictionary() {
-        return this.currentDictionary;
-    }
-
-    public ResultListDictionary.SubDictionary getCurrentSubDictionary() {
-        return currentSubDictionary;
-    }
-
-    public void setCurrentSubDictionary(int i) {
-        this.searchEngine.cancellAllQueries();
-        this.currentSubDictionary = currentDictionary.subdicts[i];
-        this.searchFragment.performSearch();
-    }
-
     public SearchEngine getSearchEngine() {
         return searchEngine;
     }
 
-    public void query(String query, int page, int pagesize, SearchEngine.OnResponse callback) {
+    public void query(ResultListQuery query, SearchEngine.OnResponse callback) {
 
         String url = HOST;
-        url += currentDictionary.path + currentSubDictionary.path;
-        url += "?" + PARAM_PAGE + "=" + page;
-        url += "&" + PARAM_PAGESIZE + "=" +  pagesize;
+        url += query.path;
+        url += "?" + PARAM_PAGE + "=" + query.page;
+        url += "&" + PARAM_PAGESIZE + "=" +  query.pagesize;
         try {
-            url += "&" + PARAM_QUERY + "=" +  URLEncoder.encode(query, "utf-8");
+            url += "&" + PARAM_QUERY + "=" +  URLEncoder.encode(query.query, "utf-8");
         } catch (UnsupportedEncodingException e) {
             Log.wtf(APPTAG, "Unsupported utf-8.");
             activity.reset();

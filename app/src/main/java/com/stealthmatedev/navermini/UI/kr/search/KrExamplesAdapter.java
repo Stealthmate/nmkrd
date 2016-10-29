@@ -10,6 +10,7 @@ import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.data.kr.KrExampleEntry;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import org.json.JSONArray;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 public class KrExamplesAdapter extends ResultListAdapter {
 
-    public KrExamplesAdapter(StateManager state, String query, String response) {
+    public KrExamplesAdapter(StateManager state, ResultListQuery query, String response) {
         super(state, query, response);
     }
 

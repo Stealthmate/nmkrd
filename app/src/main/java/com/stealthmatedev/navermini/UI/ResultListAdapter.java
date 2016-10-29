@@ -11,6 +11,7 @@ import com.google.android.gms.ads.AdView;
 import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
@@ -28,12 +29,12 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     public static class SerializableRepresentation implements Serializable {
 
         private final Class<? extends ResultListAdapter> childClass;
-        private final String query;
+        private final ResultListQuery query;
         private final ArrayList<DetailedItem> results;
         private final boolean noMore;
         private final int page;
 
-        private SerializableRepresentation(Class<? extends ResultListAdapter> childClass, String query, ArrayList<DetailedItem> results, int page, boolean noMore) {
+        private SerializableRepresentation(Class<? extends ResultListAdapter> childClass, ResultListQuery query, ArrayList<DetailedItem> results, int page, boolean noMore) {
             this.childClass = childClass;
             this.query = query;
             this.results = results;
@@ -69,13 +70,13 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     private static final int PAGE_SIZE = 10;
 
     protected final StateManager state;
-    private final String query;
+    private final ResultListQuery query;
     private int page;
 
     private boolean noMoreAvailable;
     private boolean loading;
 
-    public ResultListAdapter(StateManager state, String query, String response) {
+    public ResultListAdapter(StateManager state, ResultListQuery query, String response) {
         super(state.getActivity(), 0, new ArrayList<DetailedItem>());
         this.addAll(parseResult(response));
         this.noMoreAvailable = super.getCount() == 0;
@@ -168,7 +169,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     }
 
     private void loadMoreIfAvailable() {
-        state.query(query, page + 1, PAGE_SIZE, new SearchEngine.OnResponse() {
+        state.query(query, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
                 setLoading(false);
@@ -183,7 +184,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         setLoading(true);
     }
 
-    public String getQuery() {
+    public ResultListQuery getQuery() {
         return query;
     }
 

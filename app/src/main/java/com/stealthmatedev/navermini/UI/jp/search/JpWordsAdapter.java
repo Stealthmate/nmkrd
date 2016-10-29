@@ -11,6 +11,7 @@ import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsVisualizer;
 import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 import com.stealthmatedev.navermini.data.jp.JpKanjiEntry;
 import com.stealthmatedev.navermini.data.jp.JpWordEntry;
@@ -36,7 +37,7 @@ public class JpWordsAdapter extends ResultListAdapter {
 
     private static final Pattern RUBY = Pattern.compile("\\(([^\\(\\);]+);([^\\(\\);]+)\\)");
 
-    public JpWordsAdapter(StateManager state, String query, String result) {
+    public JpWordsAdapter(StateManager state, ResultListQuery query, String result) {
         super(state, query, result);
     }
 

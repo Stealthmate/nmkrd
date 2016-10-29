@@ -11,6 +11,7 @@ import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.kr.details.KrDetailsVisualizer;
 import com.stealthmatedev.navermini.data.kr.KrWordDetails;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 import com.stealthmatedev.navermini.data.kr.KrWordEntry;
 
@@ -28,7 +29,7 @@ public class KrWordsAdapter extends ResultListAdapter {
 
     private JSONObject json;
 
-    public KrWordsAdapter(StateManager state, String query, String result) {
+    public KrWordsAdapter(StateManager state, ResultListQuery query, String result) {
         super(state, query, result);
     }
 

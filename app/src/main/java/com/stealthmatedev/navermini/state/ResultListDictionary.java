@@ -45,4 +45,11 @@ public enum ResultListDictionary {
 
         return null;
     }
+
+    public int indexOf(SubDictionary subdict) {
+        for (int i = 0; i <= subdicts.length - 1; i++) {
+            if(subdicts[i].equals(subdict)) return i;
+        }
+        return -1;
+    }
 }

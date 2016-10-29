@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
 import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
 import com.stealthmatedev.navermini.UI.SearchVisualizer;
 import com.stealthmatedev.navermini.state.ResultListDictionary;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
@@ -38,7 +40,7 @@ public class SearchFragment extends Fragment {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            state.setCurrentSubDictionary(position);
+            setCurrentSubDictionary(position);
         }
 
         @Override
@@ -51,9 +53,7 @@ public class SearchFragment extends Fragment {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            setSubDictionaryList(dictAdapter.getItem(position).resultListDictionary);
-            state.setCurrentDictionary(dictAdapter.getItem(position).resultListDictionary);
-            subdictList.setSelection(0);
+            setCurrentDictionary(dictAdapter.getItem(position).resultListDictionary);
         }
 
         @Override
@@ -62,8 +62,11 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    private ResultListDictionary dictionary;
-    private ResultListDictionary.SubDictionary subDictionary;
+    private static final String SAVE_KEY_DICT = "dict";
+    private static final String SAVE_KEY_SUBDICT = "subdict";
+
+    private ResultListDictionary currentDictionary;
+    private ResultListDictionary.SubDictionary currentSubDictionary;
 
     private StateManager state;
     private LinearLayout resultcontainer;
@@ -75,7 +78,30 @@ public class SearchFragment extends Fragment {
 
     private boolean created = false;
 
-    private LinearLayout loadingView;
+
+    public void setCurrentSubDictionary(int i) {
+        if (i < 0 || i >= currentDictionary.subdicts.length) {
+            throw new IllegalArgumentException("Invalid sub-dictionary index: " + i + " (sub-dictionaries of " + currentDictionary.name() + ": " + currentDictionary.subdicts.length);
+        }
+        this.currentSubDictionary = currentDictionary.subdicts[i];
+    }
+
+    public void setCurrentDictionary(ResultListDictionary dict) {
+        this.currentDictionary = dict;
+        setSubDictionaryList(this.currentDictionary);
+    }
+
+    private void setSubDictionaryList(ResultListDictionary dict) {
+        ResultListDictionary.SubDictionary[] subdicts = dict.subdicts;
+        ArrayList<String> subdictStrings = new ArrayList<>(subdicts.length);
+        for (int i = 0; i <= subdicts.length - 1; i++) {
+            subdictStrings.add(subdicts[i].name);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, subdictStrings);
+        subdictList.setAdapter(adapter);
+        subdictList.setSelection(0);
+        setCurrentSubDictionary(0);
+    }
 
     public void performSearch() {
 
@@ -88,14 +114,17 @@ public class SearchFragment extends Fragment {
 
         ViewGroup root = (ViewGroup) this.getView();
         EditText searchBar = (EditText) root.findViewById(R.id.search_bar);
-        final String query = searchBar.getText().toString();
+        final String querystring = searchBar.getText().toString();
+        String path = currentDictionary.path + currentSubDictionary.path;
 
-        if (query.length() == 0) return;
+        if (querystring.length() == 0) return;
 
-        state.query(query, 1, 10, new SearchEngine.OnResponse() {
+        final ResultListQuery query = new ResultListQuery(path, querystring, 1, 10);
+
+        state.query(query, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
-                populate(ResultListSearchVisualizer.mapFromSearch(state, state.getCurrentSubDictionary(), query, response));
+                populate(ResultListSearchVisualizer.mapFromSearch(state, currentSubDictionary, query, response));
             }
         });
         this.waitForResults();
@@ -110,11 +139,12 @@ public class SearchFragment extends Fragment {
 
         clear();
         resultcontainer.addView(currentVisualizer.getView(resultcontainer));
-        loadingView.setVisibility(View.GONE);
     }
 
     public void waitForResults() {
-        loadingView.setVisibility(View.VISIBLE);
+        if (resultcontainer == null) return;
+        clear();
+        LayoutInflater.from(getContext()).inflate(R.layout.view_loading, this.resultcontainer, true);
     }
 
     public void clear() {
@@ -123,24 +153,65 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        this.dictAdapter = new DictionarySpinnerAdapter();
+
+        ResultListDictionary dict = null;
+        ResultListDictionary.SubDictionary subdict = null;
+
+        if (savedInstanceState != null) {
+            dict = ResultListDictionary.valueOf(savedInstanceState.getString(SAVE_KEY_DICT));
+            if (dict != null) {
+                subdict = dict.getSubDict(savedInstanceState.getString(SAVE_KEY_SUBDICT));
+            }
+        }
+
+        if (dict != null) {
+            this.currentDictionary = dict;
+        } else {
+            this.currentDictionary = this.dictAdapter.getItem(0).resultListDictionary;
+        }
+
+        if (subdict != null && this.currentDictionary.indexOf(subdict) >= 0) {
+            this.currentSubDictionary = subdict;
+        } else {
+            this.currentSubDictionary = this.currentDictionary.subdicts[0];
+        }
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_search, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        this.resultcontainer = (LinearLayout) view.findViewById(R.id.result);
+        LayoutInflater.from(getContext()).inflate(R.layout.layout_results, resultcontainer, true);
+
+        this.dictList = (Spinner) view.findViewById(R.id.view_search_select_dict);
+        this.subdictList = (Spinner) view.findViewById(R.id.spinner_select_enigne);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         this.state = ((MainActivity) getActivity()).getState();
 
-        final View contents = inflater.inflate(R.layout.fragment_search, container, false);
-
-        resultcontainer = (LinearLayout) contents.findViewById(R.id.result);
-        ViewGroup.inflate(getActivity(), R.layout.layout_results, resultcontainer);
-
-        this.dictList = (Spinner) contents.findViewById(R.id.view_search_select_dict);
-        this.dictAdapter = new DictionarySpinnerAdapter(getContext());
         this.dictList.setAdapter(this.dictAdapter);
         this.dictList.setOnItemSelectedListener(new OnSelectDictionaryListener());
-
-        this.subdictList = (Spinner) contents.findViewById(R.id.spinner_select_enigne);
         this.subdictList.setOnItemSelectedListener(new OnSelectSubdictionaryListener());
+        setCurrentDictionary(this.currentDictionary);
+        setCurrentSubDictionary(this.currentDictionary.indexOf(this.currentSubDictionary));
 
-        EditText searchBox = (EditText) contents.findViewById(R.id.search_bar);
+
+        EditText searchBox = (EditText) getView().findViewById(R.id.search_bar);
         searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -149,50 +220,24 @@ public class SearchFragment extends Fragment {
             }
         });
 
-        this.loadingView = (LinearLayout) contents.findViewById(R.id.view_loading);
-        this.loadingView.setVisibility(View.GONE);
-
         created = true;
 
         if (savedInstanceState != null) {
             SearchVisualizer vis = ResultListSearchVisualizer.fromSavedState(state, savedInstanceState);
-            if(vis != null) this.currentVisualizer = vis;
+            if (vis != null) this.currentVisualizer = vis;
         }
 
         populate(this.currentVisualizer);
 
-        return contents;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setSubDictionaryList(state.getCurrentDictionary());
-    }
-
-    public void setSubDictionaryList(ResultListDictionary dict) {
-        ResultListDictionary.SubDictionary[] subdicts = dict.subdicts;
-        ArrayList<String> subdictStrings = new ArrayList<>(subdicts.length);
-        for (int i = 0; i <= subdicts.length - 1; i++) {
-            subdictStrings.add(subdicts[i].name);
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, subdictStrings);
-        subdictList.setAdapter(adapter);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if (currentVisualizer != null) {
             currentVisualizer.saveState(outState);
-            outState.putString("dict", state.getCurrentDictionary().name());
-            outState.putString("subdict", state.getCurrentSubDictionary().name);
+            outState.putString(SAVE_KEY_DICT, currentDictionary.name());
+            outState.putString(SAVE_KEY_SUBDICT, currentSubDictionary.name);
         }
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        Log.i(APPTAG, "activity created");
-        if(savedInstanceState != null) Log.i(APPTAG, savedInstanceState.toString());
-    }
 }

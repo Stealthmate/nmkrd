@@ -11,6 +11,7 @@ import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.data.en.EnWordEntry;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import org.json.JSONArray;
@@ -28,7 +29,7 @@ import static android.R.attr.name;
  */
 
 public class EnWordsAdapter extends ResultListAdapter {
-    public EnWordsAdapter(StateManager state, String query, String response) {
+    public EnWordsAdapter(StateManager state, ResultListQuery query, String response) {
         super(state, query, response);
     }
 
