@@ -114,20 +114,19 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     @Override
     public final View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        if (position == getCount() - 1) {
+        if (position == getCount() - 1 && !noMoreAvailable) {
 
-            if(!noMoreAvailable)
-            {
                 if (loading) {
                     View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
                     v.setVisibility(View.VISIBLE);
                     return v;
                 } else
                     return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
-            } else {
-                if(AD_POSITION > super.getCount() - 1) return generateAd(parent);
-            }
         }
+        else if(position == getCount() - 1 && noMoreAvailable && AD_POSITION > position) {
+             return generateAd(parent);
+        }
+        else if(!noMoreAvailable && position == getCount() - 2 && AD_POSITION > position) return generateAd(parent);
 
         if (position == AD_POSITION) return generateAd(parent);
 
