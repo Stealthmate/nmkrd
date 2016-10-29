@@ -13,7 +13,8 @@ public class Definition implements Serializable {
 
     public Definition(String def, ArrayList<String> ex) {
         this.def = def;
-        this.ex = ex;
+        if(ex != null) this.ex = ex;
+        else this.ex = new ArrayList<>(0);
     }
 
 }

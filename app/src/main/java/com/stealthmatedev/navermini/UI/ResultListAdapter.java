@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.google.android.gms.ads.AdView;
-import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
@@ -26,7 +26,7 @@ import static com.stealthmatedev.navermini.App.APPTAG;
  */
 public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
-    public static class SerializableRepresentation implements Serializable {
+    protected static class SerializableRepresentation implements Serializable {
 
         private final Class<? extends ResultListAdapter> childClass;
         private final ResultListQuery query;
@@ -97,91 +97,16 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         this.loading = false;
     }
 
-    protected abstract ArrayList<DetailedItem> parseResult(String result);
-
-    protected abstract View generateItem(int position, View convertView, ViewGroup parent);
-
-
-    private View generateAd(ViewGroup parent) {
-        ViewGroup view = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.view_listitem_ad, parent, false);
-        AdView ad = state.getActivity().resultListBannerAd();
-        if (ad.getParent() != null) ((ViewGroup) ad.getParent()).removeView(ad);
-        view.addView(ad);
-        return view;
-    }
-
-    @NonNull
-    @Override
-    public final View getView(int position, View convertView, @NonNull ViewGroup parent) {
-
-        if (position == getCount() - 1 && !noMoreAvailable) {
-
-                if (loading) {
-                    View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
-                    v.setVisibility(View.VISIBLE);
-                    return v;
-                } else
-                    return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
-        }
-        else if(position == getCount() - 1 && noMoreAvailable && AD_POSITION > position) {
-             return generateAd(parent);
-        }
-        else if(!noMoreAvailable && position == getCount() - 2 && AD_POSITION > position) return generateAd(parent);
-
-        if (position == AD_POSITION) return generateAd(parent);
-
-        int actualPosition = position;
-
-        if (position > AD_POSITION) actualPosition -= 1;
-
-        return generateItem(actualPosition, convertView, parent);
-    }
-
-    @Override
-    public final int getCount() {
-        if(super.getCount() == 0) return 0;
-        if (noMoreAvailable) return super.getCount() + 1;
-        else return super.getCount() + 2;
-    }
-
-    private void setNoMoreAvailable(boolean b) {
-
-        this.noMoreAvailable = b;
-        notifyDataSetChanged();
-    }
-
-    protected abstract Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item);
-
-    public final boolean onItemClicked(View view, int position, long id) {
-        if (position == getCount() - 1) {
-            if (!noMoreAvailable) loadMoreIfAvailable();
-        } else {
-            DetailedItem item = getItem(position);
-            if(item.hasDetails()) state.loadDetails(item.getLinkToDetails(), getDetailsVisualizerClass(item));
-        }
-
-        return true;
-    }
 
     private void setLoading(boolean b) {
         this.loading = b;
         this.notifyDataSetChanged();
     }
 
-    private void loadMoreIfAvailable() {
-        state.query(query, new SearchEngine.OnResponse() {
-            @Override
-            public void responseReady(String response) {
-                setLoading(false);
-                ArrayList<DetailedItem> new_entries = parseResult(response);
-                if (new_entries.size() < PAGE_SIZE) {
-                    setNoMoreAvailable(true);
-                }
-                ResultListAdapter.this.addAll(new_entries);
-                page++;
-            }
-        });
-        setLoading(true);
+    private void setNoMoreAvailable(boolean b) {
+
+        this.noMoreAvailable = b;
+        notifyDataSetChanged();
     }
 
     public ResultListQuery getQuery() {
@@ -196,4 +121,88 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
         return new SerializableRepresentation(this.getClass(), query, results, page, noMoreAvailable);
     }
+
+    private void loadMoreIfAvailable() {
+        state.getSearchEngine().queryResultList(query, new SearchEngine.OnResponse() {
+            @Override
+            public void responseReady(String response) {
+                setLoading(false);
+                ArrayList<DetailedItem> new_entries = parseResult(response);
+                if (new_entries.size() < PAGE_SIZE) {
+                    setNoMoreAvailable(true);
+                }
+                ResultListAdapter.this.addAll(new_entries);
+                page++;
+            }
+        });
+        setLoading(true);
+    }
+
+    private View generateAd(ViewGroup parent) {
+        ViewGroup view = (ViewGroup) LayoutInflater.from(getContext()).inflate(R.layout.view_listitem_ad, parent, false);
+        AdView ad = state.getActivity().resultListBannerAd();
+        if (ad.getParent() != null) ((ViewGroup) ad.getParent()).removeView(ad);
+        view.addView(ad);
+        return view;
+    }
+
+
+    @Override
+    public final int getCount() {
+        if (super.getCount() == 0) return 0;
+        if (noMoreAvailable) return super.getCount() + 1;
+        else return super.getCount() + 2;
+    }
+
+
+    @NonNull
+    @Override
+    public final View getView(int position, View convertView, @NonNull ViewGroup parent) {
+
+        if (position == getCount() - 1 && !noMoreAvailable) {
+
+            if (loading) {
+                View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
+                v.setVisibility(View.VISIBLE);
+                return v;
+            } else
+                return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
+        } else if (position == getCount() - 1 && noMoreAvailable && AD_POSITION > position) {
+            return generateAd(parent);
+        } else if (!noMoreAvailable && position == getCount() - 2 && AD_POSITION > position)
+            return generateAd(parent);
+
+        if (position == AD_POSITION) return generateAd(parent);
+
+        int actualPosition = position;
+
+        if (position > AD_POSITION) actualPosition -= 1;
+
+        return generateItem(actualPosition, convertView, parent);
+    }
+
+
+    public final boolean onItemClicked(View view, int position, long id) {
+        if (position == getCount() - 1) {
+            if (!noMoreAvailable) loadMoreIfAvailable();
+        } else {
+            DetailedItem item = getItem(position);
+            final DetailsVisualizer visualizer = getDetailsVisualizer(item);
+            final DetailsFragment dfrag = state.openDetails();
+
+            if (item.hasDetails()) {
+                state.loadDetailsAsync(item.getLinkToDetails(), visualizer, dfrag);
+            } else {
+                dfrag.populate(visualizer);
+            }
+        }
+
+        return true;
+    }
+
+
+    protected abstract ArrayList<DetailedItem> parseResult(String result);
+    protected abstract View generateItem(int position, View convertView, ViewGroup parent);
+    protected abstract DetailsVisualizer getDetailsVisualizer(DetailedItem item);
+
 }

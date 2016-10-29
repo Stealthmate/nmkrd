@@ -65,28 +65,28 @@ public class KrWordsAdapter extends ResultListAdapter {
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.kr_word_name);
-        name.setText(word.getName());
+        name.setText(word.name);
 
         TextView hanja = (TextView) convertView.findViewById(R.id.kr_word_hanja);
         System.out.println(convertView);
-        hanja.setText(word.getHanja());
+        hanja.setText(word.hanja);
 
         TextView pronun = (TextView) convertView.findViewById(R.id.kr_word_pronun);
-        pronun.setText(word.getPronunciation());
+        pronun.setText(word.pronunciation);
 
         TextView wordclass = (TextView) convertView.findViewById(R.id.kr_word_class);
-        String classes = Arrays.toString(word.getWordClasses());
+        String classes = Arrays.toString(word.wordclasses);
         if(classes.equals("[]")) classes = "";
         wordclass.setText(classes);
 
         TextView meaning = (TextView) convertView.findViewById(R.id.kr_word_meaning);
-        meaning.setText(word.getMeaning());
+        meaning.setText(word.meaning);
 
         return convertView;
     }
 
     @Override
-    protected Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item) {
-        return KrDetailsVisualizer.class;
+    protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
+        return new KrDetailsVisualizer((KrWordEntry) item);
     }
 }

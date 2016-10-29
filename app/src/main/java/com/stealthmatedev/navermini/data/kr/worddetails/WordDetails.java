@@ -1,5 +1,7 @@
 package com.stealthmatedev.navermini.data.kr.worddetails;
 
+import com.stealthmatedev.navermini.data.kr.KrWordEntry;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,5 +64,11 @@ public class WordDetails implements Serializable {
         }
 
         this.defs = defs;
+    }
+
+    public WordDetails(KrWordEntry word) {
+        this.word = new Word(word.name, word.pronunciation, word.hanja, word.wordclasses);
+        this.defs = new ArrayList<>(1);
+        this.defs.add(new Definition(word.meaning, null));
     }
 }

@@ -1,5 +1,7 @@
 package com.stealthmatedev.navermini.state;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,8 +12,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.stealthmatedev.navermini.App;
+import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
+import static com.stealthmatedev.navermini.App.HOST;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -24,6 +32,10 @@ public class SearchEngine {
 
     private static final String TAG = "tag";
 
+    private static final String PARAM_QUERY = "q";
+    private static final String PARAM_PAGE = "page";
+    private static final String PARAM_PAGESIZE = "pagesize";
+
     private RequestQueue queue;
     private StateManager state;
 
@@ -32,7 +44,7 @@ public class SearchEngine {
         this.queue = Volley.newRequestQueue(state.getActivity());
     }
 
-    public void request(final String url, final OnResponse callback) {
+    private void request(final String url, final OnResponse callback) {
         cancellAllQueries();
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -61,7 +73,31 @@ public class SearchEngine {
         queue.add(req);
     }
 
-    public void cancellAllQueries() {
+    private void cancellAllQueries() {
         queue.cancelAll(TAG);
+    }
+
+    public void queryResultList(ResultListQuery query, OnResponse callback) {
+        String url = HOST;
+        url += query.path;
+        url += "?" + PARAM_PAGE + "=" + query.page;
+        url += "&" + PARAM_PAGESIZE + "=" +  query.pagesize;
+        try {
+            url += "&" + PARAM_QUERY + "=" +  URLEncoder.encode(query.query, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.wtf(APPTAG, "Unsupported utf-8.");
+        }
+
+        request(url, callback);
+    }
+
+    public void queryDetails(final String path, OnResponse callback) {
+        if(path.startsWith("http")) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(path));
+            state.getActivity().startActivity(browserIntent);
+            return;
+        }
+
+        request(HOST + path, callback);
     }
 }

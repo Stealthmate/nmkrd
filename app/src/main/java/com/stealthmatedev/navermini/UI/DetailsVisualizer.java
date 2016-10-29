@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.stealthmatedev.navermini.state.DetailedItem;
+
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
@@ -23,10 +25,10 @@ public abstract class DetailsVisualizer {
 
     public static DetailsVisualizer fromSavedState(Context context, Bundle savedState) {
 
-        if(savedState == null) return null;
+        if (savedState == null) return null;
 
         String classname = savedState.getString(STATE_CLASS);
-        if(classname == null) return null;
+        if (classname == null) return null;
 
         try {
             Class<?> adapterClass = Class.forName(classname);
@@ -49,11 +51,10 @@ public abstract class DetailsVisualizer {
         return null;
     }
 
-    protected final Context context;
-
-    public DetailsVisualizer(Context context) {
-        this.context = context;
+    public DetailsVisualizer() {
     }
+
+    public abstract void populate(String data);
 
     public abstract View getView(ViewGroup container);
 

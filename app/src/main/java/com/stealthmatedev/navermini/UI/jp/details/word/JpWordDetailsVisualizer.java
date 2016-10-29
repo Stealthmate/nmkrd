@@ -24,24 +24,21 @@ import java.io.Serializable;
 
 public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
-    private final WordDetails details;
+    private WordDetails details;
 
-    public JpWordDetailsVisualizer(Context context, String response) {
-        super(context);
-        WordDetails details = null;
-        try {
-            details = new WordDetails(response);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            System.out.println("JSON ERROR");
-        }
-
-        this.details = details;
+    public JpWordDetailsVisualizer() {
+        super();
     }
 
-    public JpWordDetailsVisualizer(Context context, JpWordEntry word) {
-        super(context);
+    public JpWordDetailsVisualizer(JpWordEntry word) {
+        super();
         this.details = new WordDetails(word);
+    }
+
+    public JpWordDetailsVisualizer(Serializable data) {
+        super();
+        throw new UnsupportedOperationException("JpWordDetailsVisualizer: constructor from serialized data not yet supported.");
+        //this.details = new WordDetails(data);
     }
 
     public static void setDefinition(Context context, View root, Meaning meaning) {
@@ -55,9 +52,22 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     }
 
     @Override
+    public void populate(String data) {
+
+        WordDetails details = null;
+        try {
+            details = new WordDetails(data);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        this.details = details;
+    }
+
+    @Override
     public View getView(ViewGroup container) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_jp_detail_word, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_jp_detail_word, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.view_jp_detail_word_name);
         name.setText(details.word);
@@ -70,7 +80,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        WordclassAdapter adapter = new WordclassAdapter(context, this, details);
+        WordclassAdapter adapter = new WordclassAdapter(container.getContext(), this, details);
         deflist.setAdapter(adapter);
 
         Meaning meaning = details.getMeaningsForWordclass(adapter.getItem(0)).get(0);
@@ -80,7 +90,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
         ListView glossList = (ListView) view.findViewById(R.id.view_jp_detail_word_definition_gloss);
         glossList.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
-        glossList.setAdapter(new GlossAdapter(context, meaning.getGlosses()));
+        glossList.setAdapter(new GlossAdapter(container.getContext(), meaning.getGlosses()));
 
         return view;
     }

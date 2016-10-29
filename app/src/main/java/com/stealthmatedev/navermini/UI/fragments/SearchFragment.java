@@ -121,7 +121,7 @@ public class SearchFragment extends Fragment {
 
         final ResultListQuery query = new ResultListQuery(path, querystring, 1, 10);
 
-        state.query(query, new SearchEngine.OnResponse() {
+        state.getSearchEngine().queryResultList(query, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
                 populate(ResultListSearchVisualizer.mapFromSearch(state, currentSubDictionary, query, response));

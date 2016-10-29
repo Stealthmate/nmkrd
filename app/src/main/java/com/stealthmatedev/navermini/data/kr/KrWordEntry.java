@@ -25,14 +25,14 @@ public class KrWordEntry implements DetailedItem {
 
     private static final String NO_MORE_INFO = "NOMOREINFO";
 
-    private String name;
-    private String meaning;
+    public final String name;
+    public final String meaning;
 
-    private String hanja;
-    private String pronunciation;
-    private String[] wordclasses;
+    public final String hanja;
+    public final String pronunciation;
+    public final String[] wordclasses;
 
-    private String moreInfo;
+    public final String moreInfo;
 
 
     public static KrWordEntry fromJSON(JSONObject obj) throws JSONException {
@@ -67,31 +67,6 @@ public class KrWordEntry implements DetailedItem {
         this.wordclasses = wordclasses;
         this.meaning = gloss;
         this.moreInfo = moreInfo;
-    }
-
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPronunciation() {
-        return pronunciation;
-    }
-
-    public String getMeaning() {
-        return meaning;
-    }
-
-    public String getHanja() {
-        return hanja;
-    }
-
-    public String[] getWordClasses() {
-        return wordclasses;
-    }
-
-    public String getMoreInfoLink() {
-        return moreInfo;
     }
 
     @Override

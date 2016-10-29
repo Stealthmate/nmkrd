@@ -142,9 +142,9 @@ public class JpWordsAdapter extends ResultListAdapter {
     }
 
     @Override
-    protected Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item) {
-        if(item instanceof JpWordEntry) return JpWordDetailsVisualizer.class;
-        else if (item instanceof JpKanjiEntry) return JpKanjiDetailsVisualizer.class;
+    protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
+        if(item instanceof JpWordEntry) return new JpWordDetailsVisualizer((JpWordEntry) item);
+        else if (item instanceof JpKanjiEntry) return new JpKanjiDetailsVisualizer();
         throw new RuntimeException("Invalid item class in JpWordsAdapter: " + item.getClass().getName());
     }
 

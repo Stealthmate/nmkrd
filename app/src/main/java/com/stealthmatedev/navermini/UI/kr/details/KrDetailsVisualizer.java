@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
+import com.stealthmatedev.navermini.data.kr.KrWordEntry;
 import com.stealthmatedev.navermini.data.kr.worddetails.Definition;
 import com.stealthmatedev.navermini.data.kr.worddetails.WordDetails;
 
@@ -21,6 +22,7 @@ import org.json.JSONException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static android.R.attr.data;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -41,8 +43,8 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
             if (convertView == null) {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_detail_kr_defitem, parent, false);
             }
-            
-            ((TextView)convertView).setText(getItem(position).def);
+
+            ((TextView) convertView).setText(getItem(position).def);
 
             final View finalConvertView = convertView;
             convertView.setOnClickListener(new View.OnClickListener() {
@@ -69,26 +71,29 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
 
     private WordDetails details;
 
-    public KrDetailsVisualizer(Context context, String response) {
-        super(context);
+    public KrDetailsVisualizer() {
+        super();
+    }
+
+    public KrDetailsVisualizer(KrWordEntry word) {
+        super();
+        this.details = new WordDetails(word);
+    }
+
+    @Override
+    public void populate(String data) {
         try {
-            this.details = new WordDetails(response);
+            this.details = new WordDetails(data);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, "JSON ERROR");
         }
     }
 
-    public KrDetailsVisualizer(Context context, Serializable data) {
-        super(context);
-        this.details = (WordDetails) data;
-
-    }
-
     @Override
     public View getView(ViewGroup container) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_kr_detail, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_kr_detail, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.kr_detail_word);
         name.setText(details.word.name);
@@ -104,7 +109,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        DefinitionsAdapter adapter = new DefinitionsAdapter(context, details.defs);
+        DefinitionsAdapter adapter = new DefinitionsAdapter(container.getContext(), details.defs);
         deflist.setAdapter(adapter);
 
         Definition def = details.defs.get(0);
@@ -115,13 +120,13 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         ListView ex = (ListView) view.findViewById(R.id.view_kr_detail_definition_ex_list);
         ex.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
-        ex.setAdapter(new ArrayAdapter<>(context, R.layout.view_kr_detail_definition_example, R.id.viewid_kr_detail_def_ex_text, def.ex));
+        ex.setAdapter(new ArrayAdapter<>(container.getContext(), R.layout.view_kr_detail_definition_example, R.id.viewid_kr_detail_def_ex_text, def.ex));
 
         return view;
     }
 
     @Override
-    public Serializable getDataRepresentation(){
+    public Serializable getDataRepresentation() {
         return details;
     }
 }

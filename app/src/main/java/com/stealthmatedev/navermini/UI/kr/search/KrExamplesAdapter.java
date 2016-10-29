@@ -60,7 +60,7 @@ public class KrExamplesAdapter extends ResultListAdapter {
     }
 
     @Override
-    protected Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item) {
+    protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
         return null;
     }
 }
