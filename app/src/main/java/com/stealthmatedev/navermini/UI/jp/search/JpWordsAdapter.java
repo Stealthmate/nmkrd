@@ -6,7 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
+import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsVisualizer;
+import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.StateManager;
 import com.stealthmatedev.navermini.data.jp.JpKanjiEntry;
@@ -135,6 +138,13 @@ public class JpWordsAdapter extends ResultListAdapter {
             return generateKanjiEntry((JpKanjiEntry) item, convertView, parent);
 
         throw new NullPointerException("Invalid object");
+    }
+
+    @Override
+    protected Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item) {
+        if(item instanceof JpWordEntry) return JpWordDetailsVisualizer.class;
+        else if (item instanceof JpKanjiEntry) return JpKanjiDetailsVisualizer.class;
+        throw new RuntimeException("Invalid item class in JpWordsAdapter: " + item.getClass().getName());
     }
 
     @Override

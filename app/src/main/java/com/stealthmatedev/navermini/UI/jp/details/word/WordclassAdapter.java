@@ -22,9 +22,9 @@ import java.util.ArrayList;
 public class WordclassAdapter extends ArrayAdapter<String> {
 
     private WordDetails details;
-    private JpWordDetailsAdapter detailsPanel;
+    private JpWordDetailsVisualizer detailsPanel;
 
-    public WordclassAdapter(Context context, JpWordDetailsAdapter detailsPanel, WordDetails details) {
+    public WordclassAdapter(Context context, JpWordDetailsVisualizer detailsPanel, WordDetails details) {
         super(context, 0, new ArrayList<>(details.getWordclasses()));
         this.detailsPanel = detailsPanel;
         this.details = details;
@@ -49,7 +49,7 @@ public class WordclassAdapter extends ArrayAdapter<String> {
         meanings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                JpWordDetailsAdapter.setDefinition(getContext(), parent.getRootView(), details.getMeaningsForWordclass(wordclass).get(position));
+                JpWordDetailsVisualizer.setDefinition(getContext(), parent.getRootView(), details.getMeaningsForWordclass(wordclass).get(position));
             }
         });
 

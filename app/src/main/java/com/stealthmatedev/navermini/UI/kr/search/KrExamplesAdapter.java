@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.data.kr.KrExampleEntry;
 import com.stealthmatedev.navermini.state.DetailedItem;
@@ -55,5 +56,10 @@ public class KrExamplesAdapter extends ResultListAdapter {
         ((TextView) convertView).setText(((KrExampleEntry)getItem(position)).getText());
 
         return convertView;
+    }
+
+    @Override
+    protected Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item) {
+        return null;
     }
 }

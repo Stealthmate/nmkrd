@@ -11,12 +11,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.generic.FixedListView;
 import com.stealthmatedev.navermini.UI.generic.ListLayout;
-import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsAdapter;
+import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
 import com.stealthmatedev.navermini.data.jp.kanjidetails.KanjiDetails;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
@@ -35,7 +36,7 @@ import static android.content.ContentValues.TAG;
  * Created by Stealthmate on 16/09/30 0030.
  */
 
-public class JpKanjiDetailsAdapter extends DetailsAdapter {
+public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
     private static class WordExAdapter extends CustomizableArrayAdapter<String> {
         public WordExAdapter(Context context, int resource, ArrayList<Pair<String, String>> wordexs) {
@@ -58,42 +59,23 @@ public class JpKanjiDetailsAdapter extends DetailsAdapter {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final String link = links.get(position).second;
-            StateManager.getState(context).loadDetails(new DetailedItem() {
-                @Override
-                public boolean hasDetails() {
-                    return true;
-                }
-
-                @Override
-                public String getLinkToDetails() {
-                    try {
-                        return DetailsDictionary.JAPANESE_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(link, "utf-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-
-                    return "";
-                }
-
-                @Override
-                public DetailsAdapter createAdapterFromDetails(Context context, String details) {
-                    return new JpWordDetailsAdapter(context, details);
-                }
-            });
-
+            try {
+                String url = DetailsDictionary.JAPANESE_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(links.get(position).second, "utf-8");
+                StateManager.getState(context).loadDetails(url, JpWordDetailsVisualizer.class);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private KanjiDetails details;
 
-    public JpKanjiDetailsAdapter(Context context, String response) {
+    public JpKanjiDetailsVisualizer(Context context, String response) {
         super(context);
         try {
             details = new KanjiDetails(response);
         } catch (JSONException e) {
             e.printStackTrace();
-            Log.e(TAG, "FAILED PARSING KANJI DETAILS");
         }
     }
 

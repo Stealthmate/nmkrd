@@ -7,10 +7,12 @@ import android.util.Log;
 
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.App;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
@@ -90,11 +92,7 @@ public class StateManager {
         searchEngine.request(url, callback);
     }
 
-    public void loadDetails(final DetailedItem obj) {
-        if(!obj.hasDetails()) return;
-
-        String link = obj.getLinkToDetails();
-        System.out.println(link);
+    public void loadDetails(final String link, final Class<? extends DetailsVisualizer> adapterClass) {
 
         if(link.startsWith("http")) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
@@ -103,17 +101,34 @@ public class StateManager {
         }
 
         final DetailsFragment dfrag = new DetailsFragment();
-        searchEngine.request(HOST + obj.getLinkToDetails(), new SearchEngine.OnResponse() {
-            @Override
-            public void responseReady(String response) {
-                dfrag.populate(obj.createAdapterFromDetails(activity, response));
-            }
-        });
         activity.openNewDetailsPage(dfrag);
         dfrag.waitForData();
+        searchEngine.request(App.HOST + link, new SearchEngine.OnResponse() {
+            @Override
+            public void responseReady(String response) {
+                try {
+                    dfrag.populate(adapterClass.getConstructor(Context.class, String.class).newInstance(activity, response));
+                    return;
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+
+                Log.e(APPTAG, adapterClass.getName() + " does not support a constructor with the signature DetailsVisualizer(Context context, String response).");
+
+                if(dfrag.isAdded()) activity.onBackPressed();
+            }
+        });
     }
 
     public static StateManager getState(Context context) {
         return ((MainActivity)context).getState();
     }
+
+
 }

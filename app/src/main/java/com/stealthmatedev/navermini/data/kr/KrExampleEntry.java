@@ -2,7 +2,7 @@ package com.stealthmatedev.navermini.data.kr;
 
 import android.content.Context;
 
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailedItem;
 
 /**
@@ -25,11 +25,6 @@ public class KrExampleEntry implements DetailedItem {
 
     @Override
     public String getLinkToDetails() {
-        return null;
-    }
-
-    @Override
-    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
         return null;
     }
 

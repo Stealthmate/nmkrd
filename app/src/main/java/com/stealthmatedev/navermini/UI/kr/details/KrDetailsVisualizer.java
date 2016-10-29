@@ -12,7 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.data.kr.worddetails.Definition;
 import com.stealthmatedev.navermini.data.kr.worddetails.WordDetails;
 
@@ -26,7 +26,7 @@ import static android.content.ContentValues.TAG;
 /**
  * Created by Stealthmate on 16/09/23 0023.
  */
-public class KrDetailsAdapter extends DetailsAdapter {
+public class KrDetailsVisualizer extends DetailsVisualizer {
 
     private class DefinitionsAdapter extends ArrayAdapter<Definition> {
 
@@ -69,7 +69,7 @@ public class KrDetailsAdapter extends DetailsAdapter {
 
     private WordDetails details;
 
-    public KrDetailsAdapter(Context context, String response) {
+    public KrDetailsVisualizer(Context context, String response) {
         super(context);
         try {
             this.details = new WordDetails(response);
@@ -79,7 +79,7 @@ public class KrDetailsAdapter extends DetailsAdapter {
         }
     }
 
-    public KrDetailsAdapter(Context context, Serializable data) {
+    public KrDetailsVisualizer(Context context, Serializable data) {
         super(context);
         this.details = (WordDetails) data;
 

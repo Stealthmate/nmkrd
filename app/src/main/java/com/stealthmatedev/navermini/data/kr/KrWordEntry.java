@@ -1,11 +1,8 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import android.content.Context;
-
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
-import com.stealthmatedev.navermini.UI.kr.details.KrDetailsAdapter;
-import com.stealthmatedev.navermini.state.DetailsDictionary;
+import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.DetailsDictionary;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,19 +108,13 @@ public class KrWordEntry implements DetailedItem {
 
         if (!moreInfo.equals(word.moreInfo)) return false;
 
-        System.out.println("So far so good");
-
         if (wordclasses.length != word.wordclasses.length) return false;
-
-        System.out.println("Very good");
 
         for (int i = 0; i <= wordclasses.length - 1; i++) {
             if(!wordclasses[i].equals(word.wordclasses[i])) {
-                System.out.println("Fail " + wordclasses[i] + " " + word.wordclasses[i]);
                 return false;
             }
         }
-        System.out.println("Equal!");
         return true;
     }
 
@@ -142,20 +133,9 @@ public class KrWordEntry implements DetailedItem {
         try {
             return DetailsDictionary.KOREAN_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
         } catch (UnsupportedEncodingException e) {
-            System.out.println("Shit");
             e.printStackTrace();
         }
 
         return null;
-    }
-
-    @Override
-    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
-
-        if(moreInfo.equals(NO_MORE_INFO)) {
-            details = "[{\"def\":\"" + meaning + "\", \"ex\":[]}]";
-        }
-
-        return new KrDetailsAdapter(context, details);
     }
 }

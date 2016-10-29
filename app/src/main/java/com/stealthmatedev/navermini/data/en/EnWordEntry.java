@@ -2,8 +2,7 @@ package com.stealthmatedev.navermini.data.en;
 
 import android.content.Context;
 
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
-import com.stealthmatedev.navermini.data.kr.KrWordEntry;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailedItem;
 
 import org.json.JSONArray;
@@ -78,11 +77,6 @@ public class EnWordEntry implements DetailedItem {
 
     @Override
     public String getLinkToDetails() {
-        return null;
-    }
-
-    @Override
-    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
         return null;
     }
 }

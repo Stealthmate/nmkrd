@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.data.jp.JpWordEntry;
 import com.stealthmatedev.navermini.data.jp.worddetails.Meaning;
 import com.stealthmatedev.navermini.data.jp.worddetails.WordDetails;
@@ -22,11 +22,11 @@ import java.io.Serializable;
  * Created by Stealthmate on 16/09/30 0030.
  */
 
-public class JpWordDetailsAdapter extends DetailsAdapter {
+public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
     private final WordDetails details;
 
-    public JpWordDetailsAdapter(Context context, String response) {
+    public JpWordDetailsVisualizer(Context context, String response) {
         super(context);
         WordDetails details = null;
         try {
@@ -39,7 +39,7 @@ public class JpWordDetailsAdapter extends DetailsAdapter {
         this.details = details;
     }
 
-    public JpWordDetailsAdapter(Context context, JpWordEntry word) {
+    public JpWordDetailsVisualizer(Context context, JpWordEntry word) {
         super(context);
         this.details = new WordDetails(word);
     }

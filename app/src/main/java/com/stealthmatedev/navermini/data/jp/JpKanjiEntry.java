@@ -2,8 +2,8 @@ package com.stealthmatedev.navermini.data.jp;
 
 import android.content.Context;
 
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
-import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsAdapter;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
+import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 import com.stealthmatedev.navermini.state.DetailedItem;
 
@@ -168,10 +168,5 @@ public class JpKanjiEntry implements DetailedItem {
         }
 
         return null;
-    }
-
-    @Override
-    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
-        return new JpKanjiDetailsAdapter(context, details);
     }
 }

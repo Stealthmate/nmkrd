@@ -14,14 +14,14 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 /**
  * Created by Stealthmate on 16/09/23 0023.
  */
-public abstract class DetailsAdapter {
+public abstract class DetailsVisualizer {
 
     private static final String STATE_CLASS = "NM_DETAILS_STATE_CLASS";
     protected static final String STATE_DATA = "NM_DETAILS_STATE_DATA";
 
     public static final String KEY_DETAILS = "nm_details";
 
-    public static DetailsAdapter fromSavedState(Context context, Bundle savedState) {
+    public static DetailsVisualizer fromSavedState(Context context, Bundle savedState) {
 
         if(savedState == null) return null;
 
@@ -31,7 +31,7 @@ public abstract class DetailsAdapter {
         try {
             Class<?> adapterClass = Class.forName(classname);
             Serializable data = savedState.getSerializable(STATE_DATA);
-            return (DetailsAdapter) adapterClass.getConstructor(Context.class, Serializable.class).newInstance(context, data);
+            return (DetailsVisualizer) adapterClass.getConstructor(Context.class, Serializable.class).newInstance(context, data);
         } catch (ClassNotFoundException e) {
             Log.e(APPTAG, "Could not find class " + classname + " from saved state!");
             return null;
@@ -51,7 +51,7 @@ public abstract class DetailsAdapter {
 
     protected final Context context;
 
-    public DetailsAdapter(Context context) {
+    public DetailsVisualizer(Context context) {
         this.context = context;
     }
 

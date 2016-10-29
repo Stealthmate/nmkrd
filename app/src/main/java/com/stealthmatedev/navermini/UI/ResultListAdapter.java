@@ -7,9 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.SearchEngine;
@@ -150,11 +149,14 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         notifyDataSetChanged();
     }
 
+    protected abstract Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item);
+
     public final boolean onItemClicked(View view, int position, long id) {
         if (position == getCount() - 1) {
             if (!noMoreAvailable) loadMoreIfAvailable();
         } else {
-            state.loadDetails(getItem(position));
+            DetailedItem item = getItem(position);
+            if(item.hasDetails()) state.loadDetails(item.getLinkToDetails(), getDetailsVisualizerClass(item));
         }
 
         return true;

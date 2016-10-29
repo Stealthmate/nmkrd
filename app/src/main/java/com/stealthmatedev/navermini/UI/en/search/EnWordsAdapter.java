@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.data.en.EnWordEntry;
 import com.stealthmatedev.navermini.state.DetailedItem;
@@ -79,5 +80,10 @@ public class EnWordsAdapter extends ResultListAdapter {
         meaning.setText(word.meaning);
 
         return convertView;
+    }
+
+    @Override
+    protected Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item) {
+        return null;
     }
 }

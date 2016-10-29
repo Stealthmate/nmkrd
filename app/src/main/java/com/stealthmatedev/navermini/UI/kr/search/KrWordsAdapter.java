@@ -6,7 +6,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
+import com.stealthmatedev.navermini.UI.kr.details.KrDetailsVisualizer;
+import com.stealthmatedev.navermini.data.kr.KrWordDetails;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.StateManager;
 import com.stealthmatedev.navermini.data.kr.KrWordEntry;
@@ -79,5 +82,10 @@ public class KrWordsAdapter extends ResultListAdapter {
         meaning.setText(word.getMeaning());
 
         return convertView;
+    }
+
+    @Override
+    protected Class<? extends DetailsVisualizer> getDetailsVisualizerClass(DetailedItem item) {
+        return KrDetailsVisualizer.class;
     }
 }
