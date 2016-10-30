@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import static android.R.attr.data;
 import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
@@ -66,12 +67,14 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
     }
 
-    private static final int AD_POSITION = 4;
+    private static final int AD_POSITION = 3;
     private static final int PAGE_SIZE = 10;
 
     protected final StateManager state;
     private final String query;
     private int page;
+
+    private final int adPosition;
 
     private boolean noMoreAvailable;
     private boolean loading;
@@ -84,6 +87,9 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         this.query = query;
         this.page = 1;
         this.loading = false;
+        int items = super.getCount();
+
+        this.adPosition = AD_POSITION > items - 1 ? items - 1 : AD_POSITION;
     }
 
     public ResultListAdapter(StateManager state, Serializable data) {
@@ -95,6 +101,9 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         this.query = desData.query;
         this.page = desData.page;
         this.loading = false;
+        int items = super.getCount();
+
+        this.adPosition = AD_POSITION > items - 1 ? items - 1 : AD_POSITION;
     }
 
     protected abstract ArrayList<DetailedItem> parseResult(String result);
@@ -116,30 +125,25 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
         if (position == getCount() - 1 && !noMoreAvailable) {
 
-                if (loading) {
-                    View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
-                    v.setVisibility(View.VISIBLE);
-                    return v;
-                } else
-                    return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
+            if (loading) {
+                View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
+                v.setVisibility(View.VISIBLE);
+                return v;
+            } else
+                return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
         }
-        else if(position == getCount() - 1 && noMoreAvailable && AD_POSITION > position) {
-             return generateAd(parent);
-        }
-        else if(!noMoreAvailable && position == getCount() - 2 && AD_POSITION > position) return generateAd(parent);
 
-        if (position == AD_POSITION) return generateAd(parent);
 
-        int actualPosition = position;
+        if (position == adPosition) return generateAd(parent);
 
-        if (position > AD_POSITION) actualPosition -= 1;
+        if (position > adPosition) position = position - 1;
 
-        return generateItem(actualPosition, convertView, parent);
+        return generateItem(position, convertView, parent);
     }
 
     @Override
     public final int getCount() {
-        if(super.getCount() == 0) return 0;
+        if (super.getCount() == 0) return 0;
         if (noMoreAvailable) return super.getCount() + 1;
         else return super.getCount() + 2;
     }
@@ -154,6 +158,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         if (position == getCount() - 1) {
             if (!noMoreAvailable) loadMoreIfAvailable();
         } else {
+            if (position > adPosition) position -= 1;
             state.loadDetails(getItem(position));
         }
 
