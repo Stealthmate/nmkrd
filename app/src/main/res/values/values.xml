@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color word="primary_material_dark">#8bc34a</color>
-    <color word="primary_material_light">#8bc34a</color>
-    <color word="primary_dark_material_light">#689f38</color>
-    <color word="accent_material_light">#00bcd4</color>
-    <color word="primary_text_default_material_light">#deff0000</color>
-    <color word="foreground_material_light">#ff0000</color>
+    <color wordinfo="primary_material_dark">#8bc34a</color>
+    <color wordinfo="primary_material_light">#8bc34a</color>
+    <color wordinfo="primary_dark_material_light">#689f38</color>
+    <color wordinfo="accent_material_light">#00bcd4</color>
+    <color wordinfo="primary_text_default_material_light">#deff0000</color>
+    <color wordinfo="foreground_material_light">#ff0000</color>
 
 </resources>

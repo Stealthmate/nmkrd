@@ -15,7 +15,7 @@ import java.net.URLEncoder;
  */
 public class JpWordEntry implements DetailedItem {
 
-    private static final String NAME = "word";
+    private static final String NAME = "wordinfo";
     private static final String KANJI = "kanji";
     private static final String CLASS = "class";
     private static final String MORE = "more";

@@ -3,7 +3,6 @@ package com.stealthmatedev.navermini.UI.kr.details;
 import android.animation.LayoutTransition;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.data.kr.KrWordEntry;
 import com.stealthmatedev.navermini.data.kr.worddetails.Definition;
 import com.stealthmatedev.navermini.data.kr.worddetails.WordDetails;
 
-import org.json.JSONException;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import static android.R.attr.data;
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -82,12 +77,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
 
     @Override
     public void populate(String data) {
-        try {
-            this.details = new WordDetails(data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e(TAG, "JSON ERROR");
-        }
+        this.details = new Gson().fromJson(data, WordDetails.class);
     }
 
     @Override
@@ -96,13 +86,13 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_kr_detail, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.kr_detail_word);
-        name.setText(details.word.name);
+        name.setText(details.wordinfo.word);
 
         TextView hanja = (TextView) view.findViewById(R.id.kr_detail_hanja);
-        hanja.setText(details.word.hanja);
+        hanja.setText(details.wordinfo.hanja);
 
         TextView pronun = (TextView) view.findViewById(R.id.kr_detail_pronun);
-        pronun.setText(details.word.pronunciation);
+        pronun.setText(details.wordinfo.pronun);
 
         ListView deflist = (ListView) view.findViewById(R.id.view_detail_kr_deflist);
         deflist.removeAllViewsInLayout();

@@ -15,60 +15,22 @@ import java.util.ArrayList;
 
 public class WordDetails implements Serializable {
 
-    private static final String JSON_WORD = "word";
-    private static final String JSON_HANJA = "hanja";
-    private static final String JSON_PRONUN = "pronun";
-    private static final String JSON_WORDCLASS = "wclass";
-    private static final String JSON_DEFINITIONS = "clsgrps";
-
-
-    public final Word word;
+    public final Word wordinfo;
     public final ArrayList<Definition> defs;
 
-    public WordDetails(Word word, ArrayList<Definition> defs) {
-        this.word = word;
+    public WordDetails(Word wordinfo, ArrayList<Definition> defs) {
+        this.wordinfo = wordinfo;
         this.defs = defs;
     }
 
-    public WordDetails(String json) throws JSONException {
-
-        JSONObject obj = new JSONObject(json);
-
-        String name;
-        String hanja = null;
-        String pronun = null;
-        String wordclass = null;
-
-        name = obj.getString(JSON_WORD);
-        if(obj.has(JSON_HANJA)) hanja = obj.getString(JSON_HANJA);
-        if(obj.has(JSON_PRONUN)) pronun = obj.getString(JSON_PRONUN);
-        if(obj.has(JSON_WORDCLASS)) wordclass = obj.getString(JSON_WORDCLASS);
-
-        this.word = new Word(name, pronun, hanja, new String[]{wordclass});
-
-        JSONArray defarr = obj.getJSONArray(JSON_DEFINITIONS);
-
-        ArrayList<Definition> defs = new ArrayList<>(defarr.length());
-
-        for (int i = 0; i <= defarr.length() - 1; i++) {
-            JSONObject defobj = defarr.getJSONObject(i);
-            String def = defobj.getString("def");
-
-            JSONArray exarr = defobj.getJSONArray("ex");
-            ArrayList<String> ex = new ArrayList<>(exarr.length());
-            for (int j = 0; j <= exarr.length() - 1; j++) {
-                ex.add(exarr.getString(j));
-            }
-
-            defs.add(new Definition(def, ex));
-        }
-
-        this.defs = defs;
+    public WordDetails(String json) {
+        wordinfo = null;
+        defs = null;
     }
 
-    public WordDetails(KrWordEntry word) {
-        this.word = new Word(word.word, word.pronun, word.hanja, word.wclass);
+    public WordDetails(KrWordEntry wordinfo) {
+        this.wordinfo = new Word(wordinfo.word, wordinfo.pronun, wordinfo.hanja, wordinfo.wclass);
         this.defs = new ArrayList<>(1);
-        this.defs.add(new Definition(word.def, null));
+        this.defs.add(new Definition(wordinfo.def, null));
     }
 }

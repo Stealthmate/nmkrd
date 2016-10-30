@@ -22,7 +22,7 @@ public class KanjiDetails implements Serializable {
     private static final String JSON_STROKES = "str";
     private static final String JSON_RADICAL = "rad";
     private static final String JSON_MEANINGS = "mean";
-    private static final String JSON_WORDEX_WORD = "word";
+    private static final String JSON_WORDEX_WORD = "wordinfo";
     private static final String JSON_WORDEX_LNK = "lnk";
     private static final String JSON_KUNEX = "kunex";
     private static final String JSON_ONEX = "onex";

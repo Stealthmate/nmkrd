@@ -8,16 +8,22 @@ import java.io.Serializable;
 
 public class Word implements Serializable {
 
-    public final String name;
-    public final String pronunciation;
+    public final String word;
     public final String hanja;
-    public final String[] classes;
+    public final String pronun;
+    public final String wclass;
 
-    public Word(String name, String pronunciation, String hanja, String[] classes) {
-        this.name = name;
-        this.pronunciation = pronunciation;
+    public Word() {
+        this.word = null;
+        this.pronun = null;
+        this.hanja = null;
+        this.wclass = null;
+    }
+
+    public Word(String word, String pronun, String hanja, String wclass) {
+        this.word = word;
+        this.pronun = pronun;
         this.hanja = hanja;
-        if(classes != null) this.classes = classes;
-        else this.classes = new String[0];
+        this.wclass = wclass;
     }
 }

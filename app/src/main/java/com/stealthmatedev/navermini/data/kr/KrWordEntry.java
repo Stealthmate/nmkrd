@@ -6,8 +6,6 @@ import com.stealthmatedev.navermini.state.DetailsDictionary;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import static com.stealthmatedev.navermini.App.DEBUG_TEST;
-
 /**
  * Created by Stealthmate on 16/09/20 0020.
  */
@@ -18,7 +16,7 @@ public class KrWordEntry implements DetailedItem {
 
     public final String hanja;
     public final String pronun;
-    public final String[] wclass;
+    public final String wclass;
 
     private final String more;
 
@@ -26,7 +24,7 @@ public class KrWordEntry implements DetailedItem {
         this.word = "";
         this.hanja = "";
         this.pronun = "";
-        this.wclass = new String[0];
+        this.wclass = "";
         this.def = "";
         this.more = "";
     }
@@ -45,14 +43,8 @@ public class KrWordEntry implements DetailedItem {
 
         if (!more.equals(word.more)) return false;
 
-        if (wclass.length != word.wclass.length) return false;
+        return wclass.equals(word.wclass);
 
-        for (int i = 0; i <= wclass.length - 1; i++) {
-            if (!wclass[i].equals(word.wclass[i])) {
-                return false;
-            }
-        }
-        return true;
     }
 
     @Override

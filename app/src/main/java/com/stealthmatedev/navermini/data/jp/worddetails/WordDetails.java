@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class WordDetails implements Serializable {
 
-    private static final String JSON_WORD = "word";
+    private static final String JSON_WORD = "wordinfo";
     private static final String JSON_KANJI = "kanji";
     private static final String JSON_CLASSLIST = "meanings";
     private static final String JSON_CLASSNAME = "class";

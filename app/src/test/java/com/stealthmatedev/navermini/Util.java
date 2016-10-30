@@ -7,10 +7,17 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.io.IOUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Stealthmate on 16/10/30 0030.
@@ -26,6 +33,16 @@ public class Util {
         return json;
     }
 
+    static String readFile(String file) throws IOException {
+        InputStream in = Util.class.getClassLoader().getResourceAsStream(file);
+        return IOUtils.toString(in, Charset.forName("utf-8"));
+    }
+
+    static void assertEqualJson(String json1, String json2) {
+        JsonParser parser = new JsonParser();
+        assertEquals(parser.parse(json1), parser.parse(json2));
+    }
+
     static String prettify(String jsonString) {
         JsonParser parser = new JsonParser();
 
@@ -36,10 +53,11 @@ public class Util {
 
 
     private static String removeEmptyPropertiesObject(String json) {
-        Type type = new TypeToken<Map<String, Object>[]>() {}.getType();
+        Type type = new TypeToken<Map<String, Object>>() {
+        }.getType();
         Map<String, Object> data = new Gson().fromJson(json, type);
 
-        for (Iterator<Map.Entry<String, Object>> it = data.entrySet().iterator(); it.hasNext();) {
+        for (Iterator<Map.Entry<String, Object>> it = data.entrySet().iterator(); it.hasNext(); ) {
             Map.Entry<String, Object> entry = it.next();
 
             if (entry.getValue() == null) {
@@ -55,22 +73,21 @@ public class Util {
     }
 
     private static String removeEmptyPropertiesArray(String json) {
-        Type type = new TypeToken<Map<String, Object>[]>() {}.getType();
+        Type type = new TypeToken<Map<String, Object>[]>() {
+        }.getType();
         Map<String, Object>[] data = new Gson().fromJson(json, type);
 
 
-        for(int i=0;i<=data.length-1;i++) {
-            for (Iterator<Map.Entry<String, Object>> it = data[i].entrySet().iterator(); it.hasNext();) {
+        for (int i = 0; i <= data.length - 1; i++) {
+            for (Iterator<Map.Entry<String, Object>> it = data[i].entrySet().iterator(); it.hasNext(); ) {
                 Map.Entry<String, Object> entry = it.next();
 
 
                 if (entry.getValue() == null) {
                     it.remove();
-                }
-                else if(entry.getValue().getClass().equals(String.class)) {
-                    if(((String) entry.getValue()).length() == 0) it.remove();
-                }
-                else if (entry.getValue().getClass().equals(ArrayList.class)) {
+                } else if (entry.getValue().getClass().equals(String.class)) {
+                    if (((String) entry.getValue()).length() == 0) it.remove();
+                } else if (entry.getValue().getClass().equals(ArrayList.class)) {
                     if (((ArrayList<?>) entry.getValue()).size() == 0) {
                         it.remove();
                     }
@@ -83,7 +100,7 @@ public class Util {
 
 
     static String removeEmptyProperties(String json, boolean isArray) {
-        if(isArray) return removeEmptyPropertiesArray(json);
+        if (isArray) return removeEmptyPropertiesArray(json);
         else return removeEmptyPropertiesObject(json);
     }
 }

@@ -22,7 +22,7 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 
 public class EnWordEntry implements DetailedItem {
 
-    private static final String NAME = "word";
+    private static final String NAME = "wordinfo";
     private static final String HANJA = "hanja";
     private static final String PRONUN = "pronun";
     private static final String CLASS = "class";

@@ -60,9 +60,9 @@ public class TestKrWordEntry {
             test = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
 
             KrWordEntry[] objs  = gson.fromJson(test, KrWordEntry[].class);
-            String output = Util.prettify(Util.removeEmptyProperties(gson.toJson(objs), true));
+            String output = Util.removeEmptyProperties(gson.toJson(objs), true);
 
-            assertEquals(test, output);
+            Util.assertEqualJson(test, output);
         }
 
         //Test case 2

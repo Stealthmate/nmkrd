@@ -66,7 +66,7 @@ public class KrWordsAdapter extends ResultListAdapter {
         pronun.setText(word.pronun);
 
         TextView wordclass = (TextView) convertView.findViewById(R.id.kr_word_class);
-        String classes = Arrays.toString(word.wclass);
+        String classes = word.wclass;
         if(classes.equals("[]")) classes = "";
         wordclass.setText(classes);
 
