@@ -36,7 +36,7 @@ public class TestKrJSONParsing {
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(TESTCASE_KR_WORDENTRY_1);
         String test = IOUtils.toString(in, Charset.forName("utf-8"));
 
-        KrWordEntry.DEBUG_TEST = true;
+        App.DEBUG_TEST = true;
         KrWordEntry[] objs  = gson.fromJson(test, KrWordEntry[].class);
         assertEquals(Util.prettify(test), gson.toJson(objs));
     }

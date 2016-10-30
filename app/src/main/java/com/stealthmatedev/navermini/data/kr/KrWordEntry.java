@@ -6,14 +6,12 @@ import com.stealthmatedev.navermini.state.DetailsDictionary;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import static com.stealthmatedev.navermini.App.DEBUG_TEST;
+
 /**
  * Created by Stealthmate on 16/09/20 0020.
  */
 public class KrWordEntry implements DetailedItem {
-
-    public static boolean DEBUG_TEST = false;
-
-    private static final String NO_MORE_INFO = "NOMOREINFO";
 
     public final String word;
     public final String def;
@@ -25,28 +23,18 @@ public class KrWordEntry implements DetailedItem {
     private final String more;
 
     private KrWordEntry() {
-        if(DEBUG_TEST) {
-            this.word = null;
-            this.hanja = null;
-            this.pronun = null;
-            this.wclass = null;
-            this.def = null;
-            this.more = null;
-        }
-        else {
-            this.word = "";
-            this.hanja = "";
-            this.pronun = "";
-            this.wclass = new String[0];
-            this.def = "";
-            this.more = NO_MORE_INFO;
-        }
+        this.word = "";
+        this.hanja = "";
+        this.pronun = "";
+        this.wclass = new String[0];
+        this.def = "";
+        this.more = "";
     }
 
     @Override
     public boolean equals(Object obj) {
 
-        if(!(obj instanceof KrWordEntry)) return false;
+        if (!(obj instanceof KrWordEntry)) return false;
 
         KrWordEntry word = (KrWordEntry) obj;
 
@@ -60,7 +48,7 @@ public class KrWordEntry implements DetailedItem {
         if (wclass.length != word.wclass.length) return false;
 
         for (int i = 0; i <= wclass.length - 1; i++) {
-            if(!wclass[i].equals(word.wclass[i])) {
+            if (!wclass[i].equals(word.wclass[i])) {
                 return false;
             }
         }
@@ -74,7 +62,7 @@ public class KrWordEntry implements DetailedItem {
 
     @Override
     public boolean hasDetails() {
-        return !more.equals(NO_MORE_INFO);
+        return more.length() != 0;
     }
 
     @Override
