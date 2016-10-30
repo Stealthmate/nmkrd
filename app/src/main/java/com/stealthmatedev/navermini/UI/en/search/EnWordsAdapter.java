@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
+import com.stealthmatedev.navermini.UI.en.details.EnWordDetailsVisualizer;
 import com.stealthmatedev.navermini.data.en.EnWordEntry;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
@@ -85,6 +86,6 @@ public class EnWordsAdapter extends ResultListAdapter {
 
     @Override
     protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
-        return null;
+        return new EnWordDetailsVisualizer();
     }
 }

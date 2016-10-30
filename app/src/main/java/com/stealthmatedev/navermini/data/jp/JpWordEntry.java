@@ -1,9 +1,5 @@
 package com.stealthmatedev.navermini.data.jp;
 
-import android.content.Context;
-
-import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 import com.stealthmatedev.navermini.state.DetailedItem;
 
@@ -133,7 +129,7 @@ public class JpWordEntry implements DetailedItem {
         if(moreInfo.startsWith("http")) return moreInfo;
 
         try {
-            return DetailsDictionary.JAPANESE_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
+            return DetailsDictionary.JAPANESE_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

@@ -1,9 +1,5 @@
 package com.stealthmatedev.navermini.data.jp;
 
-import android.content.Context;
-
-import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 import com.stealthmatedev.navermini.state.DetailedItem;
 
@@ -160,7 +156,7 @@ public class JpKanjiEntry implements DetailedItem {
     @Override
     public String getLinkToDetails() {
         try {
-            return DetailsDictionary.JAPANESE_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
+            return DetailsDictionary.JAPANESE_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
         } catch (UnsupportedEncodingException e) {
             System.out.println("Unsupported utf-8 wtf");
             System.exit(-1);

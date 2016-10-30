@@ -80,7 +80,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        WordclassAdapter adapter = new WordclassAdapter(container.getContext(), this, details);
+        WordclassAdapter adapter = new WordclassAdapter(container.getContext(), details);
         deflist.setAdapter(adapter);
 
         Meaning meaning = details.getMeaningsForWordclass(adapter.getItem(0)).get(0);

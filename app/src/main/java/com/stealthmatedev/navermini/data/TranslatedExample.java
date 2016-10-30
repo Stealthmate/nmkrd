@@ -13,11 +13,16 @@ public class TranslatedExample implements Serializable {
     private static final String EXAMPLE = "ex";
     private static final String TRANSLATED = "tr";
 
-    public final String original;
-    public final String translated;
+    public final String ex;
+    public final String tr;
 
     public TranslatedExample(JSONObject obj) throws JSONException {
-        this.original = obj.getString(EXAMPLE);
-        this.translated = obj.getString(TRANSLATED);
+        this.ex = obj.getString(EXAMPLE);
+        this.tr = obj.getString(TRANSLATED);
+    }
+
+    public TranslatedExample(String ex, String tr) {
+        this.ex = ex;
+        this.tr = tr;
     }
 }

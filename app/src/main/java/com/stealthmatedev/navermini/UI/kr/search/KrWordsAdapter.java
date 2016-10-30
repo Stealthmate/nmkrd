@@ -42,7 +42,7 @@ public class KrWordsAdapter extends ResultListAdapter {
         ArrayList<DetailedItem> wordlist = null;
         try {
             this.json = new JSONObject(result);
-            JSONArray wordarr = json.getJSONArray("defs");
+            JSONArray wordarr = json.getJSONArray("clsgrps");
             wordlist = new ArrayList<>(wordarr.length());
             for (int i = 0; i <= wordarr.length() - 1; i++) {
                 wordlist.add(KrWordEntry.fromJSON(wordarr.getJSONObject(i)));

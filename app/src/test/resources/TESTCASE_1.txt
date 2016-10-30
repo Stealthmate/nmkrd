@@ -1,0 +1,352 @@
+{
+	"word" : "하다",
+	"clsgrps" : [{
+			"wclass" : "",
+			"defs" : [{
+					"eng" : "do",
+					"def" : "(행동·행위 등을) do, have; (연극·운동경기 등을) play",
+					"ex" : [{
+							"ex" : "자원 봉사를 하다",
+							"tr" : "do volunteer work"
+						}, {
+							"ex" : "빨래를 하다",
+							"tr" : "do the laundry[wash; washing]"
+						}, {
+							"ex" : "빨래를 하다",
+							"tr" : "wash (the clothes)"
+						}, {
+							"ex" : "운동을 하다",
+							"tr" : "do exercise"
+						}, {
+							"ex" : "운동을 하다",
+							"tr" : "exercise"
+						}, {
+							"ex" : "제가 하겠습니다",
+							"tr" : "I will do it."
+						}, {
+							"ex" : "내가 하라는 대로 해라",
+							"tr" : "Do as I say."
+						}, {
+							"ex" : "너 좋을 대로 해라",
+							"tr" : "Do as you like[please]."
+						}, {
+							"ex" : "이 역은 누가 하지?",
+							"tr" : "Who will play this part?"
+						}, {
+							"ex" : "친구들과 야구를 했다",
+							"tr" : "I played baseball with my friends."
+						}, {
+							"ex" : "연습 많이 했어요?",
+							"tr" : "Have you had plenty of practice?"
+						}, {
+							"ex" : "연습 많이 했어요?",
+							"tr" : "Have you exercised a lot?"
+						}, {
+							"ex" : "이번만큼은 제 뜻대로 하겠습니다",
+							"tr" : "I'll do what I want this time."
+						}, {
+							"ex" : "이번만큼은 제 뜻대로 하겠습니다",
+							"tr" : "I'll do it my way this time."
+						}, {
+							"ex" : "내일 뭐 할 거니?",
+							"tr" : "What are you doing tomorrow?"
+						}, {
+							"ex" : "내일 뭐 할 거니?",
+							"tr" : "Do you have any plans for tomorrow?"
+						}, {
+							"ex" : "앞으로 어떻게 할 생각입니까?",
+							"tr" : "What do you intend to do?"
+						}, {
+							"ex" : "앞으로 어떻게 할 생각입니까?",
+							"tr" : "What are you thinking of doing?"
+						}, {
+							"ex" : "할 일 없으면 집에 가서 낮잠이나 자라",
+							"tr" : "If you've got nothing better to do, go home and take a nap (instead of bothering me)."
+						}, {
+							"ex" : "나는 그와 말을 해 본 적이 없다",
+							"tr" : "I have never talked to[with] him."
+						}, {
+							"ex" : "회사를 다니다 보니 다시 공부를 하고 싶다",
+							"tr" : "Now that I'm working, I want to study again."
+						}
+					]
+				}, {
+					"def" : "(만들다, 장만하다)",
+					"ex" : [{
+							"ex" : "밥을 하다",
+							"tr" : "make[cook] rice"
+						}, {
+							"ex" : "나무를 하러 가다",
+							"tr" : "go to gather[cut] firewood"
+						}, {
+							"ex" : "어머니께 금반지를 하나 해 드렸다",
+							"tr" : "I bought my mother a gold ring."
+						}
+					]
+				}, {
+					"def" : "(동작·표정 등을)",
+					"ex" : [{
+							"ex" : "반색을 하다",
+							"tr" : "rejoice (at/over/in)"
+						}, {
+							"ex" : "반색을 하다",
+							"tr" : "be delighted (with/by/at)"
+						}, {
+							"ex" : "어두운 얼굴을 하다",
+							"tr" : "have a gloomy[melancholy] face"
+						}, {
+							"ex" : "어깨동무를 하다",
+							"tr" : "put arms around each other's shoulders"
+						}
+					]
+				}, {
+					"def" : "(옷·차림새 등을)",
+					"ex" : [{
+							"ex" : "정장을 하다",
+							"tr" : "dress up"
+						}, {
+							"ex" : "정장을 하다",
+							"tr" : "dress formally"
+						}, {
+							"ex" : "정장을 하다 (남성)",
+							"tr" : "wear a suit and tie"
+						}, {
+							"ex" : "넥타이를 하다",
+							"tr" : "tie[wear] a tie"
+						}, {
+							"ex" : "넥타이를 하다",
+							"tr" : "put on a tie"
+						}, {
+							"ex" : "귀걸이를 하다",
+							"tr" : "wear[put on] earrings"
+						}, {
+							"ex" : "그 꼴을 하고 어디 나가니?",
+							"tr" : "Where are you going (dressed) like that?"
+						}
+					]
+				}, {
+					"def" : "(전화·편지 등을)",
+					"ex" : [{
+							"ex" : "전화를 하다",
+							"tr" : "call"
+						}, {
+							"ex" : "전화를 하다",
+							"tr" : "make a (phone) call"
+						}, {
+							"ex" : "전화를 하다",
+							"tr" : "give sb a call"
+						}, {
+							"ex" : "편지를 하다",
+							"tr" : "write (to)"
+						}, {
+							"ex" : "편지를 하다",
+							"tr" : "write a letter"
+						}
+					]
+				}, {
+					"eng" : "have",
+					"def" : "(음식·술·담배 등을) have; (먹다) eat; (마시다) drink; (담배를) smoke",
+					"ex" : [{
+							"ex" : "술 잘 하세요?",
+							"tr" : "Can you drink much?"
+						}, {
+							"ex" : "저는 담배를 안 합니다",
+							"tr" : "I don't smoke."
+						}, {
+							"ex" : "아직 점심 안 하셨어요?",
+							"tr" : "Haven't you had[eaten] lunch yet?"
+						}, {
+							"ex" : "언제 저녁이나 함께 합시다",
+							"tr" : "Let's have dinner together sometime."
+						}, {
+							"ex" : "커피 한 잔 하시겠어요?",
+							"tr" : "Would you like[care for] a cup of coffee?"
+						}, {
+							"ex" : "안주는 무엇으로 하시겠어요?",
+							"tr" : "What would you like with your drink?"
+						}
+					]
+				}, {
+					"eng" : "do",
+					"def" : "(종사하다) do, work; (경영하다) run",
+					"ex" : [{
+							"ex" : "사업을 하다",
+							"tr" : "run a business"
+						}, {
+							"ex" : "사업을 하다",
+							"tr" : "be in business"
+						}, {
+							"ex" : "그는 수년 동안 출판 관련 일을 했다",
+							"tr" : "He worked in publishing for many years."
+						}, {
+							"ex" : "나는 자영업을 하고 있다",
+							"tr" : "I'm self-employed."
+						}, {
+							"ex" : "그녀는 젊었을 때 연극을 했다",
+							"tr" : "She did some work in the theater when she was young."
+						}
+					]
+				}, {
+					"def" : "(지위·역할 등을)",
+					"ex" : [{
+							"ex" : "그는 전에 교장을 했다",
+							"tr" : "He used to be a school principal."
+						}, {
+							"ex" : "그는 3년 동안 반장을 했다",
+							"tr" : "He was classroom president for three years."
+						}
+					]
+				}, {
+					"def" : "(의사를 표현하다)",
+					"ex" : [{
+							"ex" : "말을 하다",
+							"tr" : "speak"
+						}, {
+							"ex" : "말을 하다",
+							"tr" : "talk"
+						}, {
+							"ex" : "엉뚱한 소리를 하다",
+							"tr" : "say something random"
+						}, {
+							"ex" : "엉뚱한 소리를 하다",
+							"tr" : "speak[talk; blab] nonsense"
+						}, {
+							"ex" : "하소연을 하다",
+							"tr" : "complain (of)"
+						}, {
+							"ex" : "하소연을 하다",
+							"tr" : "appeal (to)"
+						}, {
+							"ex" : "한국어를 하다",
+							"tr" : "speak Korean"
+						}
+					]
+				}, {
+					"def" : "(결과를 이루어 내다)",
+					"ex" : [{
+							"ex" : "반에서 1등을 하다",
+							"tr" : "get first place in one's class"
+						}, {
+							"ex" : "우리 팀이 우승을 했다",
+							"tr" : "Our team got first place."
+						}, {
+							"ex" : "그녀는 대입 시험에서 수석을 했다",
+							"tr" : "She got the top score on the college entrance exam."
+						}
+					]
+				}, {
+					"eng" : "cost",
+					"def" : "(값이 나가다) cost",
+					"ex" : [{
+							"ex" : "그것은 5천 원 할 것이다",
+							"tr" : "It'll cost 5,000 won."
+						}, {
+							"ex" : "요즘 금값이 얼마나 하는지 모르겠다",
+							"tr" : "I don't know how much gold costs these days."
+						}
+					]
+				}, {
+					"def" : "(기대에 걸맞다)",
+					"ex" : [{
+							"ex" : "그것은 그만한 값은 한다",
+							"tr" : "It's worth it."
+						}, {
+							"ex" : "그는 밥값도 못 한다",
+							"tr" : "He is good-for-nothing."
+						}, {
+							"ex" : "그는 밥값도 못 한다",
+							"tr" : "He isn't worth his salt."
+						}, {
+							"ex" : "예쁜 여자들은 얼굴값을 하기 마련이다",
+							"tr" : "Pretty women often get into troublesome relationship with men."
+						}
+					]
+				}, {
+					"eng" : "call",
+					"def" : "(부르다) call, name",
+					"ex" : [{
+							"ex" : "존이라고 하는 사람이 전화를 했다",
+							"tr" : "Someone named John called."
+						}, {
+							"ex" : "저는 홍길동이라고 합니다",
+							"tr" : "My name is Hong Gil-dong."
+						}, {
+							"ex" : "저는 홍길동이라고 합니다",
+							"tr" : "I'm Hong Gil-dong."
+						}, {
+							"ex" : "이것을 영어로 뭐라고 하죠?",
+							"tr" : "What's this called in English?"
+						}, {
+							"ex" : "이것을 영어로 뭐라고 하죠?",
+							"tr" : "What do you call this in English?"
+						}
+					]
+				}, {
+					"def" : "(다투다, 처리하다)",
+					"ex" : [{
+							"ex" : "그 돈 어떻게 했어요?",
+							"tr" : "What did you do with the money?"
+						}, {
+							"ex" : "그 자식을 어떻게 하면 좋을까?",
+							"tr" : "What should I do to that guy[fellow]?"
+						}, {
+							"ex" : "말썽을 피운 학생들을 어떻게 해야 할지 모르겠다",
+							"tr" : "I don't know what to do with the students who caused trouble."
+						}
+					]
+				}, {
+					"def" : "(삼다, 정하다)",
+					"ex" : [{
+							"ex" : "이것은 너와 나 사이의 비밀로 하자",
+							"tr" : "Let's (just) keep this between us."
+						}, {
+							"ex" : "그 일은 없던 일로 하기로 했다",
+							"tr" : "We decided to forget about the matter."
+						}
+					]
+				}, {
+					"def" : "(방향을 정하다)",
+					"ex" : [{
+							"ex" : "머리를 벽 쪽으로 하고 자다",
+							"tr" : "sleep with one's head to the wall"
+						}
+					]
+				}, {
+					"def" : "(소식 등을 듣다)",
+					"ex" : [{
+							"ex" : "내일 눈이 온다고 한다",
+							"tr" : "They say it will snow tomorrow."
+						}
+					]
+				}, {
+					"def" : "(경유하다)",
+					"ex" : [{
+							"ex" : "나는 대전으로 해서 목포에 갈 생각이다",
+							"tr" : "I'm planning to go to Mokpo via Daejeon."
+						}
+					]
+				}, {
+					"def" : "('하는 수 없이'의 형태로 쓰여)",
+					"ex" : [{
+							"ex" : "하는 수 없이 사실을 털어놓고 말았다",
+							"tr" : "I had no choice but to tell the truth."
+						}
+					]
+				}, {
+					"def" : "(기타)",
+					"ex" : [{
+							"ex" : "이 스웨터가 좋기는 한데 가격이 너무 비싸다",
+							"tr" : "I like this sweater, but it's too expensive."
+						}, {
+							"ex" : "사람들은 신혼여행 하면 제주도를 먼저 떠올린다",
+							"tr" : "People think of Jeju Island first when it comes to honeymoons."
+						}, {
+							"ex" : "이번 대회에는 한다하는 선수들은 모두 나왔다",
+							"tr" : "At this event, all the prominent[well-known] athletes are here to compete."
+						}
+					]
+				}
+			]
+		}
+	]
+}

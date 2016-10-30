@@ -29,10 +29,10 @@ public class TranslatedExampleAdapter extends ArrayAdapter<TranslatedExample> {
         if(convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_general_ex_translated, parent, false);
 
         TextView original = (TextView) convertView.findViewById(R.id.view_jp_detail_definition_meaning_gloss_ex_original);
-        original.setText(getItem(position).original);
+        original.setText(getItem(position).ex);
 
         TextView translation = (TextView) convertView.findViewById(R.id.view_jp_detail_definition_meaning_gloss_ex_translation);
-        translation.setText(getItem(position).translated);
+        translation.setText(getItem(position).tr);
 
         return convertView;
     }

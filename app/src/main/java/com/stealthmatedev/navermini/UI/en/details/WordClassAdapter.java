@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.jp.details.word;
+package com.stealthmatedev.navermini.UI.en.details;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,46 +11,50 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.data.jp.worddetails.WordDetails;
+import com.stealthmatedev.navermini.data.en.worddetails.Definition;
+import com.stealthmatedev.navermini.data.en.worddetails.WordClassGroup;
 
 import java.util.ArrayList;
 
 /**
- * Created by Stealthmate on 16/10/03 0003.
+ * Created by Stealthmate on 16/10/30 0030.
  */
 
-public class WordclassAdapter extends ArrayAdapter<String> {
-
-    private WordDetails details;
-
-    public WordclassAdapter(Context context, WordDetails details) {
-        super(context, 0, new ArrayList<>(details.getWordclasses()));
-        this.details = details;
+public class WordClassAdapter extends ArrayAdapter<WordClassGroup> {
+    public WordClassAdapter(Context context, ArrayList<WordClassGroup> groups) {
+        super(context, 0, groups);
     }
 
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_listitem_wclass, parent, false);
         }
 
-        final String wordclass = getItem(position);
+        final WordClassGroup item = getItem(position);
+
+        final String wordclass = item.wclass;
 
         TextView wordclassView = (TextView) convertView.findViewById(R.id.view_listitem_wclass_class);
         wordclassView.setText(wordclass);
 
         ListView meanings = (ListView) convertView.findViewById(R.id.view_listitem_wclass_deflist);
 
-        meanings.setAdapter(new ArrayAdapter<>(getContext(), R.layout.view_listitem_furigana, details.getCompactMeaningsForWordclass(wordclass)));
+        ArrayList<String> defstrs = new ArrayList<>(item.defs.size());
+        for(Definition def : item.defs) defstrs.add(def.def);
+
+        meanings.setAdapter(new ArrayAdapter<>(getContext(), R.layout.view_listitem_furigana, defstrs));
         meanings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                JpWordDetailsVisualizer.setDefinition(getContext(), parent.getRootView(), details.getMeaningsForWordclass(wordclass).get(position));
+                EnWordDetailsVisualizer.setDefinition(getContext(), parent.getRootView(), item.defs.get(position));
             }
         });
 
         return convertView;
-    }
 
+
+    }
 }

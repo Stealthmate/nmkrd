@@ -55,7 +55,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             try {
-                String url = DetailsDictionary.JAPANESE_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(links.get(position).second, "utf-8");
+                String url = DetailsDictionary.JAPANESE_DETAILS.path + "?lnk=" + URLEncoder.encode(links.get(position).second, "utf-8");
                 StateManager.getState(context).loadDetailsAsync(url, new JpWordDetailsVisualizer(), null);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();

@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/view_jp_detail_word_definition_wordclass"
+        android:id="@+id/view_listitem_wclass_class"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/nm_colorTextAccent"
@@ -13,7 +13,7 @@
         android:text="WORD CLASS"/>
 
     <com.stealthmatedev.navermini.UI.generic.FixedListView
-        android:id="@+id/view_jp_detail_word_definition_meaninglist"
+        android:id="@+id/view_listitem_wclass_deflist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"

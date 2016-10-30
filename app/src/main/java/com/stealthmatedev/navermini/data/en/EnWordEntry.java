@@ -1,13 +1,20 @@
 package com.stealthmatedev.navermini.data.en;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.DetailsDictionary;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/10/28 0028.
@@ -72,11 +79,17 @@ public class EnWordEntry implements DetailedItem {
 
     @Override
     public boolean hasDetails() {
-        return false;
+        return true;
     }
 
     @Override
     public String getLinkToDetails() {
+        try {
+            Log.i(APPTAG, moreInfo);
+            return DetailsDictionary.ENGLISH_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo.substring(1) + "&sLn=en", "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

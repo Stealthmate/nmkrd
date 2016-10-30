@@ -18,8 +18,8 @@ public class WordDetails implements Serializable {
     private static final String JSON_WORD = "word";
     private static final String JSON_HANJA = "hanja";
     private static final String JSON_PRONUN = "pronun";
-    private static final String JSON_WORDCLASS = "wordclass";
-    private static final String JSON_DEFINITIONS = "defs";
+    private static final String JSON_WORDCLASS = "wclass";
+    private static final String JSON_DEFINITIONS = "clsgrps";
 
 
     public final Word word;
