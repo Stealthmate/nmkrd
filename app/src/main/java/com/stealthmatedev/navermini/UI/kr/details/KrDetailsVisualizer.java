@@ -15,7 +15,7 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.data.kr.KrWordEntry;
 import com.stealthmatedev.navermini.data.kr.worddetails.Definition;
-import com.stealthmatedev.navermini.data.kr.worddetails.WordDetails;
+import com.stealthmatedev.navermini.data.kr.KrWord;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,20 +64,20 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         ex.setAdapter(new ArrayAdapter<>(context, R.layout.view_kr_detail_definition_example, R.id.viewid_kr_detail_def_ex_text, def.ex));
     }
 
-    private WordDetails details;
+    private KrWord details;
 
     public KrDetailsVisualizer() {
         super();
     }
 
-    public KrDetailsVisualizer(KrWordEntry word) {
+    public KrDetailsVisualizer(KrWord word) {
         super();
-        this.details = new WordDetails(word);
+        this.details = new KrWord(word);
     }
 
     @Override
     public void populate(String data) {
-        this.details = new Gson().fromJson(data, WordDetails.class);
+        this.details = new Gson().fromJson(data, KrWord.class);
     }
 
     @Override
@@ -86,13 +86,13 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_kr_detail, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.kr_detail_word);
-        name.setText(details.wordinfo.word);
+        name.setText(details.word);
 
         TextView hanja = (TextView) view.findViewById(R.id.kr_detail_hanja);
-        hanja.setText(details.wordinfo.hanja);
+        hanja.setText(details.hanja);
 
         TextView pronun = (TextView) view.findViewById(R.id.kr_detail_pronun);
-        pronun.setText(details.wordinfo.pronun);
+        pronun.setText(details.pronun);
 
         ListView deflist = (ListView) view.findViewById(R.id.view_detail_kr_deflist);
         deflist.removeAllViewsInLayout();

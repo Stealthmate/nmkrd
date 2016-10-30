@@ -38,7 +38,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     public JpWordDetailsVisualizer(Serializable data) {
         super();
         throw new UnsupportedOperationException("JpWordDetailsVisualizer: constructor from serialized data not yet supported.");
-        //this.details = new WordDetails(data);
+        //this.details = new KrWord(data);
     }
 
     public static void setDefinition(Context context, View root, Meaning meaning) {

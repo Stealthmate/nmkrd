@@ -10,6 +10,7 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.kr.details.KrDetailsVisualizer;
+import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -78,6 +79,6 @@ public class KrWordsAdapter extends ResultListAdapter {
 
     @Override
     protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
-        return new KrDetailsVisualizer((KrWordEntry) item);
+        return new KrDetailsVisualizer((KrWord) item);
     }
 }

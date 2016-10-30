@@ -62,6 +62,8 @@ public class Util {
 
             if (entry.getValue() == null) {
                 it.remove();
+            } else if (entry.getValue().getClass().equals(String.class)) {
+                if (((String) entry.getValue()).length() == 0) it.remove();
             } else if (entry.getValue().getClass().equals(ArrayList.class)) {
                 if (((ArrayList<?>) entry.getValue()).size() == 0) {
                     it.remove();
