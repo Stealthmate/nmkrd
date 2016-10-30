@@ -33,39 +33,13 @@ public class KrWordEntry implements DetailedItem {
 
     public final String more;
 
-
-    public static KrWordEntry fromJSON(JSONObject obj) throws JSONException {
-
-        String name = obj.getString(NAME);
-        String hanja = "";
-        String pronunciation = "";
-        String[] classes = new String[0];
-        String gloss = obj.getString(MEANING);
-        String moreInfo = NO_MORE_INFO;
-
-
-        if (obj.has(HANJA)) hanja = obj.getString(HANJA);
-        if (obj.has(PRONUN)) pronunciation = obj.getString(PRONUN);
-        if (obj.has(CLASS)) {
-            JSONArray json_classes = obj.getJSONArray(CLASS);
-            classes = new String[json_classes.length()];
-            for (int i = 0; i <= json_classes.length() - 1; i++) {
-                classes[i] = json_classes.getString(i);
-            }
-        }
-
-        if (obj.has(MORE)) moreInfo = obj.getString(MORE);
-
-        return new KrWordEntry(name, hanja, pronunciation, classes, gloss, moreInfo);
-    }
-
-    private KrWordEntry(String word, String hanja, String pronun, String[] wordclasses, String gloss, String more) {
-        this.word = word;
-        this.hanja = hanja;
-        this.pronun = pronun;
-        this.wclass = wordclasses;
-        this.def = gloss;
-        this.more = more;
+    private KrWordEntry() {
+        this.word = null;
+        this.hanja = null;
+        this.pronun = null;
+        this.wclass = null;
+        this.def = null;
+        this.more = null;
     }
 
     @Override
@@ -99,7 +73,7 @@ public class KrWordEntry implements DetailedItem {
 
     @Override
     public boolean hasDetails() {
-        return !more.equals(NO_MORE_INFO);
+        return more != null && !more.equals(NO_MORE_INFO);
     }
 
     @Override

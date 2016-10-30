@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
@@ -39,18 +40,9 @@ public class KrWordsAdapter extends ResultListAdapter {
     @Override
     protected ArrayList<DetailedItem> parseResult(String result) {
         ArrayList<DetailedItem> wordlist = null;
-        try {
-            this.json = new JSONObject(result);
-            JSONArray wordarr = json.getJSONArray("clsgrps");
-            wordlist = new ArrayList<>(wordarr.length());
-            for (int i = 0; i <= wordarr.length() - 1; i++) {
-                wordlist.add(KrWordEntry.fromJSON(wordarr.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            System.err.println("JSON ERROR");
-            e.printStackTrace();
-        }
-
+        Gson gson = new Gson();
+        KrWordEntry[] entries = gson.fromJson(result, KrWordEntry[].class);
+        wordlist = new ArrayList<DetailedItem>(Arrays.asList(entries));
         return wordlist;
     }
 
