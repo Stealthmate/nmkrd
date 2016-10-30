@@ -71,7 +71,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     private static final int PAGE_SIZE = 10;
 
     protected final StateManager state;
-    private final ResultListQuery query;
+    private ResultListQuery query;
     private int page;
 
     private final int adPosition;
@@ -126,16 +126,28 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     }
 
     private void loadMoreIfAvailable() {
-        state.getSearchEngine().queryResultList(query, new SearchEngine.OnResponse() {
+        final DetailedItem last = getItem(super.getCount()-1);
+
+        final ResultListQuery newQuery = new ResultListQuery(query.path, query.query, query.page + 1, query.pagesize);
+
+        state.getSearchEngine().queryResultList(newQuery, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
                 setLoading(false);
                 ArrayList<DetailedItem> new_entries = parseResult(response);
+
+                boolean same = new_entries.get(new_entries.size()-1).equals(getItem(ResultListAdapter.super.getCount()-1));
+
+                if(same) {
+                    setNoMoreAvailable(true);
+                    return;
+                }
+
                 if (new_entries.size() < PAGE_SIZE) {
                     setNoMoreAvailable(true);
                 }
                 ResultListAdapter.this.addAll(new_entries);
-                page++;
+                query = newQuery;
             }
         });
         setLoading(true);
