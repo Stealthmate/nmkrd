@@ -13,8 +13,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.data.kr.KrWordEntry;
-import com.stealthmatedev.navermini.data.kr.worddetails.Definition;
 import com.stealthmatedev.navermini.data.kr.KrWord;
 
 import java.io.Serializable;
@@ -25,9 +23,9 @@ import java.util.ArrayList;
  */
 public class KrDetailsVisualizer extends DetailsVisualizer {
 
-    private class DefinitionsAdapter extends ArrayAdapter<Definition> {
+    private class DefinitionsAdapter extends ArrayAdapter<KrWord.Definition> {
 
-        public DefinitionsAdapter(Context context, ArrayList<Definition> defs) {
+        public DefinitionsAdapter(Context context, ArrayList<KrWord.Definition> defs) {
             super(context, R.layout.view_detail_kr_defitem, defs);
         }
 
@@ -53,7 +51,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         }
     }
 
-    private static void setDefinition(Context context, View root, Definition def) {
+    private static void setDefinition(Context context, View root, KrWord.Definition def) {
 
         TextView head = (TextView) root.findViewById(R.id.view_kr_detail_definition_head);
         head.setText(def.def);
@@ -102,7 +100,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         DefinitionsAdapter adapter = new DefinitionsAdapter(container.getContext(), details.defs);
         deflist.setAdapter(adapter);
 
-        Definition def = details.defs.get(0);
+        KrWord.Definition def = details.defs.get(0);
 
         TextView head = (TextView) view.findViewById(R.id.view_kr_detail_definition_head);
         head.setText(def.def);

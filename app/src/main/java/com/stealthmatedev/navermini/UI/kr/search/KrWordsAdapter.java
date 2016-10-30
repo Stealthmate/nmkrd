@@ -14,10 +14,7 @@ import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
-import com.stealthmatedev.navermini.data.kr.KrWordEntry;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -42,7 +39,7 @@ public class KrWordsAdapter extends ResultListAdapter {
     protected ArrayList<DetailedItem> parseResult(String result) {
         ArrayList<DetailedItem> wordlist = null;
         Gson gson = new Gson();
-        KrWordEntry[] entries = gson.fromJson(result, KrWordEntry[].class);
+        KrWord[] entries = gson.fromJson(result, KrWord[].class);
         wordlist = new ArrayList<DetailedItem>(Arrays.asList(entries));
         return wordlist;
     }
@@ -50,7 +47,7 @@ public class KrWordsAdapter extends ResultListAdapter {
     @Override
     protected View generateItem(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        final KrWordEntry word = (KrWordEntry) getItem(position);
+        final KrWord word = (KrWord) getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null || convertView.findViewById(R.id.kr_word_name) == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_kr_word, parent, false);
@@ -72,7 +69,7 @@ public class KrWordsAdapter extends ResultListAdapter {
         wordclass.setText(classes);
 
         TextView meaning = (TextView) convertView.findViewById(R.id.kr_word_meaning);
-        meaning.setText(word.def);
+        meaning.setText(word.defs.get(0).def);
 
         return convertView;
     }

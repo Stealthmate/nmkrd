@@ -1,6 +1,6 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import com.stealthmatedev.navermini.data.kr.worddetails.Definition;
+import com.stealthmatedev.navermini.data.en.worddetails.Definition;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 
@@ -15,6 +15,40 @@ import java.util.ArrayList;
 
 public class KrWord implements Serializable, DetailedItem {
 
+    public static class Definition implements Serializable {
+
+        public final String def;
+        public final ArrayList<String> ex;
+
+        public Definition() {
+            this.def = "";
+            this.ex = new ArrayList<>(0);
+        }
+
+        public Definition(String def, ArrayList<String> ex) {
+            this.def = def;
+            if(ex != null) this.ex = ex;
+            else this.ex = new ArrayList<>(0);
+        }
+
+
+        @Override
+        public boolean equals(Object obj) {
+            if(!(obj instanceof Definition)) return false;
+
+            Definition d = (Definition) obj;
+
+            if(!def.equals(d.def)) return false;
+
+            if (ex.size() != d.ex.size()) return false;
+
+            for (int i = 0; i <= ex.size() - 1; i++) {
+                if (!ex.get(i).equals(d.ex.get(i))) return false;
+            }
+
+            return true;
+        }
+    }
 
     public final String word;
     public final String hanja;
