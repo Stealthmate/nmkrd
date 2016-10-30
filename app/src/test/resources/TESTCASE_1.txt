@@ -263,13 +263,13 @@
 					]
 				}, {
 					"eng" : "call",
-					"def" : "(부르다) call, name",
+					"def" : "(부르다) call, word",
 					"ex" : [{
 							"ex" : "존이라고 하는 사람이 전화를 했다",
 							"tr" : "Someone named John called."
 						}, {
 							"ex" : "저는 홍길동이라고 합니다",
-							"tr" : "My name is Hong Gil-dong."
+							"tr" : "My word is Hong Gil-dong."
 						}, {
 							"ex" : "저는 홍길동이라고 합니다",
 							"tr" : "I'm Hong Gil-dong."

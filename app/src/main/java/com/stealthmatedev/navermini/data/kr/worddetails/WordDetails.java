@@ -67,8 +67,8 @@ public class WordDetails implements Serializable {
     }
 
     public WordDetails(KrWordEntry word) {
-        this.word = new Word(word.name, word.pronunciation, word.hanja, word.wordclasses);
+        this.word = new Word(word.word, word.pronun, word.hanja, word.wclass);
         this.defs = new ArrayList<>(1);
-        this.defs.add(new Definition(word.meaning, null));
+        this.defs.add(new Definition(word.def, null));
     }
 }

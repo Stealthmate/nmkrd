@@ -9,7 +9,6 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.kr.details.KrDetailsVisualizer;
-import com.stealthmatedev.navermini.data.kr.KrWordDetails;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -65,22 +64,22 @@ public class KrWordsAdapter extends ResultListAdapter {
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.kr_word_name);
-        name.setText(word.name);
+        name.setText(word.word);
 
         TextView hanja = (TextView) convertView.findViewById(R.id.kr_word_hanja);
         System.out.println(convertView);
         hanja.setText(word.hanja);
 
         TextView pronun = (TextView) convertView.findViewById(R.id.kr_word_pronun);
-        pronun.setText(word.pronunciation);
+        pronun.setText(word.pronun);
 
         TextView wordclass = (TextView) convertView.findViewById(R.id.kr_word_class);
-        String classes = Arrays.toString(word.wordclasses);
+        String classes = Arrays.toString(word.wclass);
         if(classes.equals("[]")) classes = "";
         wordclass.setText(classes);
 
         TextView meaning = (TextView) convertView.findViewById(R.id.kr_word_meaning);
-        meaning.setText(word.meaning);
+        meaning.setText(word.def);
 
         return convertView;
     }

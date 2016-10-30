@@ -1,6 +1,5 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 
@@ -25,14 +24,14 @@ public class KrWordEntry implements DetailedItem {
 
     private static final String NO_MORE_INFO = "NOMOREINFO";
 
-    public final String name;
-    public final String meaning;
+    public final String word;
+    public final String def;
 
     public final String hanja;
-    public final String pronunciation;
-    public final String[] wordclasses;
+    public final String pronun;
+    public final String[] wclass;
 
-    public final String moreInfo;
+    public final String more;
 
 
     public static KrWordEntry fromJSON(JSONObject obj) throws JSONException {
@@ -60,13 +59,13 @@ public class KrWordEntry implements DetailedItem {
         return new KrWordEntry(name, hanja, pronunciation, classes, gloss, moreInfo);
     }
 
-    private KrWordEntry(String name, String hanja, String pronunciation, String[] wordclasses, String gloss, String moreInfo) {
-        this.name = name;
+    private KrWordEntry(String word, String hanja, String pronun, String[] wordclasses, String gloss, String more) {
+        this.word = word;
         this.hanja = hanja;
-        this.pronunciation = pronunciation;
-        this.wordclasses = wordclasses;
-        this.meaning = gloss;
-        this.moreInfo = moreInfo;
+        this.pronun = pronun;
+        this.wclass = wordclasses;
+        this.def = gloss;
+        this.more = more;
     }
 
     @Override
@@ -76,17 +75,17 @@ public class KrWordEntry implements DetailedItem {
 
         KrWordEntry word = (KrWordEntry) obj;
 
-        if (!name.equals(word.name)) return false;
-        if (!meaning.equals(word.meaning)) return false;
+        if (!this.word.equals(word.word)) return false;
+        if (!def.equals(word.def)) return false;
         if (!hanja.equals(word.hanja)) return false;
-        if (!pronunciation.equals(word.pronunciation)) return false;
+        if (!pronun.equals(word.pronun)) return false;
 
-        if (!moreInfo.equals(word.moreInfo)) return false;
+        if (!more.equals(word.more)) return false;
 
-        if (wordclasses.length != word.wordclasses.length) return false;
+        if (wclass.length != word.wclass.length) return false;
 
-        for (int i = 0; i <= wordclasses.length - 1; i++) {
-            if(!wordclasses[i].equals(word.wordclasses[i])) {
+        for (int i = 0; i <= wclass.length - 1; i++) {
+            if(!wclass[i].equals(word.wclass[i])) {
                 return false;
             }
         }
@@ -95,18 +94,18 @@ public class KrWordEntry implements DetailedItem {
 
     @Override
     public String toString() {
-        return name + " " + hanja + " " + pronunciation + " " + meaning;
+        return word + " " + hanja + " " + pronun + " " + def;
     }
 
     @Override
     public boolean hasDetails() {
-        return !moreInfo.equals(NO_MORE_INFO);
+        return !more.equals(NO_MORE_INFO);
     }
 
     @Override
     public String getLinkToDetails() {
         try {
-            return DetailsDictionary.KOREAN_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(moreInfo, "utf-8");
+            return DetailsDictionary.KOREAN_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(more, "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

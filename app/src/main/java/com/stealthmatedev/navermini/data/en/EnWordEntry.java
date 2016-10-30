@@ -27,7 +27,7 @@ public class EnWordEntry implements DetailedItem {
     private static final String PRONUN = "pronun";
     private static final String CLASS = "class";
     private static final String MORE = "more";
-    private static final String MEANING = "meaning";
+    private static final String MEANING = "def";
 
     private static final String NO_MORE_INFO = "NOMOREINFO";
 
