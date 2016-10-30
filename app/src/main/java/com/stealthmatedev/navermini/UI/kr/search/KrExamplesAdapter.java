@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Stealthmate on 16/10/07 0007.
@@ -30,31 +32,23 @@ public class KrExamplesAdapter extends ResultListAdapter {
 
     @Override
     protected ArrayList<DetailedItem> parseResult(String result) {
-
         ArrayList<DetailedItem> examples = null;
+        Gson gson = new Gson();
+        //Kr examples are single-string without translation
+        String[] entries = gson.fromJson(result, String[].class);
 
-        try {
-            JSONArray exarr = new JSONArray(result);
-            examples = new ArrayList<>(exarr.length());
-            for (int i = 0; i <= exarr.length() - 1; i++) {
-                examples.add(new KrExampleEntry(exarr.getString(i)));
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-            System.err.println("COULD NOT PARSE EXAMPLES");
-        }
-
+        examples = new ArrayList<>(entries.length);
+        for (int i = 0; i <= entries.length - 1; i++) examples.add(new KrExampleEntry(entries[i]));
         return examples;
     }
 
     @Override
     protected View generateItem(int position, View convertView, ViewGroup parent) {
-        if(convertView == null || !(convertView instanceof TextView)) {
+        if (convertView == null || !(convertView instanceof TextView)) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_search_listitem_kr_example, parent, false);
         }
 
-        ((TextView) convertView).setText(((KrExampleEntry)getItem(position)).getText());
+        ((TextView) convertView).setText(((KrExampleEntry) getItem(position)).getText());
 
         return convertView;
     }

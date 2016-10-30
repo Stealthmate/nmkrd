@@ -2,6 +2,7 @@ package com.stealthmatedev.navermini;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.stealthmatedev.navermini.data.kr.KrExampleEntry;
 import com.stealthmatedev.navermini.data.kr.KrWordEntry;
 
 import org.apache.commons.io.IOUtils;
@@ -22,21 +23,33 @@ import static org.junit.Assert.assertEquals;
 
 public class TestKrJSONParsing {
 
-    public static final String TESTCASE_KR_WORDENTRY_1 = "TESTCASE_KR_WORDENTRY_1.txt";
-
-    private String reformatGson(String json) {
-        return json.replaceAll("  ", "\t").replaceAll("\\n[\\t]+\\{", "{").replaceAll("([^ \\[])([:\\{])", "$1 $2");
-    }
+    private static final String TESTCASE_KR_WORDENTRY_1 = "TESTCASE_KR_WORDENTRY_1.txt";
+    private static final String TESTCASE_KR_EXAMPLEENTRY_1 = "TESTCASE_KR_EXAMPLEENTRY_1.txt";
 
     @Test
     public void KrWordEntryConstructionIsCorrect() throws IOException {
+
+
 
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
         InputStream in = this.getClass().getClassLoader().getResourceAsStream(TESTCASE_KR_WORDENTRY_1);
         String test = IOUtils.toString(in, Charset.forName("utf-8"));
 
+        KrWordEntry.DEBUG_TEST = true;
         KrWordEntry[] objs  = gson.fromJson(test, KrWordEntry[].class);
+        assertEquals(Util.prettify(test), gson.toJson(objs));
+    }
+
+    @Test
+    public void KrExampleEntryConstructionIsCorrect() throws IOException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream(TESTCASE_KR_EXAMPLEENTRY_1);
+        String test = IOUtils.toString(in, Charset.forName("utf-8"));
+
+        ///Korean examples are without translation
+        String[] objs  = gson.fromJson(test, String[].class);
         assertEquals(Util.prettify(test), gson.toJson(objs));
     }
 }

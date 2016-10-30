@@ -3,10 +3,6 @@ package com.stealthmatedev.navermini.data.kr;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -15,12 +11,7 @@ import java.net.URLEncoder;
  */
 public class KrWordEntry implements DetailedItem {
 
-    private static final String NAME = "word";
-    private static final String HANJA = "hanja";
-    private static final String PRONUN = "pronun";
-    private static final String CLASS = "class";
-    private static final String MORE = "more";
-    private static final String MEANING = "gloss";
+    public static boolean DEBUG_TEST = false;
 
     private static final String NO_MORE_INFO = "NOMOREINFO";
 
@@ -31,15 +22,25 @@ public class KrWordEntry implements DetailedItem {
     public final String pronun;
     public final String[] wclass;
 
-    public final String more;
+    private final String more;
 
     private KrWordEntry() {
-        this.word = null;
-        this.hanja = null;
-        this.pronun = null;
-        this.wclass = null;
-        this.def = null;
-        this.more = null;
+        if(DEBUG_TEST) {
+            this.word = null;
+            this.hanja = null;
+            this.pronun = null;
+            this.wclass = null;
+            this.def = null;
+            this.more = null;
+        }
+        else {
+            this.word = "";
+            this.hanja = "";
+            this.pronun = "";
+            this.wclass = new String[0];
+            this.def = "";
+            this.more = NO_MORE_INFO;
+        }
     }
 
     @Override
@@ -73,7 +74,7 @@ public class KrWordEntry implements DetailedItem {
 
     @Override
     public boolean hasDetails() {
-        return more != null && !more.equals(NO_MORE_INFO);
+        return !more.equals(NO_MORE_INFO);
     }
 
     @Override

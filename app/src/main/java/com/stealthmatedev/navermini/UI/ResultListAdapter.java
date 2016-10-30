@@ -154,7 +154,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         this.noMoreAvailable = b;
         notifyDataSetChanged();
     }
-    
+
     @Override
     public final int getCount() {
         if (super.getCount() == 0) return 0;
@@ -188,6 +188,9 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         if (position == getCount() - 1) {
             if (!noMoreAvailable) loadMoreIfAvailable();
         } else {
+
+            if(position > adPosition) position -= 1;
+
             DetailedItem item = getItem(position);
             final DetailsVisualizer visualizer = getDetailsVisualizer(item);
             final DetailsFragment dfrag = state.openDetails();
