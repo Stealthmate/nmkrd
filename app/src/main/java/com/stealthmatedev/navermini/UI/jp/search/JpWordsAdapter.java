@@ -30,12 +30,6 @@ import java.util.regex.Pattern;
 
 public class JpWordsAdapter extends ResultListAdapter {
 
-    private static final String TYPE = "type";
-    private static final String KANJI = "k";
-    private static final String WORD = "d";
-
-    private static final Pattern RUBY = Pattern.compile("\\(([^\\(\\);]+);([^\\(\\);]+)\\)");
-
     public JpWordsAdapter(StateManager state, ResultListQuery query, String result) {
         super(state, query, result);
     }

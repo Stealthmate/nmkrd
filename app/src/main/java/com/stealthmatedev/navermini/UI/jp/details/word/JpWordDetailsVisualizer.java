@@ -2,7 +2,6 @@ package com.stealthmatedev.navermini.UI.jp.details.word;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
 
 import java.io.Serializable;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.

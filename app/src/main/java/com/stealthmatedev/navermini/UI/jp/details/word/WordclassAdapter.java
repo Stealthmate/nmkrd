@@ -2,7 +2,6 @@ package com.stealthmatedev.navermini.UI.jp.details.word;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
 
 import java.util.ArrayList;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/10/03 0003.
@@ -50,18 +47,14 @@ public class WordclassAdapter extends ArrayAdapter<JpWord.WordClassGroup> {
         ArrayList<String> meaningStrArr = new ArrayList<>(meaningsarr.size());
         if(meaningsarr.size() > 1) {
             for(Meaning m : meaningsarr) {
-                Log.i(APPTAG, "Adding meaning " + m.m);
                 if(m.m.length() > 0) meaningStrArr.add(m.m);
                 else {
-                    Log.i(APPTAG, "ADDING GLOSS " + m.glosses.get(0).g);
                     for(Meaning.Gloss g : m.glosses) meaningStrArr.add(g.g);
                 }
             }
         } else {
-            Log.i(APPTAG, "Okay wtf " + meaningsarr.get(0).glosses.size());
             for(Meaning.Gloss g : meaningsarr.get(0).glosses) {
                 meaningStrArr.add(g.g);
-                Log.i(APPTAG, "ADDING GLOSS " +g.g);
             }
         }
 
