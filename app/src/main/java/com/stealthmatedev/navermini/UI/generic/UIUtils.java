@@ -1,5 +1,7 @@
 package com.stealthmatedev.navermini.UI.generic;
 
+import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
@@ -9,6 +11,10 @@ import android.widget.ListView;
  * Created by Stealthmate on 16/09/24 0024.
  */
 public class UIUtils {
+
+    public static float dp(Context context,int units) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, units, context.getResources().getDisplayMetrics());
+    }
 
     /**
      * Sets ListView height dynamically based on the height of the items.

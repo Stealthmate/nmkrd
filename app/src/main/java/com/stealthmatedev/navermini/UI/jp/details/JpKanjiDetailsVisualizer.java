@@ -145,7 +145,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
         CustomizableArrayAdapter.ViewStyler linkStyler = new CustomizableArrayAdapter.ViewStyler() {
             @Override
-            public void style(View v) {
+            public void style(View v, int position) {
                 ((TextView) v).setTextColor(ContextCompat.getColor(container.getContext(), R.color.nm_colorTextLink));
             }
         };

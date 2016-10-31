@@ -15,7 +15,7 @@ import java.util.List;
 public class CustomizableArrayAdapter<T> extends ArrayAdapter<T> {
 
     public interface ViewStyler {
-        void style(View v);
+        void style(View v, int position);
     }
 
     private ViewStyler styler = null;
@@ -52,7 +52,7 @@ public class CustomizableArrayAdapter<T> extends ArrayAdapter<T> {
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View v = super.getView(position, convertView, parent);
-        if(this.styler != null) this.styler.style(v);
+        if(this.styler != null) this.styler.style(v, position);
         return v;
     }
 }

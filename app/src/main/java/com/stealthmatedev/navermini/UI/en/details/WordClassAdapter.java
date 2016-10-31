@@ -13,9 +13,8 @@ import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
+import com.stealthmatedev.navermini.UI.generic.UIUtils;
 import com.stealthmatedev.navermini.data.en.EnWord;
-import com.stealthmatedev.navermini.data.en.worddetails.Definition;
-import com.stealthmatedev.navermini.data.en.worddetails.WordClassGroup;
 
 import java.util.ArrayList;
 
@@ -54,17 +53,25 @@ public class WordClassAdapter extends ArrayAdapter<EnWord.WordClassGroup> {
         meanings.setAdapter(new CustomizableArrayAdapter<>(getContext(), R.layout.view_listitem_minimal, defstrs));
         ((CustomizableArrayAdapter)meanings.getAdapter()).setViewStyler(new CustomizableArrayAdapter.ViewStyler() {
             @Override
-            public void style(View v) {
+            public void style(View v, int position) {
                 TextView tv = (TextView) v;
-                tv.setTextIsSelectable(true);
+                ViewGroup.LayoutParams lp = tv.getLayoutParams();
+                lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                tv.setLayoutParams(lp);
                 tv.setMaxLines(Integer.MAX_VALUE);
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.nm_colorText));
+                Context c = getContext();
+                int h_pad = (int) UIUtils.dp(c, 5);
+                int v_pad = (int) UIUtils.dp(c, 10);
+                tv.setPadding(h_pad, v_pad, h_pad, v_pad);
+                tv.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.selector_primary_light));
+                tv.invalidate();
             }
         });
         meanings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EnWordDetailsVisualizer.setDefinition(getContext(), parent.getRootView(), item.meanings.get(position));
+                EnWordDetailsVisualizer.setDefinition(parent.getRootView(), item.meanings.get(position));
             }
         });
 
