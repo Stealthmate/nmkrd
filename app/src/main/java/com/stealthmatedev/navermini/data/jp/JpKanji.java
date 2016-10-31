@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class JpKanji implements Serializable, DetailedItem {
 
-    public static class Meaning {
+    public static class Meaning implements Serializable {
         public final String m;
         public final ArrayList<TranslatedExample> ex;
 
@@ -25,7 +25,7 @@ public class JpKanji implements Serializable, DetailedItem {
         }
     }
 
-    public static class WordLinkPair {
+    public static class WordLinkPair implements Serializable {
         public final String word;
         public final String lnk;
 

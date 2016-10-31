@@ -10,20 +10,18 @@ import com.google.gson.GsonBuilder;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
-import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsVisualizer;
-import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
+import com.stealthmatedev.navermini.UI.jp.details.JpKanjiDetailsVisualizer;
+import com.stealthmatedev.navermini.UI.jp.details.JpWordDetailsVisualizer;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
-import com.stealthmatedev.navermini.data.jp.JpKanjiEntry;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 /**
  * Created by Stealthmate on 16/09/28 0028.
