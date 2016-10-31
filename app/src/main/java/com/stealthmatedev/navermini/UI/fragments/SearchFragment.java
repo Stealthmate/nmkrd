@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
@@ -126,6 +127,11 @@ public class SearchFragment extends Fragment {
             public void responseReady(String response) {
                 populate(ResultListSearchVisualizer.mapFromSearch(state, currentSubDictionary, query, response));
             }
+
+            @Override
+            public void onError(VolleyError err) {
+                clear();
+            }
         });
         this.waitForResults();
     }
@@ -162,6 +168,7 @@ public class SearchFragment extends Fragment {
         ResultListDictionary.SubDictionary subdict = null;
 
         if (savedInstanceState != null) {
+            System.out.println(savedInstanceState);
             dict = ResultListDictionary.valueOf(savedInstanceState.getString(SAVE_KEY_DICT));
             if (dict != null) {
                 subdict = dict.getSubDict(savedInstanceState.getString(SAVE_KEY_SUBDICT));
@@ -235,6 +242,8 @@ public class SearchFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         if (currentVisualizer != null) {
             currentVisualizer.saveState(outState);
+            System.out.println("DICT!");
+            System.out.println(currentDictionary);
             outState.putString(SAVE_KEY_DICT, currentDictionary.name());
             outState.putString(SAVE_KEY_SUBDICT, currentSubDictionary.name);
         }

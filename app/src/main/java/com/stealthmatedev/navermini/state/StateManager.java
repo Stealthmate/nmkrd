@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
@@ -53,6 +54,11 @@ public class StateManager {
             public void responseReady(String response) {
                 visualizer.populate(response);
                 finalFrag.populate(visualizer);
+            }
+
+            @Override
+            public void onError(VolleyError err) {
+                if(finalFrag.isAdded()) activity.onBackPressed();
             }
         });
     }

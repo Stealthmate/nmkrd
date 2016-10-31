@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdView;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
@@ -148,6 +149,11 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
                 }
                 ResultListAdapter.this.addAll(new_entries);
                 query = newQuery;
+            }
+
+            @Override
+            public void onError(VolleyError err) {
+                setLoading(false);
             }
         });
         setLoading(true);

@@ -23,6 +23,7 @@ import static com.stealthmatedev.navermini.Util.assertEqualJson;
 public class TestEnWord {
 
     private static final String TEST_CASE_SIMPLE = "test_en_simple.js";
+    private static final String TEST_CASE_DETAILED = "test_en_detailed_fromEn.js";
 
     @Test
     public void gsonParseGeneratesSameJson() throws IOException {
@@ -42,6 +43,20 @@ public class TestEnWord {
 
             EnWord[] objs = gson.fromJson(input, EnWord[].class);
             output = Util.removeEmptyProperties(gson.toJson(objs), true).replaceAll("0\\.0", "0");
+            assertEqualJson(input, output);
+        }
+
+
+        {
+            gson = new GsonBuilder()
+                    .setPrettyPrinting()
+                    .disableHtmlEscaping()
+                    .create();
+            in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_DETAILED);
+            input = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
+
+            EnWord word = gson.fromJson(input, EnWord.class);
+            output = Util.removeEmptyProperties(gson.toJson(word), false);
             assertEqualJson(input, output);
         }
     }

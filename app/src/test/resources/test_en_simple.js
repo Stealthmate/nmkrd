@@ -1,153 +1,214 @@
 [{
-		"word" : "help",
-		"pronun" : "help",
-		"wclass" : "동사",
-		"meanings" : [{
-				"m" : "|~ (sb) (with sth) | ~ (sb) (in doing sth)돕다, 거들다",
-				"enWord" : "MAKE EASIER/BETTER "
+		"word" : "do",
+		"pronun" : "də;du강형du:",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "(어떤 동작이나 행위를) 하다",
+						"enWord" : "ACTION "
+					}
+				],
+				"wclass" : "동사"
 			}
 		],
-		"more" : "/enkrEntry.nhn?entryId=574334de35984dd38782b73d8feb1920"
+		"more" : "/enkrEntry.nhn?entryId=af8d631e9d44400fbf7d107013a0dcfe"
 	}, {
-		"word" : "Help!",
-		"wclass" : "음악",
-		"meanings" : [{
-				"m" : "[노래이야기] 도와주세요"
+		"word" : "do.",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "위와 같음, 상동(ditto)"
+					}
+				],
+				"wclass" : "약어"
 			}
 		],
-		"more" : "/enkrEntry.nhn?entryId=2b8ee298454e49c5b74d8dfa0f628658"
+		"more" : "/enkrEntry.nhn?entryId=d1125c3f8a2942c2a04baf26c65a21ef"
 	}, {
-		"word" : "God/Heaven help somebody",
-		"meanings" : [{
-				"m" : "~이 가엽게[불쌍하게] 되다"
+		"word" : "do",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "英, 口"
+					}
+				],
+				"wclass" : "동사"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=04013474da954577b96cc5a0611d0c5b"
+		"more" : "/enkrEntry.nhn?entryId=00feab33348a40e99c984331ec48e3e2"
 	}, {
-		"word" : "help out",
-		"wclass" : "특히 곤경에 처한 ~를",
-		"meanings" : [{
-				"m" : " 도와주다"
+		"word" : "do",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "be, have 이외의 동사 반복을 피하는데 사용함 ; 어형 변화 ⇨ DO3"
+					}
+				],
+				"wclass" : "대동사"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=7d4d0772eb9b489b8da9261f0df7825a"
+		"more" : "/enkrEntry.nhn?entryId=eb242a4291074e4ab26f6fc7c6ff0df1"
 	}, {
-		"word" : "self-help",
-		"wclass" : "명사",
-		"meanings" : [{
-				"m" : "자립, 자조(自助)"
+		"word" : "do",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "부정문을 만듦 ; 변칙 정동사 이외의 동사로 not을 수반할 경우"
+					}
+				],
+				"wclass" : "조동사"
 			}
 		],
-		"more" : "/enkrEntry.nhn?entryId=039ce4d680414ff88031046ddcc0589d"
+		"more" : "/enkrEntry.nhn?entryId=8b46e0cf4e8046d8a75f3c0a3a6cff02"
 	}, {
-		"word" : "help desk",
-		"wclass" : "명사",
-		"meanings" : [{
-				"m" : "(회사내의 특히 컴퓨터 관련) 업무 지원 센터"
+		"word" : "do",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "(pl.)「…해야 한다는 주의 사항」, 명령 조항(cf. DON'T n. )"
+					}
+				],
+				"wclass" : "명사"
 			}
 		],
-		"more" : "/enkrEntry.nhn?entryId=bd92639604c74190ab66596ac2555542"
+		"more" : "/enkrEntry.nhn?entryId=fa5157d4d8bf4c17ab34f15fcd621ae3"
 	}, {
-		"word" : "home help",
-		"wclass" : "명사",
-		"meanings" : [{
-				"m" : "(英)가정 도우미[간병인]"
+		"word" : "DO",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "dissolved oxygen"
+					}
+				]
 			}
 		],
-		"more" : "/enkrEntry.nhn?entryId=7f120b27cb734dcfb4b8ed0c71a5d996"
+		"more" : "/enkrEntry.nhn?entryId=7c1dde69cbaa415eb382e152bce3f7d7"
 	}, {
-		"word" : "be a help",
-		"meanings" : [{
-				"m" : "일조가 되다"
+		"word" : "DO",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "defense order"
+					}
+				],
+				"wclass" : "D.O."
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=10d75dcb9cec45968774a3827e040cfa"
+		"more" : "/enkrEntry.nhn?entryId=a4d70d1f3cb04b5bab694d532a15d95e"
 	}, {
-		"word" : "so help me (God)",
-		"wclass" : "특히 법정에서 하는 말로",
-		"meanings" : [{
-				"m" : " (하느님께) 맹세합니다[(하느님께 맹세코) 정말입니다]"
+		"word" : "doh",
+		"pronun" : "doʊ",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "(음악)‘도' 음"
+					}
+				],
+				"wclass" : "명사"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=64802b359ad545d49b432dc4a2ffb434"
+		"more" : "/enkrEntry.nhn?entryId=8ea1a3ae05084e16b14d67f41b9f6d7e"
 	}, {
-		"word" : "Help (me)!",
-		"meanings" : [{
-				"m" : "사람 살려!"
+		"word" : "ditto",
+		"pronun" : "'dɪtoʊ",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "do.〃위와 같음, 상동"
+					}
+				],
+				"wclass" : "명사"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=542ee7fffa0742098c4afe2e155d2dad"
+		"more" : "/enkrEntry.nhn?entryId=013e401a5e9845fabb243f8f17ac32b8"
 	}, {
-		"word" : "legal help",
-		"meanings" : [{
-				"m" : "법적인 도움"
+		"word" : "D/O",
+		"hanja" : "←",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "delivery order"
+					}
+				]
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=be0cac342c12450ea42fc1ce748012ea"
+		"more" : "/enkrEntry.nhn?entryId=aeda549a78e14c79b5623aeb0f32a757"
 	}, {
-		"word" : "cannot help",
-		"meanings" : [{
-				"m" : "못 견디다(참지 못하다)"
+		"word" : "D.O.",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "(의학)다이아민 옥시데이스"
+					}
+				],
+				"wclass" : "명사"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=d8b789d40ee74e5ab4d4a7c248f32928"
+		"more" : "/enkrEntry.nhn?entryId=c95c18eeb0dd431eb1f46c3e5c32b285"
 	}, {
-		"word" : "help in[into]",
-		"meanings" : [{
-				"m" : "도와서 들여보내[태워, 입혀] 주다"
+		"word" : "to-do",
+		"pronun" : "tə'du:",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "(비격식 구식이 되어감)소란, 난리, 법석"
+					}
+				],
+				"wclass" : "명사"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=5db012bd4f3645658eefddc9715741d1"
+		"more" : "/enkrEntry.nhn?entryId=7ba60b3c319a49c8b3ef07c75ebe35c7"
 	}, {
-		"word" : "help up",
-		"meanings" : [{
-				"m" : "도와 일으키다, 떠받치다"
+		"word" : "do something up",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "~의 단추[잠금 고리 등]를 채우다[잠그다]"
+					}
+				]
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=28b4bf5a60554da8a6b78e1cb8504b42"
+		"more" : "/enkrIdiom.nhn?idiomId=ce044d5119d140a4813568410f69f4f2"
 	}, {
-		"word" : "be of a help",
-		"meanings" : [{
-				"m" : "일조가 되다"
+		"word" : "do something in",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "~을 다치다"
+					}
+				]
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=990093f675c24a9ca092f4bcfeb1669b"
+		"more" : "/enkrIdiom.nhn?idiomId=11bc1814e95c4df686bcf5c5d87f962d"
 	}, {
-		"word" : "help off",
-		"meanings" : [{
-				"m" : "도와서 벗겨주다, 도와서 처리해 주다"
+		"word" : "do up",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : " 고정되다[잠기다]"
+					}
+				],
+				"wclass" : "단추 등으로"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=f838dbc8f2c4418c85854eaea19acca8"
+		"more" : "/enkrIdiom.nhn?idiomId=4b2169e94a2c4323a6cc6345039bebab"
 	}, {
-		"word" : "help somebody off/on with something",
-		"meanings" : [{
-				"m" : "~가 ~을 벗는/입는 것을 도와주다"
+		"word" : "do-do",
+		"pronun" : "dú:dù:",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "(유아어)응가 ((똥, 대변, 배변))"
+					}
+				],
+				"wclass" : "명사"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=b5f98d1100aa493e931c4ca82a10f502"
+		"more" : "/enkrEntry.nhn?entryId=76ee3e1af1ad48d8adca137f31ee3643"
 	}, {
-		"word" : "lady-help",
-		"pronun" : "-hélp",
-		"wclass" : "명사",
-		"meanings" : [{
-				"m" : "(영)가정부"
+		"word" : "can-do",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "(명사 앞에만 씀)(비격식)할 수 있다는"
+					}
+				],
+				"wclass" : "형용사"
 			}
 		],
-		"more" : "/enkrEntry.nhn?entryId=9b3c2b12c16c4036a4c8944b9c11471b"
+		"more" : "/enkrEntry.nhn?entryId=8bb7a3c607fd4471bd5a9f8ce816eae2"
 	}, {
-		"word" : "help down",
-		"meanings" : [{
-				"m" : "거들어서[부축해서] 내려 주다"
+		"word" : "do for somebody/something",
+		"clsgrps" : [{
+				"meanings" : [{
+						"m" : "~을 망치다[죽이다]"
+					}
+				],
+				"wclass" : "주로 수동태로"
 			}
 		],
-		"more" : "/enkrIdiom.nhn?idiomId=b876e1dd0a4f495e9fa825515f707f03"
-	}, {
-		"word" : "help over",
-		"meanings" : [{
-				"m" : "도와서 넘어가게[건너가게] 해주다, 이겨내게 하다"
-			}
-		],
-		"more" : "/enkrIdiom.nhn?idiomId=a349d03257ef490ea95cca569407310f"
+		"more" : "/enkrIdiom.nhn?idiomId=8f3f7c6bdf1641d3a0cc79b05735569a"
 	}
 ]
