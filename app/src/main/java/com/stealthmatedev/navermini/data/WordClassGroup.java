@@ -1,6 +1,5 @@
 package com.stealthmatedev.navermini.data;
 
-import com.google.gson.Gson;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 
 import java.io.Serializable;
@@ -32,11 +31,6 @@ public class WordClassGroup implements Serializable {
 
             return true;
         }
-
-        @Override
-        public String toString() {
-            return new Gson().toJson(this);
-        }
     }
 
     public final String wclass;
@@ -66,8 +60,4 @@ public class WordClassGroup implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
-    }
 }

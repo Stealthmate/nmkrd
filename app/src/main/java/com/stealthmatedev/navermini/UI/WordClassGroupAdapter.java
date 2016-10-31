@@ -22,20 +22,26 @@ import java.util.List;
 
 public class WordClassGroupAdapter extends BaseAdapter {
 
+    public interface OnMeaningClickedListener {
+        void clicked(WordClassGroup grp, WordClassGroup.Meaning m);
+    }
+
     private static final int TYPE_WCLASS = 0;
     private static final int TYPE_MEANING = 1;
 
     private final ArrayList<? extends WordClassGroup> grps;
 
     private final int count;
+    private OnMeaningClickedListener onMeaningClickListener;
 
-    public WordClassGroupAdapter(List<? extends WordClassGroup> wcg) {
+    public WordClassGroupAdapter(List<? extends WordClassGroup> wcg, OnMeaningClickedListener onMeaningClickListener) {
         grps = new ArrayList<>(wcg);
         int count = grps.size();
         for (WordClassGroup g : grps) {
             count += g.meanings.size();
         }
         this.count = count;
+        this.onMeaningClickListener = onMeaningClickListener;
     }
 
     @Override
@@ -101,13 +107,10 @@ public class WordClassGroupAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMeaningClicked(getWordClassGroup(m), m);
+                onMeaningClickListener.clicked(getWordClassGroup(m), m);
             }
         });
         return view;
-    }
-
-    protected void onMeaningClicked(WordClassGroup grp, WordClassGroup.Meaning m) {
     }
 
     @Override
