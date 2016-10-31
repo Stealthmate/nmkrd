@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.generic.ListLayout;
 import com.stealthmatedev.navermini.UI.TranslatedExampleAdapter;
-import com.stealthmatedev.navermini.data.jp.worddetails.Gloss;
+import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning.Gloss;
 
 import java.util.ArrayList;
 
@@ -41,13 +41,13 @@ public class GlossAdapter extends ArrayAdapter<Gloss> {
         if(convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_jp_detail_definition_meaning_gloss, parent, false);
 
         TextView gloss = (TextView) convertView.findViewById(R.id.view_jp_detail_definition_meaning_gloss);
-        gloss.setText(getItem(position).getGloss());
+        gloss.setText(getItem(position).g);
         if(gloss.getText().length() == 0) gloss.setVisibility(GONE);
         else gloss.setVisibility(View.VISIBLE);
 
         ListLayout ex = (ListLayout) convertView.findViewById(R.id.view_jp_detail_definition_meaning_gloss_ex);
         ex.clear();
-        ex.populate(new TranslatedExampleAdapter(getContext(), getItem(position).getExamples()));
+        ex.populate(new TranslatedExampleAdapter(getContext(), getItem(position).ex));
 
         return convertView;
     }

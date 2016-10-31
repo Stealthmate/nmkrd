@@ -5,20 +5,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsVisualizer;
 import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
+import com.stealthmatedev.navermini.data.jp.JpWord;
+import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 import com.stealthmatedev.navermini.data.jp.JpKanjiEntry;
-import com.stealthmatedev.navermini.data.jp.JpWordEntry;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,23 +42,10 @@ public class JpWordsAdapter extends ResultListAdapter {
 
     @Override
     protected ArrayList<DetailedItem> parseResult(String result) {
-        ArrayList<DetailedItem> wordlist = null;
-        try {
-            JSONArray wordarr = new JSONArray(result);
-            wordlist = new ArrayList<>(wordarr.length());
-            for (int i = 0; i <= wordarr.length() - 1; i++) {
-                JSONObject item = wordarr.getJSONObject(i);
-                String type = item.getString(TYPE);
-                if (type.equals(KANJI)) wordlist.add(JpKanjiEntry.fromJSON(item));
-                else if (type.equals(WORD)) wordlist.add(JpWordEntry.fromJSON(item));
-                else throw new JSONException("Invalid JSON obj type");
-            }
-        } catch (JSONException e) {
-            System.err.println("JSON ERROR");
-            e.printStackTrace();
-        }
+        Gson gson = new GsonBuilder().registerTypeAdapter(DetailedItem.class, new JpWordKanjiDeserializer()).create();
+        DetailedItem[] wordlist = gson.fromJson(result, DetailedItem[].class);
 
-        return wordlist;
+        return new ArrayList<>(Arrays.asList(wordlist));
     }
 
     private View generateKanjiEntry(JpKanjiEntry kanji, View convertView, ViewGroup parent) {
@@ -106,26 +92,22 @@ public class JpWordsAdapter extends ResultListAdapter {
         return convertView;
     }
 
-    private View generateWordEntry(JpWordEntry word, View convertView, ViewGroup parent) {
+    private View generateWord(JpWord word, View convertView, ViewGroup parent) {
         if (convertView == null || convertView.findViewById(R.id.jp_word_name) == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_jp_word, parent, false);
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.jp_word_name);
-        name.setText(word.getName());
+        name.setText(word.word);
 
         TextView kanji = (TextView) convertView.findViewById(R.id.jp_word_kanji);
-        kanji.setText(word.getKanji());
+        kanji.setText(word.kanji);
 
         TextView wordclass = (TextView) convertView.findViewById(R.id.jp_word_class);
-        String classes = Arrays.toString(word.getWordClasses());
-        if (classes.equals("[]")) classes = "";
-        wordclass.setText(classes);
+        wordclass.setText(word.clsgrps.get(0).wclass);
 
         TextView meaning = (TextView) convertView.findViewById(R.id.jp_word_meaning);
-        String meaningStr = word.getMeaning();
-
-        meaning.setText(meaningStr);
+        meaning.setText(word.clsgrps.get(0).meanings.get(0).glosses.get(0).g);
         return convertView;
     }
 
@@ -133,8 +115,8 @@ public class JpWordsAdapter extends ResultListAdapter {
     protected View generateItem(int position, View convertView, ViewGroup parent) {
 
         Object item = getItem(position);
-        if (item instanceof JpWordEntry)
-            return generateWordEntry((JpWordEntry) item, convertView, parent);
+        if (item instanceof JpWord)
+            return generateWord((JpWord) item, convertView, parent);
         else if (item instanceof JpKanjiEntry)
             return generateKanjiEntry((JpKanjiEntry) item, convertView, parent);
 
@@ -143,7 +125,7 @@ public class JpWordsAdapter extends ResultListAdapter {
 
     @Override
     protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
-        if(item instanceof JpWordEntry) return new JpWordDetailsVisualizer((JpWordEntry) item);
+        if(item instanceof JpWord) return new JpWordDetailsVisualizer((JpWord) item);
         else if (item instanceof JpKanjiEntry) return new JpKanjiDetailsVisualizer();
         throw new RuntimeException("Invalid item class in JpWordsAdapter: " + item.getClass().getName());
     }

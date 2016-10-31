@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.io.IOUtils;
@@ -14,9 +15,11 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
+import static android.R.attr.data;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -57,21 +60,34 @@ public class Util {
         }.getType();
         Map<String, Object> data = new Gson().fromJson(json, type);
 
-        for (Iterator<Map.Entry<String, Object>> it = data.entrySet().iterator(); it.hasNext(); ) {
-            Map.Entry<String, Object> entry = it.next();
-
-            if (entry.getValue() == null) {
-                it.remove();
-            } else if (entry.getValue().getClass().equals(String.class)) {
-                if (((String) entry.getValue()).length() == 0) it.remove();
-            } else if (entry.getValue().getClass().equals(ArrayList.class)) {
-                if (((ArrayList<?>) entry.getValue()).size() == 0) {
-                    it.remove();
-                }
-            }
-        }
+        cleanupMap(data);
 
         return new Gson().toJson(data);
+    }
+
+    private static void checkObject(Object obj, Iterator<? extends Object> it) {
+        if (obj.getClass().equals(String.class)) {
+            if (((String) obj).length() == 0) it.remove();
+        } else if (obj.getClass().equals(ArrayList.class)) {
+            if (((ArrayList<?>) obj).size() == 0) {
+                it.remove();
+            }
+            else cleanupArray((ArrayList<Object>) obj);
+        } else if (obj instanceof Map){
+            cleanupMap((Map<String, Object>) obj);
+        }
+    }
+
+    private static void cleanupArray(ArrayList<Object> arr) {
+        for(Iterator<Object> it = arr.iterator(); it.hasNext();) {
+            checkObject(it.next(), it);
+        }
+    }
+
+    private static void cleanupMap(Map<String, Object> map) {
+        for (Iterator<Map.Entry<String, Object>> it = map.entrySet().iterator(); it.hasNext(); ) {
+            checkObject(it.next().getValue(), it);
+        }
     }
 
     private static String removeEmptyPropertiesArray(String json) {
@@ -81,20 +97,7 @@ public class Util {
 
 
         for (int i = 0; i <= data.length - 1; i++) {
-            for (Iterator<Map.Entry<String, Object>> it = data[i].entrySet().iterator(); it.hasNext(); ) {
-                Map.Entry<String, Object> entry = it.next();
-
-
-                if (entry.getValue() == null) {
-                    it.remove();
-                } else if (entry.getValue().getClass().equals(String.class)) {
-                    if (((String) entry.getValue()).length() == 0) it.remove();
-                } else if (entry.getValue().getClass().equals(ArrayList.class)) {
-                    if (((ArrayList<?>) entry.getValue()).size() == 0) {
-                        it.remove();
-                    }
-                }
-            }
+            cleanupMap(data[i]);
         }
 
         return new Gson().toJson(data);

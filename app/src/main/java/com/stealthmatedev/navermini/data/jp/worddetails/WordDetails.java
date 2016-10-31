@@ -19,7 +19,7 @@ public class WordDetails implements Serializable {
 
     private static final String JSON_WORD = "wordinfo";
     private static final String JSON_KANJI = "kanji";
-    private static final String JSON_CLASSLIST = "meanings";
+    private static final String JSON_CLASSLIST = "clsgrps";
     private static final String JSON_CLASSNAME = "class";
     private static final String JSON_MEANINGS = "mean";
 
