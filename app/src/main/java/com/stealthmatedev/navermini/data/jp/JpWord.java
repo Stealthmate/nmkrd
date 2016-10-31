@@ -1,5 +1,6 @@
 package com.stealthmatedev.navermini.data.jp;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
@@ -15,11 +16,11 @@ import java.util.ArrayList;
 
 public class JpWord implements Serializable, DetailedItem {
 
-    public static class WordClassGroup {
+    public static class WordClassGroup implements Serializable {
 
-        public static class Meaning {
+        public static class Meaning implements Serializable {
 
-            public static class Gloss {
+            public static class Gloss implements Serializable {
 
                 public final String g;
                 public final ArrayList<TranslatedExample> ex;

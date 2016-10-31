@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.en.details.EnWordDetailsVisualizer;
+import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.en.EnWordEntry;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
@@ -40,20 +42,8 @@ public class EnWordsAdapter extends ResultListAdapter {
 
     @Override
     protected ArrayList<DetailedItem> parseResult(String result) {
-        ArrayList<DetailedItem> wordlist = null;
-        try {
-            JSONArray wordarr = new JSONArray(result);
-            wordlist = new ArrayList<>(wordarr.length());
-            for (int i = 0; i <= wordarr.length() - 1; i++) {
-                JSONObject item = wordarr.getJSONObject(i);
-                wordlist.add(EnWordEntry.fromJSON(item));
-            }
-        } catch (JSONException e) {
-            System.err.println("JSON ERROR");
-            e.printStackTrace();
-        }
-
-        return wordlist;
+        EnWord[] words = new Gson().fromJson(result, EnWord[].class);
+        return new ArrayList<DetailedItem>(Arrays.asList(words));
     }
 
     @Override
@@ -62,24 +52,27 @@ public class EnWordsAdapter extends ResultListAdapter {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_en_word, parent, false);
         }
 
-        EnWordEntry word = (EnWordEntry) getItem(position);
+        EnWord word = (EnWord) getItem(position);
+
+        if(word == null) return convertView;
+
         Resources res = getContext().getResources();
 
 
         TextView name = (TextView) convertView.findViewById(R.id.en_word_name);
-        name.setText(word.name);
+        name.setText(word.word);
 
         TextView extra = (TextView) convertView.findViewById(R.id.en_word_extra);
-        if(word.getExtra() != null && word.getExtra().length() > 0) extra.setText(String.format(res.getString(R.string.square_brackets), word.getExtra()));
+        String extraInfo = word.hanja;
+        if(extraInfo.length() == 0) extraInfo = word.pronun;
+        if(extraInfo.length() > 0) extra.setText(String.format(res.getString(R.string.square_brackets), extraInfo));
         else extra.setText("");
 
         TextView wordclass = (TextView) convertView.findViewById(R.id.en_word_class);
-        String classes = Arrays.toString(word.wordclasses);
-        if (classes.equals("[]")) classes = "";
-        wordclass.setText(classes);
+        wordclass.setText(word.wclass);
 
         TextView meaning = (TextView) convertView.findViewById(R.id.en_word_meaning);
-        meaning.setText(word.meaning);
+        meaning.setText(word.meanings.get(0).m);
 
         return convertView;
     }

@@ -4,25 +4,27 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
-import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.state.DetailedItem;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 
 import static com.stealthmatedev.navermini.Util.assertEqualJson;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by Stealthmate on 16/10/30 0030.
@@ -32,8 +34,8 @@ public class TestJpWord {
 
     private static final String TEST_CASE_RESULTTS_WORDONLY = "test_jp_result_wordonly.js";
     private static final String TEST_CASE_DETAILS_WORD = "test_jp_detail_word.js";
-    private static final String TEST_CASE_RESULTS_MIXED = "test_jp_result_mixed.js";
-    private static final String TEST_CASE_EQUALITY = "test_jpword_equality.js";
+    private static final String TEST_CASE_EQUALITY = "test_jp_word_equality.js";
+    private static final String TEST_CASE_INEQUALITY = "test_jp_word_inequality.js";
 
     private static class JpWordSerializer implements JsonSerializer<JpWord> {
 
@@ -46,7 +48,7 @@ public class TestJpWord {
         }
     }
 
-    /*@Test
+    @Test
     public void methodEqualsReturnsTrueOnEqualObject() throws IOException {
         Gson gson;
         InputStream in;
@@ -58,11 +60,57 @@ public class TestJpWord {
             in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_EQUALITY);
             test = IOUtils.toString(in, Charset.forName("utf-8"));
 
-            KrWord[] objs = gson.fromJson(test, KrWord[].class);
+            JpWord[] objs = gson.fromJson(test, JpWord[].class);
             assertTrue(objs[0].equals(objs[1]));
         }
         System.out.println("Equality test succeded.");
-    }*/
+    }
+
+    @Test
+    public void methodEqualsReturnsFalseOnDifferentObject() throws IOException {
+        Gson gson;
+        InputStream in;
+        String test;
+
+        gson = new Gson();
+
+        {
+            in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_INEQUALITY);
+            test = IOUtils.toString(in, Charset.forName("utf-8"));
+
+            JpWord[] objs = gson.fromJson(test, JpWord[].class);
+            assertFalse(objs[0].equals(objs[1]));
+        }
+        System.out.println("Inequality test succeded.");
+    }
+
+    @Test
+    public void serializationReturnsSameObject() throws IOException, ClassNotFoundException {
+
+        Gson gson;
+        InputStream in;
+        String input;
+        String output;
+
+        gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .disableHtmlEscaping()
+                .create();
+        in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_DETAILS_WORD);
+        input = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
+
+        DetailedItem obj = gson.fromJson(input, JpWord.class);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(obj);
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()));
+        output = Util.removeEmptyProperties(gson.toJson((JpWord)ois.readObject()), false).replaceAll("0\\.0", "0");
+
+        assertEqualJson(input, output);
+
+        System.out.println("Serialization test succeeded");
+
+    }
 
     @Test
     public void gsonParseGeneratesSameJson() throws IOException {
@@ -101,7 +149,6 @@ public class TestJpWord {
 
             DetailedItem obj = gson.fromJson(input, JpWord.class);
             output = Util.removeEmptyProperties(gson.toJson(obj), false).replaceAll("0\\.0", "0");
-            System.out.println(output);
             assertEqualJson(input, output);
         }
 
