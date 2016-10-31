@@ -12,6 +12,7 @@ import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.jp.details.kanji.JpKanjiDetailsVisualizer;
 import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
+import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
 import com.stealthmatedev.navermini.state.DetailedItem;
@@ -28,9 +29,9 @@ import java.util.regex.Pattern;
  * Created by Stealthmate on 16/09/28 0028.
  */
 
-public class JpWordsAdapter extends ResultListAdapter {
+public class JpResultAdapter extends ResultListAdapter {
 
-    public JpWordsAdapter(StateManager state, ResultListQuery query, String result) {
+    public JpResultAdapter(StateManager state, ResultListQuery query, String result) {
         super(state, query, result);
     }
 
@@ -42,43 +43,43 @@ public class JpWordsAdapter extends ResultListAdapter {
         return new ArrayList<>(Arrays.asList(wordlist));
     }
 
-    private View generateKanjiEntry(JpKanjiEntry kanji, View convertView, ViewGroup parent) {
+    private View generateKanjiEntry(JpKanji kanji, View convertView, ViewGroup parent) {
 
         if (convertView == null || convertView.findViewById(R.id.jp_kanji_ji) == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_jp_kanji, parent, false);
         }
 
         TextView ji = (TextView) convertView.findViewById(R.id.jp_kanji_ji);
-        ji.setText(kanji.getKanji());
+        ji.setText(kanji.kanji.toString());
 
         TextView radical = (TextView) convertView.findViewById(R.id.view_jp_entry_kanji_radical);
-        radical.setText(kanji.getRadical());
+        radical.setText(kanji.radical.toString());
 
         TextView strokes = (TextView) convertView.findViewById(R.id.view_jp_entry_kanji_strokes);
-        strokes.setText("" + kanji.getStrokes());
+        strokes.setText("" + kanji.strokes);
 
         TextView kunyomi = (TextView) convertView.findViewById(R.id.view_jp_entry_kanji_kunyomi);
         String kun = "";
-        if (kanji.getKunyomi().length > 0) kun = kanji.getKunyomi()[0];
-        for (int i = 1; i <= kanji.getKunyomi().length - 1; i++) {
-            kun += " ; " + kanji.getKunyomi()[i];
+        if (kanji.kunyomi.size() > 0) kun = kanji.kunyomi.get(0);
+        for (int i = 1; i <= kanji.kunyomi.size() - 1; i++) {
+            kun += " ; " + kanji.kunyomi.get(i);
         }
         kunyomi.setText(kun);
 
         TextView onyomi = (TextView) convertView.findViewById(R.id.view_jp_entry_kanji_onyomi);
         String on = "";
-        if (kanji.getOnyomi().length > 0) on = kanji.getOnyomi()[0];
-        for (int i = 1; i <= kanji.getOnyomi().length - 1; i++) {
-            on += " ; " + kanji.getOnyomi()[i];
+        if (kanji.onyomi.size() > 0) on = kanji.onyomi.get(0);
+        for (int i = 1; i <= kanji.onyomi.size() - 1; i++) {
+            on += " ; " + kanji.onyomi.get(i);
         }
         onyomi.setText(on);
 
         TextView meanings = (TextView) convertView.findViewById(R.id.view_jp_entry_kanji_meaning);
         String meaningstr = "";
-        String[] meaningsarr = kanji.getMeanings();
-        if (meaningsarr.length > 0) meaningstr = meaningsarr[0];
-        for (int i = 1; i <= meaningsarr.length - 1; i++) {
-            meaningstr += " ; " + meaningsarr[i];
+        ArrayList<JpKanji.Meaning> meaningsarr = kanji.meanings;
+        if (meaningsarr.size() > 0) meaningstr = meaningsarr.get(0).m;
+        for (int i = 1; i <= meaningsarr.size() - 1; i++) {
+            meaningstr += " ; " + meaningsarr.get(i).m;
         }
         meanings.setText(meaningstr);
 
@@ -111,8 +112,8 @@ public class JpWordsAdapter extends ResultListAdapter {
         Object item = getItem(position);
         if (item instanceof JpWord)
             return generateWord((JpWord) item, convertView, parent);
-        else if (item instanceof JpKanjiEntry)
-            return generateKanjiEntry((JpKanjiEntry) item, convertView, parent);
+        else if (item instanceof JpKanji)
+            return generateKanjiEntry((JpKanji) item, convertView, parent);
 
         throw new NullPointerException("Invalid object");
     }
@@ -120,8 +121,8 @@ public class JpWordsAdapter extends ResultListAdapter {
     @Override
     protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
         if(item instanceof JpWord) return new JpWordDetailsVisualizer((JpWord) item);
-        else if (item instanceof JpKanjiEntry) return new JpKanjiDetailsVisualizer();
-        throw new RuntimeException("Invalid item class in JpWordsAdapter: " + item.getClass().getName());
+        else if (item instanceof JpKanji) return new JpKanjiDetailsVisualizer();
+        throw new RuntimeException("Invalid item class in JpResultAdapter: " + item.getClass().getName());
     }
 
     @Override

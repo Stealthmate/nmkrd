@@ -10,12 +10,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.generic.FixedListView;
 import com.stealthmatedev.navermini.UI.generic.ListLayout;
 import com.stealthmatedev.navermini.UI.jp.details.word.JpWordDetailsVisualizer;
+import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.kanjidetails.KanjiDetails;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -34,20 +37,20 @@ import java.util.ArrayList;
 public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
     private static class WordExAdapter extends CustomizableArrayAdapter<String> {
-        public WordExAdapter(Context context, int resource, ArrayList<Pair<String, String>> wordexs) {
+        public WordExAdapter(Context context, int resource, ArrayList<JpKanji.WordLinkPair> wordexs) {
             super(context, resource);
-            for (Pair<String, String> wordex : wordexs) {
-                this.add(wordex.first);
+            for (JpKanji.WordLinkPair wordex : wordexs) {
+                this.add(wordex.word);
             }
         }
     }
 
     private static class LinkListener implements AdapterView.OnItemClickListener {
 
-        private final ArrayList<Pair<String, String>> links;
+        private final ArrayList<JpKanji.WordLinkPair> links;
         private final Context context;
 
-        private LinkListener(Context fragment, ArrayList<Pair<String, String>> links) {
+        private LinkListener(Context fragment, ArrayList<JpKanji.WordLinkPair> links) {
             this.links = links;
             this.context = fragment;
         }
@@ -55,7 +58,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             try {
-                String url = DetailsDictionary.JAPANESE_DETAILS.path + "?lnk=" + URLEncoder.encode(links.get(position).second, "utf-8");
+                String url = DetailsDictionary.JAPANESE_DETAILS.path + "?lnk=" + URLEncoder.encode(links.get(position).lnk, "utf-8");
                 StateManager.getState(context).loadDetailsAsync(url, new JpWordDetailsVisualizer(), null);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -63,7 +66,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
         }
     }
 
-    private KanjiDetails details;
+    private JpKanji details;
 
     public JpKanjiDetailsVisualizer() {
         super();
@@ -71,11 +74,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
     @Override
     public void populate(String data) {
-        try {
-            details = new KanjiDetails(data);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        this.details = new Gson().fromJson(data, JpKanji.class);
     }
 
     @Override

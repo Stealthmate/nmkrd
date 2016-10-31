@@ -28,7 +28,7 @@ public class JpWordKanjiDeserializer implements JsonDeserializer<DetailedItem> {
         JsonObject obj = wrapper.get("obj").getAsJsonObject();
 
         if(id == TYPE_DEF) return context.deserialize(obj, JpWord.class);
-        else if(id == TYPE_KANJI) return context.deserialize(obj, JpKanjiEntry.class);
+        else if(id == TYPE_KANJI) return context.deserialize(obj, JpKanji.class);
         else return null;
     }
 }
