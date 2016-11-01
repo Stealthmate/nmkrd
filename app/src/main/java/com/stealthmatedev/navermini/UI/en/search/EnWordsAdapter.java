@@ -41,7 +41,7 @@ public class EnWordsAdapter extends ResultListAdapter {
     @Override
     protected View generateItem(int position, View convertView, ViewGroup parent) {
         if (convertView == null || convertView.findViewById(R.id.jp_word_name) == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_generic_detail_word, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_generic_detail_word_head, parent, false);
         }
 
         EnWord word = (EnWord) getItem(position);

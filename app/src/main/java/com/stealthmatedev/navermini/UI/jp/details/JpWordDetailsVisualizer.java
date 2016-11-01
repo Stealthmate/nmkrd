@@ -127,7 +127,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     @Override
     public View getView(ViewGroup container) {
 
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_en_detail_word, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
