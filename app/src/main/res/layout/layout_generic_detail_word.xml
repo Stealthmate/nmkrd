@@ -1,52 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_en_word"
+    android:id="@+id/layout_generic_detail_word"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:orientation="vertical"
+    android:padding="7dp">
 
-    <TextView
-        android:id="@+id/en_word_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="남자"
-        android:textColor="@color/nm_colorTextAccent"
-        android:textSize="20sp" />
+    <RelativeLayout
+        android:id="@+id/view_generic_detail_word_head"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true">
 
-    <TextView
-        android:id="@+id/en_word_extra"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/en_word_name"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_toEndOf="@id/en_word_name"
-        android:layout_toRightOf="@id/en_word_name"
-        android:text="[%s]"
-        android:textColor="@color/nm_colorTextAccent"
-        android:textSize="15sp" />
+        <TextView
+            style="@style/detailsItem"
+            android:id="@+id/view_generic_detail_word_word"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:gravity="bottom"
+            android:text="もつ"
+            android:textColor="@color/nm_colorTextAccent"
+            android:textIsSelectable="true" />
 
-    <TextView
-        android:id="@+id/en_word_class"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:text="Noun"
-        android:textColor="@color/nm_colorText"
-        android:textSize="16sp" />
+        <TextView
+            style="@style/detailsItemExtra"
+            android:id="@+id/view_generic_detail_word_extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/view_generic_detail_word_word"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/view_generic_detail_word_word"
+            android:layout_toRightOf="@id/view_generic_detail_word_word"
+            android:focusable="true"
+            android:text="持つ" />
 
-    <com.stealthmatedev.navermini.UI.generic.FuriganaTextView
-        android:id="@+id/en_word_meaning"
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/en_word_name"
-        android:layout_marginTop="5dp"
-        android:text="Boy/Man"
-        android:textColor="@color/nm_colorText" />
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/view_generic_detail_word_head"
+        android:orientation="vertical">
+
+        <ListView
+            style="@style/simpleListStyle"
+            android:id="@+id/view_generic_detail_word_deflist"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="5"
+            android:divider="?android:attr/listDivider"
+            android:animateLayoutChanges="true"
+            android:padding="5dp">
+
+        </ListView>
+
+        <LinearLayout
+            android:id="@+id/view_generic_detail_word_defex_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"
+            android:animateLayoutChanges="true"
+            android:minHeight="200dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/nm_colorPrimary"
+                android:gravity="center"
+                android:text="@string/label_details_def_ex"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ListView
+                style="@style/simpleListStyle"
+                android:id="@+id/view_generic_detail_word_defex_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?android:attr/listDivider"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+            </ListView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </RelativeLayout>
