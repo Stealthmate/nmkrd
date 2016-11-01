@@ -4,7 +4,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
@@ -95,6 +97,27 @@ public abstract class SectionedListAdapter<K, V> extends BaseAdapter {
 
     protected abstract String getMeaningText(V meaning);
 
+    public AdapterView.OnItemClickListener getSubitemClickListener() {
+        return new ListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(getItemViewType(position) == TYPE_HEADER) return;
+
+                V obj = (V) getItem(position);
+
+                K header = null;
+                for (Map.Entry<K, ArrayList<V>> entry : sectionMap.entrySet()) {
+                    if (entry.getValue().contains(obj)) {
+                        header = entry.getKey();
+                        break;
+                    }
+                }
+
+                if (onMeaningClickListener != null) onMeaningClickListener.clicked(header, obj);
+            }
+        };
+    }
+
     @Override
     public long getItemId(int position) {
         return getItem(position).hashCode();
@@ -113,24 +136,7 @@ public abstract class SectionedListAdapter<K, V> extends BaseAdapter {
     protected View getMeaningView(final V m, ViewGroup parent) {
         TextView view = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.view_detail_listitem_meaning, parent, false);
         view.setText(getMeaningText(m));
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                K header = null;
-                for (Map.Entry<K, ArrayList<V>> entry : sectionMap.entrySet()) {
-                    if (entry.getValue().contains(m)) {
-                        header = entry.getKey();
-                        break;
-                    }
-                }
-
-                if (onMeaningClickListener != null) onMeaningClickListener.clicked(header, m);
-            }
-        });
-
         view.setPadding((int) (view.getPaddingLeft() + UIUtils.dp(parent.getContext(), 20)), view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
-
         return view;
     }
 

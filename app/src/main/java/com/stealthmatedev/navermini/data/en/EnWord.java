@@ -2,6 +2,7 @@ package com.stealthmatedev.navermini.data.en;
 
 import android.util.Log;
 
+import com.stealthmatedev.navermini.UI.SectionedListAdapter;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
@@ -20,7 +21,7 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 public class EnWord implements DetailedItem, Serializable {
 
     public static class WordClassGroup implements Serializable {
-        public static class Meaning {
+        public static class Meaning implements Serializable {
             public final String m;
             public final String enWord;
             public final ArrayList<TranslatedExample> ex;

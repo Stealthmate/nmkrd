@@ -16,7 +16,6 @@ import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -42,7 +41,7 @@ public class EnWordsAdapter extends ResultListAdapter {
     @Override
     protected View generateItem(int position, View convertView, ViewGroup parent) {
         if (convertView == null || convertView.findViewById(R.id.jp_word_name) == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_en_word, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_generic_detail_word, parent, false);
         }
 
         EnWord word = (EnWord) getItem(position);

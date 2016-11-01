@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -62,22 +63,11 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
     }
 
 
-    private static class ExAdapter extends CustomizableArrayAdapter<String> {
+    private static class ExAdapter extends ArrayAdapter<String> {
 
         ExAdapter(Context context, EnWord.WordClassGroup.Meaning meaning) {
-            super(context, R.layout.view_listitem_minimal);
+            super(context, R.layout.view_detail_listitem_meaning);
             for(TranslatedExample ex : meaning.ex) this.add(ex.ex + " - " + ex.tr);
-            this.setViewStyler(new ViewStyler() {
-                @Override
-                public void style(View v, int position) {
-                    TextView tv = (TextView) v;
-                    ViewGroup.LayoutParams lp = tv.getLayoutParams();
-                    lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                    tv.setLayoutParams(lp);
-                    tv.invalidate();
-                    //tv.setTextIsSelectable(true);
-                }
-            });
         }
     }
 
@@ -87,13 +77,11 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
             root.findViewById(R.id.view_generic_detail_word_defex_container).setVisibility(View.GONE);
             return;
         }
-
-        Log.i(APPTAG, meaning.ex.size() + "");
-
         root.findViewById(R.id.view_generic_detail_word_defex_container).setVisibility(View.VISIBLE);
 
         ListView exlist = (ListView) root.findViewById(R.id.view_generic_detail_word_defex_list);
         exlist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        exlist.getLayoutTransition().setDuration(1);
         exlist.setAdapter(new ExAdapter(root.getContext(), meaning));
     }
 
@@ -116,9 +104,14 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         if(extraStr.length() == 0) extraStr = details.pronun;
         extra.setText(extraStr);
 
-        ListView defs = (ListView) view.findViewById(R.id.view_generic_detail_word_deflist);;
-        defs.setAdapter(WCGAdapter.makeAdapter(container, details));
+        ListView defs = (ListView) view.findViewById(R.id.view_generic_detail_word_deflist);
+        WCGAdapter adapter = WCGAdapter.makeAdapter(container, details);
+        defs.setAdapter(adapter);
+        defs.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        defs.getLayoutTransition().setDuration(100);
+        defs.setOnItemClickListener(adapter.getSubitemClickListener());
 
+        setDefinition(view, details.clsgrps.get(0).meanings.get(0));
 
         return view;
     }

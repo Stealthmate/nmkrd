@@ -106,8 +106,16 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     }
 
     private static void setDefinition(View root, Meaning meaning) {
-        ListView glossList = (ListView) root.findViewById(R.id.view_jp_detail_word_definition_gloss);
+        ListView glossList = (ListView) root.findViewById(R.id.view_generic_detail_word_defex_list);
+
+        if(meaning.glosses.size() == 1 && meaning.glosses.get(0).ex.size() == 0) {
+            root.findViewById(R.id.view_generic_detail_word_defex_container).setVisibility(View.GONE);
+            return;
+        }
+        root.findViewById(R.id.view_generic_detail_word_defex_container).setVisibility(View.VISIBLE);
+
         glossList.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        glossList.getLayoutTransition().setDuration(100);
         glossList.setAdapter(GlossAdapter.makeAdapter(meaning));
     }
 
@@ -119,18 +127,21 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     @Override
     public View getView(ViewGroup container) {
 
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_jp_detail_word, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_en_detail_word, container, false);
 
-        TextView name = (TextView) view.findViewById(R.id.view_jp_detail_word_name);
+        TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
 
-        TextView kanji = (TextView) view.findViewById(R.id.view_jp_detail_word_kanji);
+        TextView kanji = (TextView) view.findViewById(R.id.view_generic_detail_word_extra);
         kanji.setText(details.kanji);
 
-        final ListView deflist = (ListView) view.findViewById(R.id.view_jp_detail_word_deflist);
+        final ListView deflist = (ListView) view.findViewById(R.id.view_generic_detail_word_deflist);
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
+        deflist.getLayoutTransition().setDuration(100);
 
-        deflist.setAdapter(WCGAdapter.makeAdapter(container, details));
+        WCGAdapter adapter = WCGAdapter.makeAdapter(container, details);
+        deflist.setAdapter(adapter);
+        deflist.setOnItemClickListener(adapter.getSubitemClickListener());
 
         setDefinition(view, details.clsgrps.get(0).meanings.get(0));
 

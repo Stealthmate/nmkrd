@@ -1,6 +1,5 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import com.stealthmatedev.navermini.data.en.worddetails.Definition;
 import com.stealthmatedev.navermini.state.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 

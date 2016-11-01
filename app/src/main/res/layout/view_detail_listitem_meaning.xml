@@ -2,10 +2,8 @@
 <com.stealthmatedev.navermini.UI.generic.FuriganaTextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp"
+    android:padding="5dp"
     android:textSize="13sp"
-    android:textColor="@color/nm_colorText"
-    android:background="@drawable/selector_primary_light">
+    android:textColor="@color/nm_colorText">
 
 </com.stealthmatedev.navermini.UI.generic.FuriganaTextView>
