@@ -21,4 +21,6 @@
 
     <string name="square_brackets">[%s]</string>
 
+    <string name="err_no_internet">You are not connected to the internet</string>
+
 </resources>

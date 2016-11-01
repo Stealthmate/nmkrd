@@ -24,12 +24,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.volley:volley:1.0.0'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile "com.mikepenz:crossfader:1.5.0@aar"
     compile 'com.balysv.materialmenu:material-menu:2.0.0'
     compile 'com.google.firebase:firebase-ads:9.8.0'
+    compile 'org.apache.directory.studio:org.apache.commons.io:2.4'
     compile('com.mikepenz:materialdrawer:5.6.0@aar') {
         transitive = true
     }
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.json:json:20140107'
 }
 apply plugin: 'com.google.gms.google-services'

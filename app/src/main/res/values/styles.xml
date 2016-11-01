@@ -11,6 +11,27 @@
         <item name="android:windowBackground">@color/nm_colorBackground</item>
     </style>
 
+    <style name="detailsItem">
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:textSize">@dimen/textSizeTitle</item>
+        <item name="android:textColor">@color/nm_colorTextAccent</item>
+    </style>
+
+    <style name="detailsItemExtra">
+        <item name="android:textSize">@dimen/textSizeH2</item>
+        <item name="android:textColor">@color/nm_colorText</item>
+    </style>
+
+    <style name="detailsItemMajor">
+        <item name="android:textSize">@dimen/textSizeH2</item>
+        <item name="android:textColor">@color/nm_colorTextAccent</item>
+    </style>
+
+    <style name="detailsItemMinor">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/nm_colorText</item>
+    </style>
+
     <style name="textH1">
         <item name="android:textSize">@dimen/textSizeH1</item>
         <item name="android:textColor">@color/nm_colorH1</item>

@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/nm_colorTextAccent"
-            android:text="word"
+            android:text="wordinfo"
             android:textSize="30sp"/>
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_below="@id/kr_detail_word"
             android:layout_marginTop="3dp"
             android:textColor="@color/nm_colorText"
-            android:text="pronunciation"
+            android:text="pronun"
             android:textSize="15sp" />
 
     </RelativeLayout>

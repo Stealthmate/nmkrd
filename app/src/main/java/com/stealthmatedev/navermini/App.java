@@ -5,6 +5,7 @@ package com.stealthmatedev.navermini;
  */
 
 public class App {
-    public static final String HOST = "http://naver-mini.herokuapp.com";
+    public static final String HOST = "http://naver-mini.herokuapp.com/v2";
     public static final String APPTAG = "NaverMini";
+    public static boolean DEBUG_TEST = false;
 }

@@ -1,8 +1,12 @@
 package com.stealthmatedev.navermini.UI;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -21,6 +25,10 @@ import static com.stealthmatedev.navermini.App.APPTAG;
  * Created by Stealthmate on 16/09/22 0022.
  */
 public class CustomViewPager extends ViewPager {
+
+    private static String makeFragmentTag(Fragment frag) {
+        return String.valueOf(frag.getId());
+    }
 
     public class CustomPagerAdapter extends PagerAdapter {
 
@@ -42,9 +50,12 @@ public class CustomViewPager extends ViewPager {
             this.fm = fm;
             this.pagelist = new ArrayList<>();
             if (fm.getFragments() != null) {
-                for(Fragment frag : fm.getFragments()) {
+                FragmentTransaction trans = fm.beginTransaction();
+                for (Fragment frag : fm.getFragments()) {
                     this.pagelist.add(new Page(frag, false));
+                    trans = trans.remove(frag).add(frag, makeFragmentTag(frag));
                 }
+                trans.commitNow();
             } else {
                 push(new SearchFragment());
             }
@@ -54,7 +65,7 @@ public class CustomViewPager extends ViewPager {
         public Object instantiateItem(ViewGroup container, int position) {
 
             Page page = pagelist.get(position);
-            if(!page.frag.isAdded()) {
+            if (!page.frag.isAdded()) {
                 Log.wtf(APPTAG, "Fragment not added? " + page.frag.toString());
             }
 
@@ -66,6 +77,7 @@ public class CustomViewPager extends ViewPager {
         }
 
         private void destroyPage(Page page) {
+            System.out.println("DESTROY PAGE " + pagelist.indexOf(page));
             pagelist.remove(page);
             fm.beginTransaction().remove(page.frag).commitNow();
         }
@@ -74,11 +86,10 @@ public class CustomViewPager extends ViewPager {
         public void destroyItem(ViewGroup container, int position, Object obj) {
 
             Page page = (Page) obj;
-
             container.removeView(page.frag.getView());
             container.invalidate();
 
-            if(page.alive) page.alive = false;
+            if (page.alive) page.alive = false;
             else destroyPage(page);
         }
 
@@ -134,11 +145,11 @@ public class CustomViewPager extends ViewPager {
 
     public void removePages(int pstart, int pend, final Callback cb) {
 
-        if(pstart == -1) pstart = 0;
-        if(pend == -1) pend = adapter.getCount();
+        if (pstart == -1) pstart = 0;
+        if (pend == -1) pend = adapter.getCount();
 
-        if(pstart >= adapter.getCount()) return;
-        if(pend < 1 || pend < pstart) return;
+        if (pstart >= adapter.getCount()) return;
+        if (pend < 1 || pend < pstart) return;
 
         final int start = pstart;
         final int end = pend;
@@ -156,15 +167,14 @@ public class CustomViewPager extends ViewPager {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE) {
-                    for(int i=start;i<end;i++) adapter.remove(i);
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    for (int i = start; i < end; i++) adapter.remove(i);
                     CustomViewPager.this.removeOnPageChangeListener(this);
                     cb.callback();
                 }
             }
         });
     }
-
 
 
     @Override

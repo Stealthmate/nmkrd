@@ -12,6 +12,7 @@ import android.widget.ListView;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.state.ResultListDictionary;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;
@@ -25,10 +26,10 @@ import static android.content.ContentValues.TAG;
 
 public class ResultListSearchVisualizer extends SearchVisualizer {
 
-    public static ResultListSearchVisualizer mapFromSearch(StateManager state, ResultListDictionary.SubDictionary dict, String query, String response) {
+    public static ResultListSearchVisualizer mapFromSearch(StateManager state, ResultListDictionary.SubDictionary dict, ResultListQuery query, String response) {
 
         try {
-            return new ResultListSearchVisualizer(state.getActivity(), dict.resultAdapter.getConstructor(StateManager.class, String.class, String.class).newInstance(state, query, response));
+            return new ResultListSearchVisualizer(state.getActivity(), dict.resultAdapter.getConstructor(StateManager.class, ResultListQuery.class, String.class).newInstance(state, query, response));
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

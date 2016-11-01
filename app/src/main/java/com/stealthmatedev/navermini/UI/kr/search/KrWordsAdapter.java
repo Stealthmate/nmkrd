@@ -5,14 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
+import com.stealthmatedev.navermini.UI.kr.details.KrDetailsVisualizer;
+import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
-import com.stealthmatedev.navermini.data.kr.KrWordEntry;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class KrWordsAdapter extends ResultListAdapter {
 
     private JSONObject json;
 
-    public KrWordsAdapter(StateManager state, String query, String result) {
+    public KrWordsAdapter(StateManager state, ResultListQuery query, String result) {
         super(state, query, result);
     }
 
@@ -36,48 +38,44 @@ public class KrWordsAdapter extends ResultListAdapter {
     @Override
     protected ArrayList<DetailedItem> parseResult(String result) {
         ArrayList<DetailedItem> wordlist = null;
-        try {
-            this.json = new JSONObject(result);
-            JSONArray wordarr = json.getJSONArray("defs");
-            wordlist = new ArrayList<>(wordarr.length());
-            for (int i = 0; i <= wordarr.length() - 1; i++) {
-                wordlist.add(KrWordEntry.fromJSON(wordarr.getJSONObject(i)));
-            }
-        } catch (JSONException e) {
-            System.err.println("JSON ERROR");
-            e.printStackTrace();
-        }
-
+        Gson gson = new Gson();
+        KrWord[] entries = gson.fromJson(result, KrWord[].class);
+        wordlist = new ArrayList<DetailedItem>(Arrays.asList(entries));
         return wordlist;
     }
 
     @Override
     protected View generateItem(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        final KrWordEntry word = (KrWordEntry) getItem(position);
+        final KrWord word = (KrWord) getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null || convertView.findViewById(R.id.kr_word_name) == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_kr_word, parent, false);
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.kr_word_name);
-        name.setText(word.getName());
+        name.setText(word.word);
 
         TextView hanja = (TextView) convertView.findViewById(R.id.kr_word_hanja);
         System.out.println(convertView);
-        hanja.setText(word.getHanja());
+        hanja.setText(word.hanja);
 
         TextView pronun = (TextView) convertView.findViewById(R.id.kr_word_pronun);
-        pronun.setText(word.getPronunciation());
+        pronun.setText(word.pronun);
 
         TextView wordclass = (TextView) convertView.findViewById(R.id.kr_word_class);
-        String classes = Arrays.toString(word.getWordClasses());
+        String classes = word.wclass;
         if(classes.equals("[]")) classes = "";
         wordclass.setText(classes);
 
         TextView meaning = (TextView) convertView.findViewById(R.id.kr_word_meaning);
-        meaning.setText(word.getMeaning());
+        meaning.setText(word.defs.get(0).def);
 
         return convertView;
+    }
+
+    @Override
+    protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
+        return new KrDetailsVisualizer((KrWord) item);
     }
 }

@@ -184,7 +184,6 @@ public class FuriganaTextView extends TextView {
         int calculatedWidth = horizontalPadding + (int) text_width;
         int calculatedHeight = (int) (text_height + verticalPadding + furiganaMargin);
 
-        if(getId() == R.id.view_jp_detail_word_definition) System.out.println(calculatedWidth + " AYYY WTF " + text_width + " " + providedWidth);
         if ((providedWidthMode == MeasureSpec.EXACTLY && providedWidth > calculatedWidth) || providedWidth == 0)
             calculatedWidth = providedWidth;
 
@@ -203,7 +202,6 @@ public class FuriganaTextView extends TextView {
 
                 if ((cursor > providedWidth && currentLine == maxLines) || tokenLength > providedWidth) {
                     setMeasuredDimension(providedWidth, (int) (text_height * currentLine) + verticalPadding);
-                    if(getId() == R.id.view_jp_detail_word_definition) System.out.println(cursor + " AYYY WTF " + t.lower);
                     cannotDrawAll = true;
                     return;
                 }

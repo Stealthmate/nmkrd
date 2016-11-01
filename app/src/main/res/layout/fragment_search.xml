@@ -40,10 +40,6 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-
-        <include layout="@layout/view_loading" />
-
-
         <LinearLayout
             android:id="@+id/result"
             android:layout_width="match_parent"

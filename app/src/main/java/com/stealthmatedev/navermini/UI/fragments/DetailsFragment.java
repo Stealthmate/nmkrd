@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.state.StateManager;
 
 /**
@@ -21,7 +21,7 @@ public class DetailsFragment extends Fragment {
 
     private LinearLayout loadingView;
 
-    private DetailsAdapter currentAdapter;
+    private DetailsVisualizer currentAdapter;
 
     private boolean isCreated = false;
 
@@ -33,12 +33,12 @@ public class DetailsFragment extends Fragment {
         this.currentAdapter = null;
     }
 
-    public void setCurrentAdapter(DetailsAdapter adapter) {
+    public void setCurrentAdapter(DetailsVisualizer adapter) {
         this.currentAdapter = adapter;
         populate(adapter);
     }
 
-    public void populate(DetailsAdapter adapter) {
+    public void populate(DetailsVisualizer adapter) {
         if(!this.isCreated) return;
         if(adapter != null) this.currentAdapter = adapter;
         if(this.currentAdapter == null) return;
@@ -59,7 +59,7 @@ public class DetailsFragment extends Fragment {
         this.loadingView = (LinearLayout) this.root.findViewById(R.id.view_loading);
         this.loadingView.setVisibility(View.GONE);
 
-        this.currentAdapter = DetailsAdapter.fromSavedState(getContext(), savedInstanceState);
+        this.currentAdapter = DetailsVisualizer.fromSavedState(getContext(), savedInstanceState);
 
         this.isCreated = true;
         populate(this.currentAdapter);

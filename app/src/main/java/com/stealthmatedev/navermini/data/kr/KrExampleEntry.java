@@ -1,9 +1,12 @@
 package com.stealthmatedev.navermini.data.kr;
 
 import android.content.Context;
+import android.util.Log;
 
-import com.stealthmatedev.navermini.UI.DetailsAdapter;
+import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.state.DetailedItem;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/10/07 0007.
@@ -28,12 +31,12 @@ public class KrExampleEntry implements DetailedItem {
         return null;
     }
 
-    @Override
-    public DetailsAdapter createAdapterFromDetails(Context context, String details) {
-        return null;
-    }
-
     public String getText() {
         return text;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof KrExampleEntry && text.equals(((KrExampleEntry) obj).text);
     }
 }

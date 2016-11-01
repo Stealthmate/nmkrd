@@ -2,6 +2,8 @@ package com.stealthmatedev.navermini;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -24,7 +26,10 @@ import com.stealthmatedev.navermini.data.HistoryDB;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import static android.provider.Contacts.SettingsColumns.KEY;
+import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static com.stealthmatedev.navermini.App.APPTAG;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         TRANSITION();
     }
 
+    private static final String KEY_FRAGMENT_COUNT = "nm_key_fragment_count";
+    private static final String KEY_FRAGMENT = "nm_key_fragment_";
+
     private Page currentPage = Page.SEEK;
 
 
@@ -45,9 +53,43 @@ public class MainActivity extends AppCompatActivity {
 
     private AdView resultListBannerAd;
 
+    private ArrayList<Fragment> restoreFragments(Bundle state) {
+
+        ArrayList<Fragment> fragments = new ArrayList<>();
+        if(state == null) return fragments;
+
+        if (!state.containsKey(KEY_FRAGMENT_COUNT)) return fragments;
+
+        int size = state.getInt(KEY_FRAGMENT_COUNT);
+        fragments = new ArrayList<>(size);
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        for (int i = 0; i <= size - 1; i++) {
+            Fragment f = fm.getFragment(state, KEY_FRAGMENT + i);
+            if(f == null) return fragments;
+            fragments.add(f);
+        }
+
+        return fragments;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        ArrayList<Fragment> storedFragments = restoreFragments(savedInstanceState);
+
         super.onCreate(savedInstanceState);
+
+        if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() == 0) {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction trans = fm.beginTransaction();
+            for (Fragment f : storedFragments) {
+                trans = trans.add(f, "" + f.getId());
+            }
+            trans.commitNow();
+        }
+
         setContentView(R.layout.activity_main);
 
         MobileAds.initialize(this, "ca-app-pub-3986965759537769~5680737535");
@@ -87,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
         db.put("world!");
         db.get("TEST");
 
+        getWindow().clearFlags(FLAG_FULLSCREEN);
+
         Log.i(APPTAG, "DPI " + getResources().getDisplayMetrics().density);
 
     }
@@ -101,13 +145,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("page", currentPage);
+
+
+        FragmentManager fm = getSupportFragmentManager();
+
+        if(fm.getFragments().size() == 0) return;
+
+        int i = 0;
+        for (Fragment f : fm.getFragments()) {
+            fm.putFragment(outState, KEY_FRAGMENT + i, f);
+            i++;
+        }
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
-        if(savedInstanceState == null) return;
+        if (savedInstanceState == null) return;
 
         this.currentPage = (Page) savedInstanceState.getSerializable("page");
     }
@@ -115,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.pager.setCurrentItem(this.pager.getAdapter().getCount()-1);
+        this.pager.setCurrentItem(this.pager.getAdapter().getCount() - 1);
     }
 
     @Override
@@ -123,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         // Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
 
-        if(!toggle.isDrawerIndicatorEnabled()) {
+        if (!toggle.isDrawerIndicatorEnabled()) {
             return true;
         }
 
@@ -158,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
         //if(adapter.getCount() > 1) pager.setCurrentItem(adapter.getCount()-2);
 
-        switch(currentPage) {
+        switch (currentPage) {
             case HISTORY: {
                 pager.setCurrentItem(0);
                 pager.removePages(1, -1, new CustomViewPager.Callback() {
@@ -167,13 +222,14 @@ public class MainActivity extends AppCompatActivity {
                         currentPage = Page.SEEK;
                     }
                 });
-            } break;
+            }
+            break;
             case DETAIL: {
-                pager.setCurrentItem(pager.getAdapter().getCount()-2);
+                pager.setCurrentItem(pager.getAdapter().getCount() - 2);
                 pager.removePages(pager.getAdapter().getCount() - 1, -1, new CustomViewPager.Callback() {
                     @Override
                     public void callback() {
-                        if(pager.getAdapter().getCount() == 1) currentPage = Page.SEEK;
+                        if (pager.getAdapter().getCount() == 1) currentPage = Page.SEEK;
                     }
                 });
             }
@@ -184,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
     public void openNewDetailsPage(Fragment frag) {
         final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
         adapter.push(frag);
-        pager.setCurrentItem(adapter.getCount()-1);
+        pager.setCurrentItem(adapter.getCount() - 1);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -198,18 +254,17 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE) {
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
                     currentPage = Page.DETAIL;
                 }
             }
         });
     }
 
-
     private void openHistoryPage() {
         final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
         adapter.push(new HistoryFragment());
-        pager.setCurrentItem(adapter.getCount()-1);
+        pager.setCurrentItem(adapter.getCount() - 1);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -223,8 +278,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE) {
-                    while(adapter.getCount() > 2) adapter.remove(1);
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    while (adapter.getCount() > 2) adapter.remove(1);
                     pager.clearOnPageChangeListeners();
                     currentPage = Page.HISTORY;
                 }
@@ -248,8 +303,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if(state == ViewPager.SCROLL_STATE_IDLE) {
-                    while(adapter.getCount() > 1) adapter.remove(1);
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    while (adapter.getCount() > 1) adapter.remove(1);
                     pager.clearOnPageChangeListeners();
                     currentPage = Page.SEEK;
                 }
@@ -263,23 +318,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void selectPanel(View view) {
-        if(currentPage == Page.TRANSITION) return;
-        switch(view.getId()) {
-            case R.id.view_main_btn_searchPanel : {
-                if(currentPage == Page.SEEK) return;
+        if (currentPage == Page.TRANSITION) return;
+        switch (view.getId()) {
+            case R.id.view_main_btn_searchPanel: {
+                if (currentPage == Page.SEEK) return;
                 currentPage = Page.TRANSITION;
                 cleanup();
-            } break;
-            case R.id.view_main_btn_historyPanel : {
-                if(currentPage == Page.HISTORY) return;
+            }
+            break;
+            case R.id.view_main_btn_historyPanel: {
+                if (currentPage == Page.HISTORY) return;
                 currentPage = Page.TRANSITION;
                 openHistoryPage();
-            } break;
+            }
+            break;
         }
     }
 
     public void reset() {
-        if(currentPage == Page.TRANSITION) return;
+        if (currentPage == Page.TRANSITION) return;
         cleanup();
     }
 }
