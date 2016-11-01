@@ -22,4 +22,7 @@
 
     <string name="square_brackets">[%s]</string>
 
+
+    <string name="err_no_internet">ネットに接続されていません</string>
+
 </resources>
