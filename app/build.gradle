@@ -8,8 +8,8 @@ android {
         applicationId "com.stealthmateoriginal.navermini"
         minSdkVersion 16
         targetSdkVersion 24
-        versionCode 4
-        versionName "1.2.1"
+        versionCode 5
+        versionName "2.0.0"
     }
     buildTypes {
         release {
