@@ -134,7 +134,7 @@ public abstract class SectionedListAdapter<K, V> extends BaseAdapter {
     }
 
     protected View getMeaningView(final V m, ViewGroup parent) {
-        TextView view = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.view_detail_listitem_meaning, parent, false);
+        TextView view = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.view_listitem_text_wide, parent, false);
         view.setText(getMeaningText(m));
         view.setPadding((int) (view.getPaddingLeft() + UIUtils.dp(parent.getContext(), 20)), view.getPaddingTop(), view.getPaddingRight(), view.getPaddingBottom());
         return view;

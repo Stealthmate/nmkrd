@@ -2,7 +2,6 @@ package com.stealthmatedev.navermini.UI.kr.details;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
     private class DefinitionsAdapter extends ArrayAdapter<String> {
 
         private DefinitionsAdapter(Context context, ArrayList<KrWord.Definition> defs) {
-            super(context, R.layout.view_detail_listitem_meaning);
+            super(context, R.layout.view_listitem_text_wide);
             for (KrWord.Definition d : defs) {
                 this.add(d.def);
             }
@@ -39,7 +38,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         ListView ex = (ListView) root.findViewById(R.id.view_generic_detail_word_defex_list);
         ex.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
-        ex.setAdapter(new ArrayAdapter<>(context, R.layout.view_detail_listitem_meaning, def.ex));
+        ex.setAdapter(new ArrayAdapter<>(context, R.layout.view_listitem_text_wide, def.ex));
     }
 
     private KrWord details;
@@ -98,7 +97,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         ListView ex = (ListView) view.findViewById(R.id.view_generic_detail_word_defex_list);
         ex.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
-        ex.setAdapter(new ArrayAdapter<>(container.getContext(), R.layout.view_detail_listitem_meaning, def.ex));
+        ex.setAdapter(new ArrayAdapter<>(container.getContext(), R.layout.view_listitem_text_wide, def.ex));
 
         return view;
     }

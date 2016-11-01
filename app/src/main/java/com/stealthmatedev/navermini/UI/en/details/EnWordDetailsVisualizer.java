@@ -62,7 +62,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
     private static class ExAdapter extends ArrayAdapter<String> {
 
         ExAdapter(Context context, EnWord.WordClassGroup.Meaning meaning) {
-            super(context, R.layout.view_detail_listitem_meaning);
+            super(context, R.layout.view_listitem_text_wide);
             for(TranslatedExample ex : meaning.ex) this.add(ex.ex + " - " + ex.tr);
         }
     }

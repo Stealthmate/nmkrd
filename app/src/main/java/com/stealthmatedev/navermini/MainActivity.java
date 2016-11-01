@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private static final long EXIT_DOUBLEPRESS_TIME_THRESHOLD = 300;
 
     private Page currentPage = Page.SEEK;
-    private long lastExitPress = Long.MAX_VALUE;
+    private long lastExitPress = 0;
 
 
     private StateManager state;
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             break;
             case SEEK: {
                 long press = System.currentTimeMillis();
-                if(press - lastExitPress > EXIT_DOUBLEPRESS_TIME_THRESHOLD) super.onBackPressed();
+                if(press - lastExitPress <= EXIT_DOUBLEPRESS_TIME_THRESHOLD) super.onBackPressed();
                 else {
                     lastExitPress = press;
                     Toast toast = Toast.makeText(this, getString(R.string.backpress_exit_message), Toast.LENGTH_SHORT);
