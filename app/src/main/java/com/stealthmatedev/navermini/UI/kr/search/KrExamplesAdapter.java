@@ -1,5 +1,6 @@
 package com.stealthmatedev.navermini.UI.kr.search;
 
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +43,6 @@ public class KrExamplesAdapter extends ResultListAdapter {
 
         examples = new ArrayList<>(entries.length);
         for (int i = 0; i <= entries.length - 1; i++) {
-            Log.i(APPTAG, "EX " + entries[i]);
             examples.add(new KrExampleEntry(entries[i]));
         }
         return examples;
@@ -51,12 +51,18 @@ public class KrExamplesAdapter extends ResultListAdapter {
     @Override
     protected View generateItem(int position, View convertView, ViewGroup parent) {
         if (convertView == null || !(convertView instanceof TextView)) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_search_listitem_kr_example, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_listitem_text_large, parent, false);
         }
 
-        ((TextView) convertView).setText(((KrExampleEntry) getItem(position)).getText());
+        TextView tv = (TextView) convertView;
 
-        return convertView;
+        KrExampleEntry ex = (KrExampleEntry) getItem(position);
+
+        if(ex == null) return tv;
+
+        tv.setText(ex.getText());
+
+        return tv;
     }
 
     @Override

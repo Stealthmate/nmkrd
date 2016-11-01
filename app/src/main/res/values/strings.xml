@@ -19,6 +19,8 @@
     <string name="label_kunyomi_ex">Kunyomi examples</string>
     <string name="label_onyomi_ex">Onyomi examples</string>
 
+    <string name="backpress_exit_message">Press twice to exit</string>
+
     <string name="square_brackets">[%s]</string>
 
     <string name="err_no_internet">You are not connected to the internet</string>

@@ -2,7 +2,6 @@ package com.stealthmatedev.navermini.UI.en.details;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,12 @@ import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
-import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.en.EnWord;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/10/30 0030.
@@ -66,7 +62,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
     private static class ExAdapter extends ArrayAdapter<String> {
 
         ExAdapter(Context context, EnWord.WordClassGroup.Meaning meaning) {
-            super(context, R.layout.view_detail_listitem_meaning);
+            super(context, R.layout.view_listitem_text_wide);
             for(TranslatedExample ex : meaning.ex) this.add(ex.ex + " - " + ex.tr);
         }
     }
@@ -94,7 +90,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
 
     @Override
     public View getView(ViewGroup container) {
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_en_detail_word, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);

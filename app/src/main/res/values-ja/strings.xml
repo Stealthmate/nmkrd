@@ -20,6 +20,10 @@
     <string name="label_kunyomi_ex">訓読み例</string>
     <string name="label_onyomi_ex">音読み例</string>
 
+    <string name="backpress_exit_message">2回をタップすると終了します</string>
+
     <string name="square_brackets">[%s]</string>
+
+    <string name="err_no_internet">ネットに接続されていません</string>
 
 </resources>

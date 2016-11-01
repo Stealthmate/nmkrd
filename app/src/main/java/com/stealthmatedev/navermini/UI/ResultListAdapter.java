@@ -90,7 +90,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         this.loading = false;
         int items = super.getCount();
 
-        this.adPosition = AD_POSITION > items - 1 ? items - 1 : AD_POSITION;
+        this.adPosition = AD_POSITION > items - 1 ? items : AD_POSITION;
     }
 
     public ResultListAdapter(StateManager state, Serializable data) {
@@ -104,7 +104,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         this.loading = false;
         int items = super.getCount();
 
-        this.adPosition = AD_POSITION > items - 1 ? items - 1 : AD_POSITION;
+        this.adPosition = AD_POSITION > items - 1 ? items : AD_POSITION;
     }
 
 

@@ -12,6 +12,8 @@
     <color name="nm_colorTextLight">#7000</color>
     <color name="nm_colorTextLink">#007</color>
 
+    <color name="nm_colorSimpleListDivider">#6666</color>
+
     <color name="nm_colorMenuBtn">@color/nm_colorAccentLight</color>
     <color name="nm_colorH1">@color/nm_colorTextAccent</color>
     <color name="nm_colorH2">@color/nm_colorTextAccent</color>

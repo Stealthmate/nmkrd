@@ -2,10 +2,10 @@ package com.stealthmatedev.navermini.UI.kr.details;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,42 +23,22 @@ import java.util.ArrayList;
  */
 public class KrDetailsVisualizer extends DetailsVisualizer {
 
-    private class DefinitionsAdapter extends ArrayAdapter<KrWord.Definition> {
+    private class DefinitionsAdapter extends ArrayAdapter<String> {
 
-        public DefinitionsAdapter(Context context, ArrayList<KrWord.Definition> defs) {
-            super(context, R.layout.view_detail_kr_defitem, defs);
-        }
-
-        @NonNull
-        @Override
-        public final View getView(final int position, View convertView, @NonNull final ViewGroup parent) {
-            // Check if an existing view is being reused, otherwise inflate the view
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_detail_listitem_meaning, parent, false);
+        private DefinitionsAdapter(Context context, ArrayList<KrWord.Definition> defs) {
+            super(context, R.layout.view_listitem_text_wide);
+            for (KrWord.Definition d : defs) {
+                this.add(d.def);
             }
-
-            ((TextView) convertView).setText(getItem(position).def);
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setDefinition(getContext(), parent.getRootView(), getItem(position));
-                }
-            });
-
-            return convertView;
         }
     }
 
     private static void setDefinition(Context context, View root, KrWord.Definition def) {
 
-        TextView head = (TextView) root.findViewById(R.id.view_kr_detail_definition_head);
-        head.setText(def.def);
-
-        ListView ex = (ListView) root.findViewById(R.id.view_kr_detail_definition_ex_list);
+        ListView ex = (ListView) root.findViewById(R.id.view_generic_detail_word_defex_list);
         ex.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
-        ex.setAdapter(new ArrayAdapter<>(context, R.layout.view_kr_detail_definition_example, R.id.viewid_kr_detail_def_ex_text, def.ex));
+        ex.setAdapter(new ArrayAdapter<>(context, R.layout.view_listitem_text_wide, def.ex));
     }
 
     private KrWord details;
@@ -78,36 +58,46 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
     }
 
     @Override
-    public View getView(ViewGroup container) {
+    public View getView(final ViewGroup container) {
 
-        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_kr_detail, container, false);
+        View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
 
-        TextView name = (TextView) view.findViewById(R.id.kr_detail_word);
+        TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
 
-        TextView hanja = (TextView) view.findViewById(R.id.kr_detail_hanja);
-        hanja.setText(details.hanja);
+        TextView extra = (TextView) view.findViewById(R.id.view_generic_detail_word_extra);
 
-        TextView pronun = (TextView) view.findViewById(R.id.kr_detail_pronun);
-        pronun.setText(details.pronun);
+        String hanjaStr = details.hanja;
+        String pronunStr = details.pronun;
+        StringBuilder extraStr = new StringBuilder();
+        if (hanjaStr.length() > 0) {
+            extraStr = extraStr.append(hanjaStr);
+            if (pronunStr.length() > 0) extraStr = extraStr.append(" : ").append(pronunStr);
+        } else if (pronunStr.length() > 0) extraStr = extraStr.append(pronunStr);
 
-        ListView deflist = (ListView) view.findViewById(R.id.view_detail_kr_deflist);
+        extra.setText(extraStr);
+
+        ListView deflist = (ListView) view.findViewById(R.id.view_generic_detail_word_deflist);
         deflist.removeAllViewsInLayout();
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        DefinitionsAdapter adapter = new DefinitionsAdapter(container.getContext(), details.defs);
+        final DefinitionsAdapter adapter = new DefinitionsAdapter(container.getContext(), details.defs);
         deflist.setAdapter(adapter);
+
+        deflist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                setDefinition(container.getContext(), parent.getRootView(), details.defs.get(position));
+            }
+        });
 
         KrWord.Definition def = details.defs.get(0);
 
-        TextView head = (TextView) view.findViewById(R.id.view_kr_detail_definition_head);
-        head.setText(def.def);
-
-        ListView ex = (ListView) view.findViewById(R.id.view_kr_detail_definition_ex_list);
+        ListView ex = (ListView) view.findViewById(R.id.view_generic_detail_word_defex_list);
         ex.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
 
-        ex.setAdapter(new ArrayAdapter<>(container.getContext(), R.layout.view_kr_detail_definition_example, R.id.viewid_kr_detail_def_ex_text, def.ex));
+        ex.setAdapter(new ArrayAdapter<>(container.getContext(), R.layout.view_listitem_text_wide, def.ex));
 
         return view;
     }
