@@ -126,18 +126,7 @@ public class MainActivity extends AppCompatActivity {
         pager.initialize(getSupportFragmentManager());
         this.pager = pager;
 
-
-        HistoryDB db = new HistoryDB(this);
-        db.put("TEST");
-        db.remove("TEST");
-        db.put("hello!");
-        db.put("world!");
-        db.get("TEST");
-
         getWindow().clearFlags(FLAG_FULLSCREEN);
-
-        Log.i(APPTAG, "DPI " + getResources().getDisplayMetrics().density);
-
     }
 
     @Override
