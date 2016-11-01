@@ -34,12 +34,11 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         public final View getView(final int position, View convertView, @NonNull final ViewGroup parent) {
             // Check if an existing view is being reused, otherwise inflate the view
             if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_detail_kr_defitem, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_detail_listitem_meaning, parent, false);
             }
 
             ((TextView) convertView).setText(getItem(position).def);
 
-            final View finalConvertView = convertView;
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
