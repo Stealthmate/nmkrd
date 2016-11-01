@@ -5,7 +5,7 @@ package com.stealthmatedev.navermini;
  */
 
 public class App {
-    
+
     public static final String MY_PUB_ID = "ca-app-pub-3986965759537769~5680737535";
     public static final String ADUNIT = "ca-app-pub-3986965759537769/6878269136";
     public static final String[] TEST_DEVICES = {
