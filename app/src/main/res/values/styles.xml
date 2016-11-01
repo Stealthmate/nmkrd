@@ -13,6 +13,7 @@
 
     <style name="simpleListStyle">
         <item name="android:divider">@color/nm_colorTextLight</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <style name="detailsItem">
