@@ -31,7 +31,10 @@ import java.util.ArrayList;
 
 import static android.provider.Contacts.SettingsColumns.KEY;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
+import static com.stealthmatedev.navermini.App.ADUNIT;
 import static com.stealthmatedev.navermini.App.APPTAG;
+import static com.stealthmatedev.navermini.App.MY_PUB_ID;
+import static com.stealthmatedev.navermini.App.TEST_DEVICES;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         HISTORY(),
         TRANSITION();
     }
+
 
     private static final String KEY_FRAGMENT_COUNT = "nm_key_fragment_count";
     private static final String KEY_FRAGMENT = "nm_key_fragment_";
@@ -97,12 +101,18 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
-        MobileAds.initialize(this, "ca-app-pub-3986965759537769~5680737535");
+        MobileAds.initialize(this, MY_PUB_ID);
 
         resultListBannerAd = new AdView(this);
         resultListBannerAd.setAdSize(AdSize.SMART_BANNER);
-        resultListBannerAd.setAdUnitId("ca-app-pub-3986965759537769/6878269136");
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("47E36A7D3CA090778B4C1BF8682BF772").build();
+        resultListBannerAd.setAdUnitId(ADUNIT);
+
+        AdRequest.Builder adBuilder = new AdRequest.Builder();
+        for(int i=0;i<=TEST_DEVICES.length-1;i++) {
+            adBuilder = adBuilder.addTestDevice(TEST_DEVICES[i]);
+        }
+        AdRequest adRequest = adBuilder.build();
+
         resultListBannerAd.loadAd(adRequest);
 
 
