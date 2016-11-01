@@ -158,9 +158,13 @@ public class MainActivity extends AppCompatActivity {
 
         int i = 0;
         for (Fragment f : fm.getFragments()) {
-            if(f != null) fm.putFragment(outState, KEY_FRAGMENT + i, f);
-            i++;
+            if(f != null) {
+                fm.putFragment(outState, KEY_FRAGMENT + i, f);
+                i++;
+            }
         }
+
+        outState.putInt(KEY_FRAGMENT_COUNT, i);
     }
 
     @Override
