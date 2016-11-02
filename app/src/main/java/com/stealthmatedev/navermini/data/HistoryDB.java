@@ -2,8 +2,12 @@ package com.stealthmatedev.navermini.data;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.google.gson.Gson;
+import com.stealthmatedev.navermini.data.history.HistoryEntry;
 
 /**
  * Created by Stealthmate on 16/10/28 0028.
@@ -39,23 +43,32 @@ public class HistoryDB extends SQLiteOpenHelper {
 
     }
 
-    public void put(String str) {
-        this.getWritableDatabase().execSQL("INSERT INTO " + DICTIONARY_TABLE_NAME  + " VALUES (\"" + str + "\",\"" + str + "\")");
+    private static final String INSERTION_SQL = "INSERT INTO " + DICTIONARY_TABLE_NAME  + " VALUES (\"%DATA\")";
+
+    public void put(DetailedItem entry) {
+        this.getWritableDatabase().execSQL("INSERT INTO " + DICTIONARY_TABLE_NAME + " VALUES (" + DatabaseUtils.sqlEscapeString(new HistoryEntry(entry).getJson()) + ")");
     }
 
     public void remove(String str) {
         this.getWritableDatabase().execSQL("DELETE FROM " + DICTIONARY_TABLE_NAME + " WHERE " + KEY_WORD + "=\"" + str + "\"");
     }
 
-    public void get(String str) {
+    private DetailedItem parseJson(String json) {
+        HistoryEntry entry = new Gson().fromJson(json, HistoryEntry.class);
+        return entry.data;
+    }
+
+    public DetailedItem get(int id) {
         Cursor c = getReadableDatabase().query(
                 DICTIONARY_TABLE_NAME,
                 null,
                 null,
                 null,
                 null, null, null);
-        for(int i=0;i<=c.getCount()-1;i++) {
-            c.moveToPosition(i);
-        }
+        c.moveToPosition(id);
+
+        String json = c.getString(1);
+        c.close();
+        return parseJson(json);
     }
 }

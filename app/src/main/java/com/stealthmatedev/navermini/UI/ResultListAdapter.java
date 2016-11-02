@@ -12,7 +12,6 @@ import com.google.android.gms.ads.AdView;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.data.DetailedItem;
-import com.stealthmatedev.navermini.data.ResponseTranslator;
 import com.stealthmatedev.navermini.data.history.HistoryEntry;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
@@ -23,7 +22,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
-import static com.stealthmatedev.navermini.R.id.result;
 
 public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
