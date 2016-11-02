@@ -101,6 +101,11 @@ public class KrWord implements Serializable, DetailedItem {
     }
 
     @Override
+    public String getRawLink() {
+        return more;
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof KrWord)) return false;
 

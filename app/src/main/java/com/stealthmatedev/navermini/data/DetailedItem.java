@@ -16,5 +16,6 @@ public interface DetailedItem extends Serializable {
 
     boolean hasDetails();
     String getLinkToDetails();
+    String getRawLink();
 
 }

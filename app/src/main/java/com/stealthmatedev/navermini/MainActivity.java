@@ -24,6 +24,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.stealthmatedev.navermini.UI.CustomViewPager;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
 import com.stealthmatedev.navermini.data.HistoryDB;
+import com.stealthmatedev.navermini.data.history.HistoryEntry;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;

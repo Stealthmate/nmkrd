@@ -78,4 +78,9 @@ public class JpKanji implements Serializable, DetailedItem {
         }
         return null;
     }
+
+    @Override
+    public String getRawLink() {
+        return more;
+    }
 }

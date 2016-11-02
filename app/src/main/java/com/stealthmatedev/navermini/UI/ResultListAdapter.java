@@ -13,6 +13,7 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.ResponseTranslator;
+import com.stealthmatedev.navermini.data.history.HistoryEntry;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -212,6 +213,8 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
                 Log.e(APPTAG, "Null item in result list at position " + position);
                 return false;
             }
+
+            Log.i(APPTAG, new HistoryEntry(item).getJson());
 
             final DetailsFragment dfrag = state.openDetailsPage();
             final DetailsVisualizer visualizer = getDetailsVisualizer(item);

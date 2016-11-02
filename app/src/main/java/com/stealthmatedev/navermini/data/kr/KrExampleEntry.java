@@ -25,6 +25,11 @@ public class KrExampleEntry implements DetailedItem {
         return null;
     }
 
+    @Override
+    public String getRawLink() {
+        return text;
+    }
+
     public String getText() {
         return text;
     }

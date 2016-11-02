@@ -133,6 +133,11 @@ public class JpWord implements Serializable, DetailedItem {
     }
 
     @Override
+    public String getRawLink() {
+        return more;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

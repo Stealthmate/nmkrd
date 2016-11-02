@@ -1,8 +1,7 @@
 package com.stealthmatedev.navermini.data.en;
 
-import com.stealthmatedev.navermini.data.TranslatedExample;
-import com.stealthmatedev.navermini.data.history.HistoryItem;
 import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 
 import java.io.Serializable;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
  * Created by Stealthma 0030.
  */
 
-public class EnWord implements DetailedItem, HistoryItem, Serializable {
+public class EnWord implements DetailedItem, Serializable {
 
     public static class WordClassGroup implements Serializable {
         public static class Meaning implements Serializable {
