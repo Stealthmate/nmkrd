@@ -9,16 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.en.EnWord;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
+import static android.R.attr.name;
 
 /**
  * Created by Stealthmate on 16/10/30 0030.
@@ -58,7 +58,6 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         }
     }
 
-
     private static class ExAdapter extends ArrayAdapter<String> {
 
         ExAdapter(Context context, EnWord.WordClassGroup.Meaning meaning) {
@@ -67,7 +66,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         }
     }
 
-    static void setDefinition(View root, EnWord.WordClassGroup.Meaning meaning) {
+    private static void setDefinition(View root, EnWord.WordClassGroup.Meaning meaning) {
 
         if(meaning.ex.size() == 0) {
             root.findViewById(R.id.view_generic_detail_word_defex_container).setVisibility(View.GONE);
@@ -81,16 +80,13 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         exlist.setAdapter(new ExAdapter(root.getContext(), meaning));
     }
 
-    private EnWord details;
-
-    @Override
-    public void populate(String data) {
-        this.details = new Gson().fromJson(data, EnWord.class);
-    }
-
     @Override
     public View getView(ViewGroup container) {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
+
+        EnWord details = (EnWord) getDetails();
+
+        if(details == null) return view;
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
@@ -110,10 +106,5 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         setDefinition(view, details.clsgrps.get(0).meanings.get(0));
 
         return view;
-    }
-
-    @Override
-    public Serializable getDataRepresentation() {
-        return details;
     }
 }

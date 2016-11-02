@@ -3,9 +3,6 @@ package com.stealthmatedev.navermini;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stealthmatedev.navermini.data.en.EnWord;
-import com.stealthmatedev.navermini.data.jp.JpKanji;
-import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
-import com.stealthmatedev.navermini.state.DetailedItem;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;

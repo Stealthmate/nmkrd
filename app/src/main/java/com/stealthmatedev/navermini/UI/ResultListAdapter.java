@@ -11,7 +11,8 @@ import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdView;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
-import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.ResponseTranslator;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -20,12 +21,9 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-import static android.R.attr.data;
 import static com.stealthmatedev.navermini.App.APPTAG;
+import static com.stealthmatedev.navermini.R.id.result;
 
-/**
- * Created by Stealthmate on 16/09/23 0023.
- */
 public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
 
     protected static class SerializableRepresentation implements Serializable {
@@ -45,7 +43,7 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         }
     }
 
-    public static ResultListAdapter deserialize(StateManager state, SerializableRepresentation repr) {
+    static ResultListAdapter deserialize(StateManager state, SerializableRepresentation repr) {
         if (repr == null) return null;
 
         Class<? extends ResultListAdapter> _class = repr.childClass;
@@ -127,7 +125,6 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
     }
 
     private void loadMoreIfAvailable() {
-        final DetailedItem last = getItem(super.getCount()-1);
 
         final ResultListQuery newQuery = new ResultListQuery(query.path, query.query, query.page + 1, query.pagesize);
 
@@ -202,19 +199,38 @@ public abstract class ResultListAdapter extends ArrayAdapter<DetailedItem> {
         return generateItem(position, convertView, parent);
     }
 
-    public final boolean onItemClicked(View view, int position, long id) {
+    final boolean onItemClicked(int position) {
         if (position == getCount() - 1) {
             if (!noMoreAvailable) loadMoreIfAvailable();
         } else {
 
             if(position > adPosition) position -= 1;
 
-            DetailedItem item = getItem(position);
-            final DetailsVisualizer visualizer = getDetailsVisualizer(item);
-            final DetailsFragment dfrag = state.openDetails();
+            final DetailedItem item = getItem(position);
 
-            if (item.hasDetails()) {
-                state.loadDetailsAsync(item.getLinkToDetails(), visualizer, dfrag);
+            if(item == null) {
+                Log.e(APPTAG, "Null item in result list at position " + position);
+                return false;
+            }
+
+            final DetailsFragment dfrag = state.openDetailsPage();
+            final DetailsVisualizer visualizer = getDetailsVisualizer(item);
+            visualizer.populate(item);
+
+            if(item.hasDetails()) {
+                dfrag.waitForData();
+                state.getSearchEngine().queryDetails(item.getLinkToDetails(), new SearchEngine.OnResponse() {
+                    @Override
+                    public void responseReady(String response) {
+                        visualizer.populate(new DetailedItem.Translator(item.getClass()).translate(response));
+                        dfrag.populate(visualizer);
+                    }
+
+                    @Override
+                    public void onError(VolleyError err) {
+                        state.closePage(dfrag);
+                    }
+                });
             } else {
                 dfrag.populate(visualizer);
             }

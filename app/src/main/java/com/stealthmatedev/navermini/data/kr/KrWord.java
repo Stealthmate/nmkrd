@@ -1,6 +1,6 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 
 import java.io.Serializable;

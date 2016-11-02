@@ -12,7 +12,7 @@ import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.UI.en.details.EnWordDetailsVisualizer;
 import com.stealthmatedev.navermini.data.en.EnWord;
-import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 

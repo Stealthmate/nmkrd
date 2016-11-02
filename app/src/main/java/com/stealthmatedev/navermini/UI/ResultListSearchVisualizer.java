@@ -2,7 +2,6 @@ package com.stealthmatedev.navermini.UI;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,7 +76,7 @@ public class ResultListSearchVisualizer extends SearchVisualizer {
         view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.onItemClicked(view, position, id);
+                adapter.onItemClicked(position);
             }
         });
         return view;

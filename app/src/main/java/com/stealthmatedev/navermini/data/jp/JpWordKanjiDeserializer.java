@@ -1,12 +1,11 @@
 package com.stealthmatedev.navermini.data.jp;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedItem;
 
 import java.lang.reflect.Type;
 

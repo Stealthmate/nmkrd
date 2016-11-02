@@ -1,12 +1,6 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import android.content.Context;
-import android.util.Log;
-
-import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.state.DetailedItem;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
+import com.stealthmatedev.navermini.data.DetailedItem;
 
 /**
  * Created by Stealthmate on 16/10/07 0007.

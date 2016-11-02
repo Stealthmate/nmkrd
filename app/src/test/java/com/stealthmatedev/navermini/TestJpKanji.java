@@ -7,9 +7,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
-import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
-import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedItem;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;

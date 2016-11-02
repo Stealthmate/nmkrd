@@ -1,7 +1,7 @@
 package com.stealthmatedev.navermini.data.jp;
 
 import com.stealthmatedev.navermini.data.TranslatedExample;
-import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 
 import java.io.Serializable;

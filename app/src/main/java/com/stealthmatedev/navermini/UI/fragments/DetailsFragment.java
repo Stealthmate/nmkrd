@@ -42,7 +42,7 @@ public class DetailsFragment extends Fragment {
         if(!this.isCreated) return;
         if(adapter != null) this.currentAdapter = adapter;
         if(this.currentAdapter == null) return;
-        root.addView(adapter.getView(root));
+        root.addView(this.currentAdapter.getView(root));
         loadingView.setVisibility(View.GONE);
     }
 
@@ -59,7 +59,7 @@ public class DetailsFragment extends Fragment {
         this.loadingView = (LinearLayout) this.root.findViewById(R.id.view_loading);
         this.loadingView.setVisibility(View.GONE);
 
-        this.currentAdapter = DetailsVisualizer.fromSavedState(getContext(), savedInstanceState);
+        this.currentAdapter = DetailsVisualizer.fromSavedState(savedInstanceState);
 
         this.isCreated = true;
         populate(this.currentAdapter);

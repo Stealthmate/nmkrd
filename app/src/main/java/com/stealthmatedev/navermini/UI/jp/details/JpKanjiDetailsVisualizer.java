@@ -10,18 +10,21 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
+import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.generic.FixedListView;
 import com.stealthmatedev.navermini.UI.generic.ListLayout;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
+import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
+import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -31,10 +34,6 @@ import java.util.ArrayList;
  */
 
 public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
-
-    /**
-     * Created by Stealthmate on 16/10/21 0021.
-     */
 
     private static class KanjiMeaningsAdapter extends ArrayAdapter<JpKanji.Meaning> {
 
@@ -94,22 +93,28 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             try {
                 String url = DetailsDictionary.JAPANESE_DETAILS.path + "?lnk=" + URLEncoder.encode(links.get(position).lnk, "utf-8");
-                StateManager.getState(context).loadDetailsAsync(url, new JpWordDetailsVisualizer(), null);
+
+                final StateManager state = StateManager.getState(parent.getContext());
+                final DetailsFragment dfrag = state.openDetailsPage();
+                final JpWordDetailsVisualizer visualizer = new JpWordDetailsVisualizer();
+
+                state.getSearchEngine().queryDetails(url, new SearchEngine.OnResponse() {
+                    @Override
+                    public void responseReady(String response) {
+                        visualizer.populate(new DetailedItem.Translator(JpWord.class).translate(response));
+                    }
+
+                    @Override
+                    public void onError(VolleyError err) {
+                        state.closePage(dfrag);
+                    }
+                });
+
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    private JpKanji details;
-
-    public JpKanjiDetailsVisualizer() {
-        super();
-    }
-
-    @Override
-    public void populate(String data) {
-        this.details = new Gson().fromJson(data, JpKanji.class);
     }
 
     @Override
@@ -117,7 +122,9 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_jp_detail_kanji, container, false);
 
-        if(details == null) return view;
+        JpKanji details = (JpKanji) getDetails();
+
+        if (details == null) return view;
 
         TextView kanji = (TextView) view.findViewById(R.id.view_detail_jp_kanji_kanji);
         kanji.setText(String.valueOf(details.kanji));
@@ -162,10 +169,5 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
         return view;
 
-    }
-
-    @Override
-    public Serializable getDataRepresentation() {
-        return details;
     }
 }

@@ -1,10 +1,8 @@
 package com.stealthmatedev.navermini.data.en;
 
-import android.util.Log;
-
-import com.stealthmatedev.navermini.UI.SectionedListAdapter;
 import com.stealthmatedev.navermini.data.TranslatedExample;
-import com.stealthmatedev.navermini.state.DetailedItem;
+import com.stealthmatedev.navermini.data.history.HistoryItem;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.DetailsDictionary;
 
 import java.io.Serializable;
@@ -12,13 +10,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-import static com.stealthmatedev.navermini.App.APPTAG;
-
 /**
  * Created by Stealthma 0030.
  */
 
-public class EnWord implements DetailedItem, Serializable {
+public class EnWord implements DetailedItem, HistoryItem, Serializable {
 
     public static class WordClassGroup implements Serializable {
         public static class Meaning implements Serializable {
@@ -68,11 +64,16 @@ public class EnWord implements DetailedItem, Serializable {
         if (more.startsWith("http")) return more;
 
         try {
-            Log.i(APPTAG, more);
             return DetailsDictionary.ENGLISH_WORDS_DETAILS.path + "?lnk=" + URLEncoder.encode(more + "&sLn=en", "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    @Override
+    public String getRawLink() {
+        return this.more;
+    }
+
 }

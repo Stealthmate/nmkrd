@@ -1,15 +1,11 @@
 package com.stealthmatedev.navermini.UI;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.stealthmatedev.navermini.state.DetailedItem;
-
-import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
+import com.stealthmatedev.navermini.data.DetailedItem;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
 
@@ -18,50 +14,59 @@ import static com.stealthmatedev.navermini.App.APPTAG;
  */
 public abstract class DetailsVisualizer {
 
+    public @interface For {
+    }
+
     private static final String STATE_CLASS = "NM_DETAILS_STATE_CLASS";
-    protected static final String STATE_DATA = "NM_DETAILS_STATE_DATA";
+    private static final String STATE_DATA = "NM_DETAILS_STATE_DATA";
 
-    public static final String KEY_DETAILS = "nm_details";
-
-    public static DetailsVisualizer fromSavedState(Context context, Bundle savedState) {
+    public static DetailsVisualizer fromSavedState(Bundle savedState) {
 
         if (savedState == null) return null;
 
         String classname = savedState.getString(STATE_CLASS);
+        Log.d(APPTAG, "Creating details visualizer from saved state for " + classname);
         if (classname == null) return null;
 
         try {
-            Class<?> adapterClass = Class.forName(classname);
-            Serializable data = savedState.getSerializable(STATE_DATA);
-            return (DetailsVisualizer) adapterClass.getConstructor(Context.class, Serializable.class).newInstance(context, data);
+            @SuppressWarnings("unchecked") Class<? extends DetailsVisualizer> adapterClass = (Class<? extends DetailsVisualizer>) Class.forName(classname);
+            DetailedItem data = (DetailedItem) savedState.getSerializable(STATE_DATA);
+            DetailsVisualizer visualizer = adapterClass.newInstance();
+            visualizer.populate(data);
+            Log.d(APPTAG, "Creating details visualizer from saved state for " + classname);
+            return visualizer;
         } catch (ClassNotFoundException e) {
-            Log.e(APPTAG, "Could not find class " + classname + " from saved state!");
+            Log.d(APPTAG, "Could not find class " + classname + " from saved state!");
             return null;
-        } catch (NoSuchMethodException e) {
-            Log.e(APPTAG, "Could not find constructor in class " + classname + " from saved state!");
-            e.printStackTrace();
         } catch (IllegalAccessException e) {
+            Log.d(APPTAG, "", e);
             e.printStackTrace();
         } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+            Log.d(APPTAG, "", e);
             e.printStackTrace();
         }
 
         return null;
     }
 
+    private DetailedItem details;
+
     public DetailsVisualizer() {
+        details = null;
     }
 
-    public abstract void populate(String data);
+    public final DetailedItem getDetails() {
+        return details;
+    }
 
-    public abstract View getView(ViewGroup container);
-
-    public abstract Serializable getDataRepresentation();
+    public final void populate(DetailedItem details) {
+        this.details = details;
+    }
 
     public final void saveState(Bundle outState) {
         outState.putString(STATE_CLASS, this.getClass().getCanonicalName());
-        outState.putSerializable(STATE_DATA, getDataRepresentation());
+        outState.putSerializable(STATE_DATA, details);
     }
+
+    public abstract View getView(ViewGroup container);
 }

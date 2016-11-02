@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putSerializable("page", currentPage);
 
 
-        FragmentManager fm = getSupportFragmentManager();
+        /*FragmentManager fm = getSupportFragmentManager();
 
         if (fm.getFragments().size() == 0) return;
 
@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        outState.putInt(KEY_FRAGMENT_COUNT, i);
+        outState.putInt(KEY_FRAGMENT_COUNT, i);*/
     }
 
     @Override

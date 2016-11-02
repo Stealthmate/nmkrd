@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
@@ -18,6 +19,8 @@ import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
+import static android.R.attr.data;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.
@@ -87,16 +90,13 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     }
 
 
-
-    private JpWord details;
-
     public JpWordDetailsVisualizer() {
         super();
     }
 
     public JpWordDetailsVisualizer(JpWord word) {
         super();
-        this.details = word;
+        this.populate(word);
     }
 
     public JpWordDetailsVisualizer(Serializable data) {
@@ -120,14 +120,11 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     }
 
     @Override
-    public void populate(String data) {
-        this.details = new Gson().fromJson(data, JpWord.class);
-    }
-
-    @Override
     public View getView(ViewGroup container) {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
+
+        JpWord details = (JpWord) getDetails();
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
@@ -146,10 +143,5 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         setDefinition(view, details.clsgrps.get(0).meanings.get(0));
 
         return view;
-    }
-
-    @Override
-    public Serializable getDataRepresentation() {
-        return details;
     }
 }

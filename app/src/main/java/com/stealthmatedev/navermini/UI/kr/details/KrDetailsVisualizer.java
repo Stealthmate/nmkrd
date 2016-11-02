@@ -13,10 +13,13 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.kr.KrWord;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+
+import static android.R.attr.name;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -41,26 +44,23 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         ex.setAdapter(new ArrayAdapter<>(context, R.layout.view_listitem_text_wide, def.ex));
     }
 
-    private KrWord details;
-
     public KrDetailsVisualizer() {
         super();
     }
 
     public KrDetailsVisualizer(KrWord word) {
         super();
-        this.details = new KrWord(word);
-    }
-
-    @Override
-    public void populate(String data) {
-        this.details = new Gson().fromJson(data, KrWord.class);
+        this.populate(word);
     }
 
     @Override
     public View getView(final ViewGroup container) {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
+
+        final KrWord details = (KrWord) getDetails();
+
+        if(details == null) return view;
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
@@ -102,8 +102,4 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         return view;
     }
 
-    @Override
-    public Serializable getDataRepresentation() {
-        return details;
-    }
 }

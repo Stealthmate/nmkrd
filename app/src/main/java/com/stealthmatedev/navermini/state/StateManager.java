@@ -1,22 +1,15 @@
 package com.stealthmatedev.navermini.state;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.MainActivity;
-import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
-import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
+import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.ResponseTranslator;
 
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URLEncoder;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -39,20 +32,38 @@ public class StateManager {
         return searchEngine;
     }
 
-    public DetailsFragment openDetails() {
+    //public void saveToHistory(String json, )
+
+    /*public void loadDetailsFromItem(DetailedItem item, final DetailsVisualizer visualizer) {
+        final DetailsFragment dfrag = openDetailsPage();
+
+        if (item.hasDetails()) {
+            loadDetailsFromURL(item.getLinkToDetails(), visualizer, dfrag);
+        } else {
+            visualizer.populate(item);
+            dfrag.populate(visualizer);
+        }
+    }*/
+
+    public DetailsFragment openDetailsPage() {
         DetailsFragment dfrag = new DetailsFragment();
         activity.openNewDetailsPage(dfrag);
         return dfrag;
     }
 
-    public void loadDetailsAsync(String path, final DetailsVisualizer visualizer, DetailsFragment frag) {
-        if(frag == null) frag = openDetails();
+    public void closePage(DetailsFragment frag) {
+        if(frag.isAdded()) activity.onBackPressed();
+    }
+
+    /*public void loadDetailsFromURL(String path, final DetailsVisualizer visualizer, DetailsFragment frag) {
+        if(frag == null) frag = openDetailsPage();
         frag.waitForData();
         final DetailsFragment finalFrag = frag;
+
         getSearchEngine().queryDetails(path, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
-                visualizer.populate(response);
+                visualizer.populate(new DetailedItem.Translator().translate(response));
                 finalFrag.populate(visualizer);
             }
 
@@ -61,7 +72,7 @@ public class StateManager {
                 if(finalFrag.isAdded()) activity.onBackPressed();
             }
         });
-    }
+    }*/
 
     public static StateManager getState(Context context) {
         return ((MainActivity)context).getState();
