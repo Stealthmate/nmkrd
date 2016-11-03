@@ -1,6 +1,7 @@
 package com.stealthmatedev.navermini.data.en;
 
-import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedEntry;
+import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.serverapi.DetailsDictionary;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * Created by Stealthma 0030.
  */
 
-public class EnWord implements DetailedItem, Serializable {
+public class EnWord implements DetailedEntry {
 
     public static class WordClassGroup implements Serializable {
         public static class Meaning implements Serializable {
@@ -54,7 +55,7 @@ public class EnWord implements DetailedItem, Serializable {
     }
 
     @Override
-    public boolean hasDetails() {
+    public boolean isPartial() {
         return true;
     }
 

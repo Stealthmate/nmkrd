@@ -6,9 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
-import com.stealthmatedev.navermini.data.DetailedItem;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -99,7 +99,7 @@ public class TestJpWord {
         in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_DETAILS_WORD);
         input = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
 
-        DetailedItem obj = gson.fromJson(input, JpWord.class);
+        Entry obj = gson.fromJson(input, JpWord.class);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(obj);
@@ -122,7 +122,7 @@ public class TestJpWord {
 
         {
             gson = new GsonBuilder()
-                    .registerTypeAdapter(DetailedItem.class, new JpWordKanjiDeserializer())
+                    .registerTypeAdapter(Entry.class, new JpWordKanjiDeserializer())
                     .registerTypeAdapter(JpWord.class, new JpWordSerializer())
                     .setPrettyPrinting()
                     .disableHtmlEscaping()
@@ -130,7 +130,7 @@ public class TestJpWord {
             in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_RESULTTS_WORDONLY);
             input = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
 
-            DetailedItem[] objs = gson.fromJson(input, DetailedItem[].class);
+            Entry[] objs = gson.fromJson(input, Entry[].class);
             JpWord[] words = new JpWord[objs.length];
             for (int i = 0; i <= objs.length - 1; i++) words[i] = (JpWord) objs[i];
             output = Util.removeEmptyProperties(gson.toJson(words), true).replaceAll("0\\.0", "0");
@@ -147,7 +147,7 @@ public class TestJpWord {
             in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_DETAILS_WORD);
             input = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
 
-            DetailedItem obj = gson.fromJson(input, JpWord.class);
+            Entry obj = gson.fromJson(input, JpWord.class);
             output = Util.removeEmptyProperties(gson.toJson(obj), false).replaceAll("0\\.0", "0");
             assertEqualJson(input, output);
         }

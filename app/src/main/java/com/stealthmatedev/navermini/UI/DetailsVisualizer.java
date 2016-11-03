@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedEntry;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
 
@@ -13,9 +13,6 @@ import static com.stealthmatedev.navermini.App.APPTAG;
  * Created by Stealthmate on 16/09/23 0023.
  */
 public abstract class DetailsVisualizer {
-
-    public @interface For {
-    }
 
     private static final String STATE_CLASS = "NM_DETAILS_STATE_CLASS";
     private static final String STATE_DATA = "NM_DETAILS_STATE_DATA";
@@ -30,7 +27,7 @@ public abstract class DetailsVisualizer {
 
         try {
             @SuppressWarnings("unchecked") Class<? extends DetailsVisualizer> adapterClass = (Class<? extends DetailsVisualizer>) Class.forName(classname);
-            DetailedItem data = (DetailedItem) savedState.getSerializable(STATE_DATA);
+            DetailedEntry data = (DetailedEntry) savedState.getSerializable(STATE_DATA);
             DetailsVisualizer visualizer = adapterClass.newInstance();
             visualizer.populate(data);
             Log.d(APPTAG, "Creating details visualizer from saved state for " + classname);
@@ -49,17 +46,17 @@ public abstract class DetailsVisualizer {
         return null;
     }
 
-    private DetailedItem details;
+    private DetailedEntry details;
 
     public DetailsVisualizer() {
         details = null;
     }
 
-    public final DetailedItem getDetails() {
+    public final DetailedEntry getDetails() {
         return details;
     }
 
-    public final void populate(DetailedItem details) {
+    public final void populate(DetailedEntry details) {
         this.details = details;
     }
 

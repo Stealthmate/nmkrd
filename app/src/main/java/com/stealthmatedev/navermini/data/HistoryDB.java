@@ -45,7 +45,7 @@ public class HistoryDB extends SQLiteOpenHelper {
 
     private static final String INSERTION_SQL = "INSERT INTO " + DICTIONARY_TABLE_NAME  + " VALUES (\"%DATA\")";
 
-    public void put(DetailedItem entry) {
+    public void put(Entry entry) {
         this.getWritableDatabase().execSQL("INSERT INTO " + DICTIONARY_TABLE_NAME + " VALUES (" + DatabaseUtils.sqlEscapeString(new HistoryEntry(entry).getJson()) + ")");
     }
 
@@ -53,12 +53,12 @@ public class HistoryDB extends SQLiteOpenHelper {
         this.getWritableDatabase().execSQL("DELETE FROM " + DICTIONARY_TABLE_NAME + " WHERE " + KEY_WORD + "=\"" + str + "\"");
     }
 
-    private DetailedItem parseJson(String json) {
+    private Entry parseJson(String json) {
         HistoryEntry entry = new Gson().fromJson(json, HistoryEntry.class);
         return entry.data;
     }
 
-    public DetailedItem get(int id) {
+    public Entry get(int id) {
         Cursor c = getReadableDatabase().query(
                 DICTIONARY_TABLE_NAME,
                 null,

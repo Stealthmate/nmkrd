@@ -17,7 +17,8 @@ import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.generic.FixedListView;
 import com.stealthmatedev.navermini.UI.generic.ListLayout;
-import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedEntry;
+import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
@@ -101,7 +102,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
                 state.getSearchEngine().queryDetails(url, new SearchEngine.OnResponse() {
                     @Override
                     public void responseReady(String response) {
-                        visualizer.populate(new DetailedItem.Translator(JpWord.class).translate(response));
+                        visualizer.populate((DetailedEntry) new Entry.Translator(JpWord.class).translate(response));
                     }
 
                     @Override

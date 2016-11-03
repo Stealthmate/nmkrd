@@ -1,22 +1,22 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.Entry;
 
 /**
  * Created by Stealthmate on 16/10/07 0007.
  */
 
-public class KrExampleEntry implements DetailedItem {
+public class KrExample implements Entry {
 
     private final String text;
 
-    public KrExampleEntry(String text) {
+    public KrExample(String text) {
         this.text = text;
     }
 
 
     @Override
-    public boolean hasDetails() {
+    public boolean isPartial() {
         return false;
     }
 
@@ -36,6 +36,6 @@ public class KrExampleEntry implements DetailedItem {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof KrExampleEntry && text.equals(((KrExampleEntry) obj).text);
+        return obj instanceof KrExample && text.equals(((KrExample) obj).text);
     }
 }

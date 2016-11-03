@@ -1,6 +1,8 @@
 package com.stealthmatedev.navermini.serverapi.kr;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.kr.KrExample;
 import com.stealthmatedev.navermini.serverapi.ResponseTranslator;
 
 import java.util.ArrayList;
@@ -12,6 +14,12 @@ import java.util.ArrayList;
 public class KrExampleResponseTranslator implements ResponseTranslator {
     @Override
     public ArrayList<Entry> translate(String response) {
-        return null;
+
+        ArrayList<Entry> entriesList = new ArrayList<>();
+        String[] entries = new Gson().fromJson(response, String[].class);
+
+        for (int i = 0; i <= entries.length - 1; i++) entriesList.add(new KrExample(entries[i]));
+
+        return entriesList;
     }
 }

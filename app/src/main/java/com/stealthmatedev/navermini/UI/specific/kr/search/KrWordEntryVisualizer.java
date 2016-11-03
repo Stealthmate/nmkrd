@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.specific.kr;
+package com.stealthmatedev.navermini.UI.specific.kr.search;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.StyledEntryVisualizer;
+import com.stealthmatedev.navermini.UI.specific.EntryVisualizer;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.state.ResultListQuery;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by Stealthmate on 16/11/02 0002.
  */
 
-public class KrWordEntryVisualizer extends StyledEntryVisualizer {
+public class KrWordEntryVisualizer extends EntryVisualizer {
 
     private static void setDefinition(Context context, View root, KrWord.Definition def) {
 

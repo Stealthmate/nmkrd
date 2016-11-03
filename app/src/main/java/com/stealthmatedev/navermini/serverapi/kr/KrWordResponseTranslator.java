@@ -1,7 +1,6 @@
 package com.stealthmatedev.navermini.serverapi.kr;
 
 import com.google.gson.Gson;
-import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.serverapi.ResponseTranslator;

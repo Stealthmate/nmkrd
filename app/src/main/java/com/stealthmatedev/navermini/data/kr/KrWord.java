@@ -1,6 +1,7 @@
 package com.stealthmatedev.navermini.data.kr;
 
-import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.DetailedEntry;
+import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.serverapi.DetailsDictionary;
 
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  * Created by Stealthmate on 16/10/22 0022.
  */
 
-public class KrWord implements DetailedItem {
+public class KrWord implements DetailedEntry {
 
     public static class Definition implements Serializable {
 
@@ -54,6 +55,7 @@ public class KrWord implements DetailedItem {
     public final String pronun;
     public final String wclass;
     public final String more;
+    private final boolean partial;
 
     public final ArrayList<Definition> defs;
 
@@ -64,15 +66,17 @@ public class KrWord implements DetailedItem {
         wclass = "";
         defs = new ArrayList<>(0);
         more = "";
+        partial = true;
     }
 
-    public KrWord(String word, String hanja, String pronun, String wclass, ArrayList<Definition> defs, String more) {
+    public KrWord(String word, String hanja, String pronun, String wclass, ArrayList<Definition> defs, String more, boolean partial) {
         this.word = word;
         this.hanja = hanja;
         this.pronun = pronun;
         this.wclass = wclass;
         this.defs = defs;
         this.more = more;
+        this.partial = partial;
     }
 
     public KrWord(KrWord wordinfo) {
@@ -82,11 +86,12 @@ public class KrWord implements DetailedItem {
         this.wclass = wordinfo.wclass;
         this.defs = wordinfo.defs;
         this.more = wordinfo.more;
+        this.partial = wordinfo.partial;
     }
 
     @Override
-    public boolean hasDetails() {
-        return more.length() != 0;
+    public boolean isPartial() {
+        return partial;
     }
 
     @Override

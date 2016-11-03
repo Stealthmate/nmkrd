@@ -1,16 +1,11 @@
 package com.stealthmatedev.navermini.data.history;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.Expose;
-import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.kr.KrWord;
-
-import java.io.Serializable;
-
-import static android.R.attr.id;
 
 /**
  * Created by Stealthmate on 16/11/01 0001.
@@ -26,15 +21,15 @@ public class HistoryEntry {
 
         private final int id;
 
-        private final Class<? extends DetailedItem> classType;
+        private final Class<? extends Entry> classType;
 
-        Type(int id, Class<? extends DetailedItem> classType) {
+        Type(int id, Class<? extends Entry> classType) {
             this.id = id;
             this.classType = classType;
         }
 
-        public static Type fromItem(DetailedItem item) {
-            Class<? extends DetailedItem> cls = item.getClass();
+        public static Type fromItem(Entry item) {
+            Class<? extends Entry> cls = item.getClass();
 
             if(cls.equals(KrWord.class)) return KR_WORD;
             if(cls.equals(JpWord.class)) return JP_WORD;
@@ -47,7 +42,7 @@ public class HistoryEntry {
 
     public final String version_id;
     public final Type type;
-    public final DetailedItem data;
+    public final Entry data;
 
     public HistoryEntry() {
         this.version_id = "";
@@ -55,7 +50,7 @@ public class HistoryEntry {
         this.data = null;
     }
 
-    public HistoryEntry(DetailedItem item) {
+    public HistoryEntry(Entry item) {
         this.version_id = "1";
         this.type = Type.fromItem(item);
         this.data = item;

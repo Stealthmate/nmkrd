@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
+import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
@@ -92,7 +93,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
     public JpWordDetailsVisualizer(JpWord word) {
         super();
-        this.populate(word);
+        this.populate((DetailedEntry) word);
     }
 
     public JpWordDetailsVisualizer(Serializable data) {

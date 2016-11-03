@@ -1,6 +1,5 @@
 package com.stealthmatedev.navermini.UI;
 
-import android.database.DataSetObserver;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;

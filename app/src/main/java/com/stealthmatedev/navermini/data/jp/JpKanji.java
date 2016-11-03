@@ -1,7 +1,8 @@
 package com.stealthmatedev.navermini.data.jp;
 
+import com.stealthmatedev.navermini.data.DetailedEntry;
+import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
-import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.serverapi.DetailsDictionary;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * Created by Stealthmate on 16/10/31 0031.
  */
 
-public class JpKanji implements Serializable, DetailedItem {
+public class JpKanji implements DetailedEntry {
 
     public static class Meaning implements Serializable {
         public final String m;
@@ -65,7 +66,7 @@ public class JpKanji implements Serializable, DetailedItem {
 
 
     @Override
-    public boolean hasDetails() {
+    public boolean isPartial() {
         return more.length() > 0;
     }
 

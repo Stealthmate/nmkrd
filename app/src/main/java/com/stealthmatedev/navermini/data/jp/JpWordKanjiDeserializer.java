@@ -5,7 +5,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.Entry;
 
 import java.lang.reflect.Type;
 
@@ -13,14 +13,14 @@ import java.lang.reflect.Type;
  * Created by Stealthmate on 16/10/31 0031.
  */
 
-public class JpWordKanjiDeserializer implements JsonDeserializer<DetailedItem> {
+public class JpWordKanjiDeserializer implements JsonDeserializer<Entry> {
 
     private static final String KEY_TYPE = "type";
     private static final int TYPE_DEF = 0;
     private static final int TYPE_KANJI = 1;
 
     @Override
-    public DetailedItem deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Entry deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject wrapper = json.getAsJsonObject();
         int id = wrapper.get("type").getAsInt();
 

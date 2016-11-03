@@ -6,9 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
-import com.stealthmatedev.navermini.data.DetailedItem;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class TestJpKanji {
 
         {
             gson = new GsonBuilder()
-                    .registerTypeAdapter(DetailedItem.class, new JpWordKanjiDeserializer())
+                    .registerTypeAdapter(Entry.class, new JpWordKanjiDeserializer())
                     .registerTypeAdapter(JpKanji.class, new JpKanjiSerializer())
                     .setPrettyPrinting()
                     .disableHtmlEscaping()
@@ -57,7 +57,7 @@ public class TestJpKanji {
             in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_RESULT_KANJIONLY);
             input = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
 
-            DetailedItem[] objs = gson.fromJson(input, DetailedItem[].class);
+            Entry[] objs = gson.fromJson(input, Entry[].class);
             JpKanji[] words = new JpKanji[objs.length];
             for (int i = 0; i <= objs.length - 1; i++) words[i] = (JpKanji) objs[i];
             output = Util.removeEmptyProperties(gson.toJson(words), true).replaceAll("0\\.0", "0");
@@ -74,7 +74,7 @@ public class TestJpKanji {
             in = this.getClass().getClassLoader().getResourceAsStream(TEST_CASE_DETAIL_KANJI);
             input = Util.prettify(IOUtils.toString(in, Charset.forName("utf-8")));
 
-            DetailedItem obj = gson.fromJson(input, JpKanji.class);
+            Entry obj = gson.fromJson(input, JpKanji.class);
             output = Util.removeEmptyProperties(gson.toJson(obj), false).replaceAll("0\\.0", "0");
             assertEqualJson(input, output);
         }

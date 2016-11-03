@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.stealthmatedev.navermini.UI.generic.EntryProvider;
+import com.stealthmatedev.navermini.UI.specific.EntryUIMapper;
+import com.stealthmatedev.navermini.UI.specific.EntryVisualizer;
 import com.stealthmatedev.navermini.data.Entry;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
@@ -16,10 +18,9 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 
 public class EntryListAdapter extends BaseListAdapter {
 
-    private EntryVisualizer visualizer;
     private EntryProvider entryProvider;
 
-    public EntryListAdapter(EntryProvider entryProvider, EntryVisualizer visualizer) {
+    public EntryListAdapter(EntryProvider entryProvider) {
 
         this.entryProvider = entryProvider;
         this.entryProvider.registerDataSetObserver(new DataSetObserver() {
@@ -33,17 +34,7 @@ public class EntryListAdapter extends BaseListAdapter {
                 EntryListAdapter.this.notifyDataSetInvalidated();
             }
         });
-        this.visualizer = visualizer;
 
-    }
-
-    public void setVisualizer(EntryVisualizer visualizer) {
-        this.visualizer = visualizer;
-        notifyDataSetChanged();
-    }
-
-    public EntryVisualizer getVisualizer() {
-        return this.visualizer;
     }
 
     @Override
@@ -53,6 +44,18 @@ public class EntryListAdapter extends BaseListAdapter {
 
     @Override
     protected View generateItem(int position, View convertView, ViewGroup parent) {
+
+        Entry entry = (Entry) getItem(position);
+
+        EntryVisualizer visualizer = null;
+        try {
+            visualizer = EntryUIMapper.forEntry(entry).entryVisualizerClass.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
         Log.i(APPTAG, String.valueOf(visualizer == null));
         return visualizer.visualize((Entry) getItem(position), parent);
     }

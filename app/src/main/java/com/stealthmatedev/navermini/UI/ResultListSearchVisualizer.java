@@ -32,9 +32,7 @@ public class ResultListSearchVisualizer extends SearchVisualizer {
 
         ArrayList<Entry> entries = dict.translator.translate(response);
         if(entries.size() == 0) return new ResultListSearchVisualizer(state, null);
-
-        StyledEntryVisualizer visualizer = EntryAdapters.forEntry(entries.get(0)).getVisualizerFor(entries.get(0), query);
-        NetworkEntryListAdapter adapter = new NetworkEntryListAdapter(entries, visualizer, query);
+        NetworkEntryListAdapter adapter = new NetworkEntryListAdapter(state, entries, query);
 
         return new ResultListSearchVisualizer(state.getActivity(), adapter);
     }
