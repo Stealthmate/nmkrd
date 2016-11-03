@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.en.details;
+package com.stealthmatedev.navermini.UI.specific.en.details;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
@@ -17,8 +17,6 @@ import com.stealthmatedev.navermini.data.en.EnWord;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
-import static android.R.attr.name;
 
 /**
  * Created by Stealthmate on 16/10/30 0030.

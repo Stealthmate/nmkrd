@@ -3,8 +3,6 @@ package com.stealthmatedev.navermini.UI.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,14 +21,12 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
 import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
 import com.stealthmatedev.navermini.UI.SearchVisualizer;
-import com.stealthmatedev.navermini.state.ResultListDictionary;
+import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/20 0020.
@@ -54,7 +50,7 @@ public class SearchFragment extends Fragment {
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            setCurrentDictionary(dictAdapter.getItem(position).resultListDictionary);
+            setCurrentDictionary(dictAdapter.getItem(position).entryListDictionary);
         }
 
         @Override
@@ -66,8 +62,8 @@ public class SearchFragment extends Fragment {
     private static final String SAVE_KEY_DICT = "dict";
     private static final String SAVE_KEY_SUBDICT = "subdict";
 
-    private ResultListDictionary currentDictionary;
-    private ResultListDictionary.SubDictionary currentSubDictionary;
+    private EntryListDictionary currentDictionary;
+    private EntryListDictionary.SubDictionary currentSubDictionary;
 
     private StateManager state;
     private LinearLayout resultcontainer;
@@ -87,13 +83,13 @@ public class SearchFragment extends Fragment {
         this.currentSubDictionary = currentDictionary.subdicts[i];
     }
 
-    public void setCurrentDictionary(ResultListDictionary dict) {
+    public void setCurrentDictionary(EntryListDictionary dict) {
         this.currentDictionary = dict;
         setSubDictionaryList(this.currentDictionary);
     }
 
-    private void setSubDictionaryList(ResultListDictionary dict) {
-        ResultListDictionary.SubDictionary[] subdicts = dict.subdicts;
+    private void setSubDictionaryList(EntryListDictionary dict) {
+        EntryListDictionary.SubDictionary[] subdicts = dict.subdicts;
         ArrayList<String> subdictStrings = new ArrayList<>(subdicts.length);
         for (int i = 0; i <= subdicts.length - 1; i++) {
             subdictStrings.add(subdicts[i].name);
@@ -141,9 +137,11 @@ public class SearchFragment extends Fragment {
         if (visualizer != null) this.currentVisualizer = visualizer;
 
         if (this.resultcontainer == null) return;
-        if (this.currentVisualizer == null) return;
 
         clear();
+
+        if (this.currentVisualizer == null) return;
+
         resultcontainer.addView(currentVisualizer.getView(resultcontainer));
     }
 
@@ -164,12 +162,12 @@ public class SearchFragment extends Fragment {
 
         this.dictAdapter = new DictionarySpinnerAdapter();
 
-        ResultListDictionary dict = null;
-        ResultListDictionary.SubDictionary subdict = null;
+        EntryListDictionary dict = null;
+        EntryListDictionary.SubDictionary subdict = null;
 
         if (savedInstanceState != null) {
             System.out.println(savedInstanceState);
-            dict = ResultListDictionary.valueOf(savedInstanceState.getString(SAVE_KEY_DICT));
+            dict = EntryListDictionary.valueOf(savedInstanceState.getString(SAVE_KEY_DICT));
             if (dict != null) {
                 subdict = dict.getSubDict(savedInstanceState.getString(SAVE_KEY_SUBDICT));
             }
@@ -178,7 +176,7 @@ public class SearchFragment extends Fragment {
         if (dict != null) {
             this.currentDictionary = dict;
         } else {
-            this.currentDictionary = this.dictAdapter.getItem(0).resultListDictionary;
+            this.currentDictionary = this.dictAdapter.getItem(0).entryListDictionary;
         }
 
         if (subdict != null && this.currentDictionary.indexOf(subdict) >= 0) {

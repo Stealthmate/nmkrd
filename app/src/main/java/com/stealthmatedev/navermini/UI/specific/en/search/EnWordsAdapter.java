@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.en.search;
+package com.stealthmatedev.navermini.UI.specific.en.search;
 
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -9,10 +9,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.UI.ResultListAdapter;
-import com.stealthmatedev.navermini.UI.en.details.EnWordDetailsVisualizer;
-import com.stealthmatedev.navermini.data.en.EnWord;
+import com.stealthmatedev.navermini.UI.specific.en.details.EnWordDetailsVisualizer;
 import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
@@ -22,8 +21,8 @@ import java.util.Arrays;
 /**
  * Created by Stealthmate on 16/10/27 0027.
  */
-
-public class EnWordsAdapter extends ResultListAdapter {
+/*
+public class EnWordsAdapter extends DetailedItemListAdapter {
     public EnWordsAdapter(StateManager state, ResultListQuery query, String response) {
         super(state, query, response);
     }
@@ -74,3 +73,4 @@ public class EnWordsAdapter extends ResultListAdapter {
         return new EnWordDetailsVisualizer();
     }
 }
+*/

@@ -1,7 +1,7 @@
 package com.stealthmatedev.navermini.data.kr;
 
 import com.stealthmatedev.navermini.data.DetailedItem;
-import com.stealthmatedev.navermini.state.DetailsDictionary;
+import com.stealthmatedev.navermini.serverapi.DetailsDictionary;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * Created by Stealthmate on 16/10/22 0022.
  */
 
-public class KrWord implements Serializable, DetailedItem {
+public class KrWord implements DetailedItem {
 
     public static class Definition implements Serializable {
 

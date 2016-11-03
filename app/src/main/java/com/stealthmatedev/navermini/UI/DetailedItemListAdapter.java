@@ -1,94 +1,120 @@
 package com.stealthmatedev.navermini.UI;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
+import com.android.volley.VolleyError;
 import com.google.android.gms.ads.AdView;
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.data.DetailedItem;
+import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.history.HistoryEntry;
 import com.stealthmatedev.navermini.state.ResultListQuery;
+import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
+/*
+public abstract class DetailedItemListAdapter extends BaseListAdapter {
 
-/**
- * Created by Stealthmate on 16/11/02 0002.
- */
+    protected static class SerializableRepresentation extends BaseListAdapter.SerializableRepresentation {
 
-public abstract class DetailedItemListAdapter extends ArrayAdapter<DetailedItem> {
-    protected static class SerializableRepresentation implements Serializable {
+        private final ResultListQuery query;
+        private final boolean noMore;
+        private final int page;
 
-        private final Class<? extends DetailedItemListAdapter> childClass;
-        private final ArrayList<DetailedItem> results;
-
-        private SerializableRepresentation(Class<? extends DetailedItemListAdapter> childClass, ArrayList<DetailedItem> results) {
-            this.childClass = childClass;
-            this.results = results;
+        private SerializableRepresentation(Class<? extends DetailedItemListAdapter> childClass, ResultListQuery query, ArrayList<Entry> results, int page, boolean noMore) {
+            super(childClass, results);
+            this.query = query;
+            this.page = page;
+            this.noMore = noMore;
         }
     }
 
-    static DetailedItemListAdapter deserialize(StateManager state, DetailedItemListAdapter.SerializableRepresentation repr) {
-        if (repr == null) return null;
+    private static final int PAGE_SIZE = 10;
 
-        Class<? extends DetailedItemListAdapter> _class = repr.childClass;
-        if (_class == null) return null;
+    private ResultListQuery query;
+    private int page;
 
-        try {
-            return _class.getConstructor(StateManager.class, DetailedItemListAdapter.SerializableRepresentation.class).newInstance(state, repr);
-        } catch (NoSuchMethodException e) {
-            Log.e(APPTAG, "Cannot instantiate ResultListAdapter: Constructor from SerializableRepresentation not declared in " + _class.getSimpleName());
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+    private boolean noMoreAvailable;
+    private boolean loading;
 
-        return null;
+    private ArrayList<DetailedItem> items;
 
-    }
-
-    private static final int AD_POSITION = 3;
-
-    protected final StateManager state;
-
-    private final int adPosition;
-
-    public DetailedItemListAdapter(StateManager state, ResultListQuery query, String response) {
-        super(state.getActivity(), 0, new ArrayList<DetailedItem>());
-        this.addAll(parseResult(response));
-        this.state = state;
-        int items = super.getCount();
-        this.adPosition = AD_POSITION > items - 1 ? items : AD_POSITION;
+    public DetailedItemListAdapter(StateManager state, ResultListQuery query, ArrayList<DetailedItem> items) {
+        super(state);
+        this.items = new ArrayList<>();
+        for(DetailedItem i : items) this.items.add(i);
+        this.noMoreAvailable = super.getCount() == 0;
+        this.query = query;
+        this.page = 1;
+        this.loading = false;
     }
 
     public DetailedItemListAdapter(StateManager state, Serializable data) {
-        super(state.getActivity(), 0, new ArrayList<DetailedItem>());
-        DetailedItemListAdapter.SerializableRepresentation desData = (DetailedItemListAdapter.SerializableRepresentation) data;
-        this.addAll(desData.results);
-        this.state = state;
-        int items = super.getCount();
+        super(state, new ArrayList<DetailedItem>());
+        SerializableRepresentation desData = (SerializableRepresentation) data;
+        this.noMoreAvailable = desData.noMore || desData.results.size() == 0;
+        this.query = desData.query;
+        this.page = desData.page;
+        this.loading = false;
+    }
 
-        this.adPosition = AD_POSITION > items - 1 ? items : AD_POSITION;
+
+    private void setLoading(boolean b) {
+        this.loading = b;
+        this.notifyDataSetChanged();
+    }
+
+    public ResultListQuery getQuery() {
+        return query;
     }
 
     public Serializable getDataRepresentation() {
-        ArrayList<DetailedItem> results = new ArrayList<>(super.getCount());
+        ArrayList<Entry> results = new ArrayList<>(super.getCount());
         for (int i = 0; i <= super.getCount() - 1; i++) {
             results.add(getItem(i));
         }
 
-        return new DetailedItemListAdapter.SerializableRepresentation(this.getClass(), results);
+        return new SerializableRepresentation(this.getClass(), query, results, page, noMoreAvailable);
+    }
+
+    private void loadMoreIfAvailable() {
+
+        final ResultListQuery newQuery = new ResultListQuery(query.path, query.query, query.page + 1, query.pagesize);
+
+        state.getSearchEngine().queryResultList(newQuery, new SearchEngine.OnResponse() {
+            @Override
+            public void responseReady(String response) {
+                setLoading(false);
+                ArrayList<DetailedItem> new_entries = parseResult(response);
+
+                boolean same = new_entries.get(new_entries.size() - 1).equals(getItem(DetailedItemListAdapter.super.getCount() - 1));
+
+                if (same) {
+                    setNoMoreAvailable(true);
+                    return;
+                }
+
+                if (new_entries.size() < PAGE_SIZE) {
+                    setNoMoreAvailable(true);
+                }
+                DetailedItemListAdapter.this.addAll(new_entries);
+                query = newQuery;
+            }
+
+            @Override
+            public void onError(VolleyError err) {
+                setLoading(false);
+            }
+        });
+        setLoading(true);
     }
 
     private View generateAd(ViewGroup parent) {
@@ -99,32 +125,74 @@ public abstract class DetailedItemListAdapter extends ArrayAdapter<DetailedItem>
         return view;
     }
 
-    @Override
-    public final int getCount() {
-        if (super.getCount() == 0) return 0;
-        else return super.getCount() + 1;
+    private void setNoMoreAvailable(boolean b) {
+
+        this.noMoreAvailable = b;
+        notifyDataSetChanged();
     }
 
 
-    @NonNull
     @Override
-    public final View getView(int position, View convertView, @NonNull ViewGroup parent) {
+    protected View generateItem(int position, View convertView, ViewGroup parent) {
+        if (position == getCount() - 1 && !noMoreAvailable) {
 
-        if (position == adPosition) return generateAd(parent);
-
-        if (position > adPosition) position = position - 1;
+            if (loading) {
+                View v = LayoutInflater.from(getContext()).inflate(R.layout.view_loading, parent, false);
+                v.setVisibility(View.VISIBLE);
+                return v;
+            } else
+                return LayoutInflater.from(getContext()).inflate(R.layout.view_result_final, parent, false);
+        }
 
         return generateItem(position, convertView, parent);
     }
 
-    protected boolean onItemClicked(int position) {
+    @Override
+    protected boolean onClick(int position) {
+        if (position == getCount() - 1) {
+            if (!noMoreAvailable) loadMoreIfAvailable();
+            return true;
+        }
+
+        final DetailedItem item = (DetailedItem) getItem(position);
+
+        if (item == null) {
+            Log.e(APPTAG, "Null item in result list at position " + position);
+            return false;
+        }
+
+        Log.i(APPTAG, new HistoryEntry(item).getJson());
+
+        final DetailsFragment dfrag = state.openDetailsPage();
+        final DetailsVisualizer visualizer = getDetailsVisualizer(item);
+        visualizer.populate(item);
+
+        if (item.hasDetails()) {
+            dfrag.waitForData();
+            state.getSearchEngine().queryDetails(item.getLinkToDetails(), new SearchEngine.OnResponse() {
+                @Override
+                public void responseReady(String response) {
+                    visualizer.populate(new DetailedItem.Translator(item.getClass()).translate(response));
+                    dfrag.populate(visualizer);
+                }
+
+                @Override
+                public void onError(VolleyError err) {
+                    state.closePage(dfrag);
+                }
+            });
+        } else {
+            dfrag.populate(visualizer);
+        }
+
         return true;
     }
 
     protected abstract ArrayList<DetailedItem> parseResult(String result);
 
-    protected abstract View generateItem(int position, View convertView, ViewGroup parent);
-
     protected abstract DetailsVisualizer getDetailsVisualizer(DetailedItem item);
 
+    protected abstract Class<? extends DetailedItem> getItemClass(DetailedItem item);
+
 }
+*/

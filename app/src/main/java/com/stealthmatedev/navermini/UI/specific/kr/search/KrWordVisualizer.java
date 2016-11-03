@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.kr.search;
+package com.stealthmatedev.navermini.UI.specific.kr.search;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.UI.ResultListAdapter;
-import com.stealthmatedev.navermini.UI.kr.details.KrDetailsVisualizer;
+import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
+import com.stealthmatedev.navermini.UI.specific.kr.details.KrDetailsVisualizer;
 import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
@@ -23,19 +23,19 @@ import java.util.Arrays;
 /**
  * Created by Stealthmate on 16/09/23 0023.
  */
-public class KrWordsAdapter extends ResultListAdapter {
+
+public class KrWordVisualizer extends NetworkEntryListAdapter {
 
     private JSONObject json;
 
-    public KrWordsAdapter(StateManager state, ResultListQuery query, String result) {
-        super(state, query, result);
+    public KrWordVisualizer(StateManager state, ResultListQuery query, String result) {
+        super(null, null, null);
     }
 
-    public KrWordsAdapter(StateManager state, SerializableRepresentation repr) {
-        super(state, repr);
+    public KrWordVisualizer(StateManager state, SerializableRepresentation repr) {
+        super(null, null, null);
     }
 
-    @Override
     protected ArrayList<DetailedItem> parseResult(String result) {
         ArrayList<DetailedItem> wordlist = null;
         Gson gson = new Gson();
@@ -50,7 +50,7 @@ public class KrWordsAdapter extends ResultListAdapter {
         final KrWord word = (KrWord) getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null || convertView.findViewById(R.id.kr_word_name) == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_kr_word, parent, false);
+            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_kr_word, parent, false);
         }
 
         TextView name = (TextView) convertView.findViewById(R.id.kr_word_name);
@@ -74,8 +74,11 @@ public class KrWordsAdapter extends ResultListAdapter {
         return convertView;
     }
 
-    @Override
     protected DetailsVisualizer getDetailsVisualizer(DetailedItem item) {
         return new KrDetailsVisualizer((KrWord) item);
+    }
+
+    protected Class<? extends DetailedItem> getItemClass(DetailedItem item) {
+        return KrWord.class;
     }
 }

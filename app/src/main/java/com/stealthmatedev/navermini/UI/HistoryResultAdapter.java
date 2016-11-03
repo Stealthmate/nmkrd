@@ -7,14 +7,13 @@ import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Stealthmate on 16/11/02 0002.
  */
-
-public class HistoryResultAdapter extends ResultListAdapter {
+/*
+public class HistoryResultAdapter extends DetailedItemListAdapter {
 
     public HistoryResultAdapter(StateManager state, ResultListQuery query, String response) {
         super(state, query, response);
@@ -35,3 +34,4 @@ public class HistoryResultAdapter extends ResultListAdapter {
         return null;
     }
 }
+*/

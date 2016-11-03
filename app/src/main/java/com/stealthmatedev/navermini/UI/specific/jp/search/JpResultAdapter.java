@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.jp.search;
+package com.stealthmatedev.navermini.UI.specific.jp.search;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +9,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.UI.ResultListAdapter;
-import com.stealthmatedev.navermini.UI.jp.details.JpKanjiDetailsVisualizer;
-import com.stealthmatedev.navermini.UI.jp.details.JpWordDetailsVisualizer;
+import com.stealthmatedev.navermini.UI.specific.jp.details.JpKanjiDetailsVisualizer;
+import com.stealthmatedev.navermini.UI.specific.jp.details.JpWordDetailsVisualizer;
+import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWordKanjiDeserializer;
-import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
@@ -26,8 +25,8 @@ import java.util.Arrays;
 /**
  * Created by Stealthmate on 16/09/28 0028.
  */
-
-public class JpResultAdapter extends ResultListAdapter {
+/*
+public class JpResultAdapter extends DetailedItemListAdapter {
 
     public JpResultAdapter(StateManager state, ResultListQuery query, String result) {
         super(state, query, result);
@@ -129,3 +128,4 @@ public class JpResultAdapter extends ResultListAdapter {
     }
 
 }
+*/

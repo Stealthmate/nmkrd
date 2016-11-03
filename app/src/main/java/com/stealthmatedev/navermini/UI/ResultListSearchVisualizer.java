@@ -10,13 +10,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.state.ResultListDictionary;
+import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 
+import static android.R.attr.data;
 import static android.content.ContentValues.TAG;
 
 /**
@@ -25,41 +28,34 @@ import static android.content.ContentValues.TAG;
 
 public class ResultListSearchVisualizer extends SearchVisualizer {
 
-    public static ResultListSearchVisualizer mapFromSearch(StateManager state, ResultListDictionary.SubDictionary dict, ResultListQuery query, String response) {
+    public static ResultListSearchVisualizer mapFromSearch(StateManager state, EntryListDictionary.SubDictionary dict, ResultListQuery query, String response) {
 
-        try {
-            return new ResultListSearchVisualizer(state.getActivity(), dict.resultAdapter.getConstructor(StateManager.class, ResultListQuery.class, String.class).newInstance(state, query, response));
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
+        ArrayList<Entry> entries = dict.translator.translate(response);
+        if(entries.size() == 0) return new ResultListSearchVisualizer(state, null);
 
-        Log.e(TAG, "Could not find constructor for class " + dict.resultAdapter.getName());
-        return null;
+        StyledEntryVisualizer visualizer = EntryAdapters.forEntry(entries.get(0)).getVisualizerFor(entries.get(0), query);
+        NetworkEntryListAdapter adapter = new NetworkEntryListAdapter(entries, visualizer, query);
+
+        return new ResultListSearchVisualizer(state.getActivity(), adapter);
     }
 
-    private ResultListAdapter adapter;
+    private NetworkEntryListAdapter adapter;
 
-    public ResultListSearchVisualizer(Context context, ResultListAdapter adapter) {
+    public ResultListSearchVisualizer(Context context, NetworkEntryListAdapter adapter) {
         super(context);
         this.adapter = adapter;
     }
 
     public ResultListSearchVisualizer(StateManager state, Serializable data) {
         super(state.getActivity());
-        this.adapter = ResultListAdapter.deserialize(state, (ResultListAdapter.SerializableRepresentation) data);
+        this.adapter = (NetworkEntryListAdapter) BaseListAdapter.deserialize(state, (BaseListAdapter.SerializableRepresentation) data);
     }
 
-    public void setAdapter(ResultListAdapter adapter) {
+    public void setAdapter(NetworkEntryListAdapter adapter) {
         this.adapter = adapter;
     }
 
-    public ResultListAdapter getAdapter() {
+    public NetworkEntryListAdapter getAdapter() {
         return adapter;
     }
 
@@ -67,7 +63,7 @@ public class ResultListSearchVisualizer extends SearchVisualizer {
     @Override
     public View getView(@NonNull ViewGroup container) {
 
-        if(adapter.getCount() == 0) {
+        if (adapter == null) {
             return LayoutInflater.from(getContext()).inflate(R.layout.view_no_results, container, false);
         }
 

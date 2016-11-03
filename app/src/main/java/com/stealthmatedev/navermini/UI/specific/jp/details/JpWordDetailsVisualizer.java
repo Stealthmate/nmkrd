@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.jp.details;
+package com.stealthmatedev.navermini.UI.specific.jp.details;
 
 import android.animation.LayoutTransition;
 import android.view.LayoutInflater;
@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
-import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
@@ -19,8 +17,6 @@ import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
-import static android.R.attr.data;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.

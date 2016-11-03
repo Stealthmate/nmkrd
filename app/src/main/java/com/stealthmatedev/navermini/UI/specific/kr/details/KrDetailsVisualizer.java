@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.kr.details;
+package com.stealthmatedev.navermini.UI.specific.kr.details;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
@@ -10,16 +10,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.kr.KrWord;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-
-import static android.R.attr.name;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.

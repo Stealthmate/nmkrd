@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.state;
+package com.stealthmatedev.navermini.serverapi;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.

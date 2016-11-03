@@ -1,5 +1,7 @@
 package com.stealthmatedev.navermini.state;
 
+import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -17,7 +19,7 @@ public class Query {
     private int page;
     private int pagesize;
 
-    public Query(ResultListDictionary dict) {
+    public Query(EntryListDictionary dict) {
         this.path = dict.path;
         this.query = "";
         this.page = 0;

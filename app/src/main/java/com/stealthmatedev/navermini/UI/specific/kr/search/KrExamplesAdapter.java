@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.kr.search;
+package com.stealthmatedev.navermini.UI.specific.kr.search;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.UI.ResultListAdapter;
 import com.stealthmatedev.navermini.data.kr.KrExampleEntry;
 import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.state.ResultListQuery;
@@ -19,8 +18,8 @@ import java.util.ArrayList;
 /**
  * Created by Stealthmate on 16/10/07 0007.
  */
-
-public class KrExamplesAdapter extends ResultListAdapter {
+/*
+public class KrExamplesAdapter extends DetailedItemListAdapter {
 
     public KrExamplesAdapter(StateManager state, ResultListQuery query, String response) {
         super(state, query, response);
@@ -62,3 +61,4 @@ public class KrExamplesAdapter extends ResultListAdapter {
         return null;
     }
 }
+*/

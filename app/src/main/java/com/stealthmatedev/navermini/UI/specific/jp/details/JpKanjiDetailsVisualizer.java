@@ -1,4 +1,4 @@
-package com.stealthmatedev.navermini.UI.jp.details;
+package com.stealthmatedev.navermini.UI.specific.jp.details;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -21,7 +21,7 @@ import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
-import com.stealthmatedev.navermini.state.DetailsDictionary;
+import com.stealthmatedev.navermini.serverapi.DetailsDictionary;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 

@@ -2,7 +2,7 @@ package com.stealthmatedev.navermini.data.en;
 
 import com.stealthmatedev.navermini.data.DetailedItem;
 import com.stealthmatedev.navermini.data.TranslatedExample;
-import com.stealthmatedev.navermini.state.DetailsDictionary;
+import com.stealthmatedev.navermini.serverapi.DetailsDictionary;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

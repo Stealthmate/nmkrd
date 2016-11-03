@@ -1,22 +1,17 @@
 package com.stealthmatedev.navermini.UI;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.state.Dictionary;
-import com.stealthmatedev.navermini.state.ResultListDictionary;
 
 import java.util.ArrayList;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by Stealthmate on 16/10/06 0006.
