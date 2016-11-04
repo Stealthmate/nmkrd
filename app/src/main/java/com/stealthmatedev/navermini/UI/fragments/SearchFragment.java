@@ -3,6 +3,7 @@ package com.stealthmatedev.navermini.UI.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/20 0020.
@@ -166,7 +169,6 @@ public class SearchFragment extends Fragment {
         EntryListDictionary.SubDictionary subdict = null;
 
         if (savedInstanceState != null) {
-            System.out.println(savedInstanceState);
             dict = EntryListDictionary.valueOf(savedInstanceState.getString(SAVE_KEY_DICT));
             if (dict != null) {
                 subdict = dict.getSubDict(savedInstanceState.getString(SAVE_KEY_SUBDICT));

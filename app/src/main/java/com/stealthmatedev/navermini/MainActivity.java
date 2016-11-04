@@ -4,33 +4,28 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.stealthmatedev.navermini.UI.CustomViewPager;
+import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
-import com.stealthmatedev.navermini.data.HistoryDB;
-import com.stealthmatedev.navermini.data.history.HistoryEntry;
+import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
 import com.stealthmatedev.navermini.state.StateManager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Stack;
 
-import static android.provider.Contacts.SettingsColumns.KEY;
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static com.stealthmatedev.navermini.App.ADUNIT;
 import static com.stealthmatedev.navermini.App.APPTAG;
@@ -39,27 +34,38 @@ import static com.stealthmatedev.navermini.App.TEST_DEVICES;
 
 public class MainActivity extends AppCompatActivity {
 
-    private enum Page implements Serializable {
-        SEEK(),
-        DETAIL(),
-        HISTORY(),
-        TRANSITION();
-    }
-
-
     private static final String KEY_FRAGMENT_COUNT = "nm_key_fragment_count";
     private static final String KEY_FRAGMENT = "nm_key_fragment_";
 
+    private static class Page {
+        private final Fragment fragment;
+        private final String tag;
+
+        private boolean shown;
+
+        Page(String tag, Fragment fragment) {
+            this.tag = tag;
+            this.fragment = fragment;
+            this.shown = false;
+        }
+    }
+
+    private static final String FTAG_SEARCH = "nm_FTAG_SEARCH";
+    private static final String FTAG_HISTORY = "nm_FTAG_HISTORY";
+    private static final String FTAG_DETAILS = "nm_FTAG_DETAILS";
+
+    private Stack<Page> pagestack;
+
+    public static final int PAGE_SEARCH = 0;
+    public static final int PAGE_HISTORY = 1;
+
     private static final long EXIT_DOUBLEPRESS_TIME_THRESHOLD = 300;
 
-    private Page currentPage = Page.SEEK;
     private long lastExitPress = 0;
 
+    private FrameLayout content;
 
     private StateManager state;
-    private ActionBarDrawerToggle toggle;
-    private DrawerLayout drawer;
-    private CustomViewPager pager;
 
     private AdView resultListBannerAd;
 
@@ -109,107 +115,114 @@ public class MainActivity extends AppCompatActivity {
         resultListBannerAd.setAdUnitId(ADUNIT);
 
         AdRequest.Builder adBuilder = new AdRequest.Builder();
-        for(int i=0;i<=TEST_DEVICES.length-1;i++) {
+        for (int i = 0; i <= TEST_DEVICES.length - 1; i++) {
             adBuilder = adBuilder.addTestDevice(TEST_DEVICES[i]);
         }
         AdRequest adRequest = adBuilder.build();
 
         resultListBannerAd.loadAd(adRequest);
 
+        LinearLayout adContainer = (LinearLayout) findViewById(R.id.view_ad_container);
+        adContainer.addView(resultListBannerAd);
 
         this.state = new StateManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab = getSupportActionBar();
 
-        this.drawer = (DrawerLayout) findViewById(R.id.drawer);
-        this.drawer.setEnabled(false);
-        this.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        this.toggle = new ActionBarDrawerToggle(this, drawer, R.string.material_drawer_open, R.string.material_drawer_close);
-        this.drawer.addDrawerListener(this.toggle);
+        this.content = (FrameLayout) findViewById(R.id.main_content);
 
-        //ab.setDisplayHomeAsUpEnabled(true);
-        //ab.setHomeButtonEnabled(true);
+        this.pagestack = new Stack<>();
+        Page search = new Page(FTAG_SEARCH, new SearchFragment());
+        this.pagestack.push(search);
+        getSupportFragmentManager().beginTransaction().add(this.content.getId(), search.fragment, search.tag).commitNow();
 
-        final CustomViewPager pager = (CustomViewPager) findViewById(R.id.viewpager);
+        this.getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
 
-        pager.initialize(getSupportFragmentManager());
-        this.pager = pager;
+            private int lastCount = 0;
+
+            @Override
+            public void onBackStackChanged() {
+                int count = getSupportFragmentManager().getBackStackEntryCount();
+
+                if(count < lastCount) {
+                    pagestack.pop();
+                }
+                lastCount = count;
+            }
+        });
 
         getWindow().clearFlags(FLAG_FULLSCREEN);
     }
 
-    @Override
-    public void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        toggle.syncState();
+    private FragmentTransaction getBaseTransaction() {
+        return getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in, R.anim.slide_out);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("page", currentPage);
+    private FragmentTransaction transactionHideAllPages() {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction trans = getBaseTransaction();
+        Fragment f = fm.findFragmentByTag(pagestack.peek().tag);
+        trans = trans.hide(f);
+        return trans;
+    }
 
+    private void openNewPage(Fragment fragment, String tag) {
+        FragmentTransaction trans = transactionHideAllPages();
+        Page p = new Page(tag, fragment);
+        pagestack.push(p);
+        trans.add(this.content.getId(), fragment, tag).addToBackStack(null).commit();
+    }
 
-        /*FragmentManager fm = getSupportFragmentManager();
+    private void showPage(String tag) {
 
-        if (fm.getFragments().size() == 0) return;
+        if(pagestack.peek().tag.equals(tag)) return;
 
-        int i = 0;
-        for (Fragment f : fm.getFragments()) {
-            if(f != null) {
-                fm.putFragment(outState, KEY_FRAGMENT + i, f);
-                i++;
+        FragmentTransaction trans = transactionHideAllPages();
+        for (Page p : pagestack) {
+            if (tag.equals(p.tag)) {
+                pagestack.remove(p);
+                pagestack.push(p);
+                trans.show(p.fragment).commit();
+                return;
             }
         }
+    }
 
-        outState.putInt(KEY_FRAGMENT_COUNT, i);*/
+    public void openNewDetailsPage(Fragment frag) {
+        int i = 0;
+        for(Page p : pagestack){
+            if(p.fragment instanceof DetailsFragment) i++;
+        }
+        String tag = FTAG_DETAILS + i;
+        openNewPage(frag, tag);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        if (savedInstanceState == null) return;
-
-        this.currentPage = (Page) savedInstanceState.getSerializable("page");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        this.pager.setCurrentItem(this.pager.getAdapter().getCount() - 1);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_appbar_settings, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
 
-        if (!toggle.isDrawerIndicatorEnabled()) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menu_settings: {
+                state.history().clearHistory();
+                Toast.makeText(this, "Cleared history", Toast.LENGTH_SHORT).show();
+            }
+            break;
+            case R.id.menu_history: {
+                Fragment f = getSupportFragmentManager().findFragmentByTag(FTAG_HISTORY);
+                if(f != null) showPage(FTAG_HISTORY);
+                else openNewPage(new HistoryFragment(), FTAG_HISTORY);
+            }
         }
-
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        // Handle your other action bar items...
 
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onStop() {
-        ViewGroup root = (ViewGroup) findViewById(R.id.view_home_dict_btn_bar);
-        int count = root.getChildCount();
-        for (int i = 0; i <= count - 1; i++) {
-            root.getChildAt(i).setBackgroundResource(0);
-        }
-
-        super.onStop();
-    }
-
 
     public StateManager getState() {
         return state;
@@ -217,144 +230,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
-        //if(adapter.getCount() > 1) pager.setCurrentItem(adapter.getCount()-2);
 
-        switch (currentPage) {
-            case HISTORY: {
-                pager.setCurrentItem(0);
-                pager.removePages(1, -1, new CustomViewPager.Callback() {
-                    @Override
-                    public void callback() {
-                        currentPage = Page.SEEK;
-                    }
-                });
-            }
-            break;
-            case DETAIL: {
-                pager.setCurrentItem(pager.getAdapter().getCount() - 2);
-                pager.removePages(pager.getAdapter().getCount() - 1, -1, new CustomViewPager.Callback() {
-                    @Override
-                    public void callback() {
-                        if (pager.getAdapter().getCount() == 1) currentPage = Page.SEEK;
-                    }
-                });
-            }
-            break;
-            case SEEK: {
-                long press = System.currentTimeMillis();
-                if(press - lastExitPress <= EXIT_DOUBLEPRESS_TIME_THRESHOLD) super.onBackPressed();
-                else {
-                    lastExitPress = press;
-                    Toast toast = Toast.makeText(this, getString(R.string.backpress_exit_message), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-            break;
+        if(pagestack.size() > 1) {
+            super.onBackPressed();
+            return;
+        }
+
+        long press = System.currentTimeMillis();
+        if (press - lastExitPress <= EXIT_DOUBLEPRESS_TIME_THRESHOLD) super.onBackPressed();
+        else {
+            lastExitPress = press;
+            Toast toast = Toast.makeText(this, getString(R.string.backpress_exit_message), Toast.LENGTH_SHORT);
+            toast.show();
         }
 
     }
 
-    public void openNewDetailsPage(Fragment frag) {
-        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
-        adapter.push(frag);
-        pager.setCurrentItem(adapter.getCount() - 1);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    currentPage = Page.DETAIL;
-                }
-            }
-        });
-    }
-
-    private void openHistoryPage() {
-        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
-        adapter.push(new HistoryFragment());
-        pager.setCurrentItem(adapter.getCount() - 1);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    while (adapter.getCount() > 2) adapter.remove(1);
-                    pager.clearOnPageChangeListeners();
-                    currentPage = Page.HISTORY;
-                }
-            }
-        });
-    }
-
-    private void cleanup() {
-        final CustomViewPager.CustomPagerAdapter adapter = (CustomViewPager.CustomPagerAdapter) pager.getAdapter();
-        pager.setCurrentItem(0);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    while (adapter.getCount() > 1) adapter.remove(1);
-                    pager.clearOnPageChangeListeners();
-                    currentPage = Page.SEEK;
-                }
-            }
-
-        });
-    }
 
     public AdView resultListBannerAd() {
         return resultListBannerAd;
-    }
-
-    public void selectPanel(View view) {
-        if (currentPage == Page.TRANSITION) return;
-        switch (view.getId()) {
-            case R.id.view_main_btn_searchPanel: {
-                if (currentPage == Page.SEEK) return;
-                currentPage = Page.TRANSITION;
-                cleanup();
-            }
-            break;
-            case R.id.view_main_btn_historyPanel: {
-                if (currentPage == Page.HISTORY) return;
-                currentPage = Page.TRANSITION;
-                openHistoryPage();
-            }
-            break;
-        }
-    }
-
-    public void reset() {
-        if (currentPage == Page.TRANSITION) return;
-        cleanup();
     }
 }

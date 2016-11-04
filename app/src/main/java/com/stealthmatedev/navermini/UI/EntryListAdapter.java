@@ -37,6 +37,10 @@ public class EntryListAdapter extends BaseListAdapter {
 
     }
 
+    protected EntryProvider getEntryProvider() {
+        return this.entryProvider;
+    }
+
     @Override
     protected int getItemCountInternal() {
         return entryProvider.getCount();
@@ -56,7 +60,6 @@ public class EntryListAdapter extends BaseListAdapter {
             e.printStackTrace();
         }
 
-        Log.i(APPTAG, String.valueOf(visualizer == null));
         return visualizer.visualize((Entry) getItem(position), parent);
     }
 

@@ -77,7 +77,7 @@ public class CustomViewPager extends ViewPager {
         }
 
         private void destroyPage(Page page) {
-            System.out.println("DESTROY PAGE " + pagelist.indexOf(page));
+            Log.d(APPTAG, "DESTROY PAGE " + pagelist.indexOf(page));
             pagelist.remove(page);
             fm.beginTransaction().remove(page.frag).commitNow();
         }
@@ -143,18 +143,10 @@ public class CustomViewPager extends ViewPager {
         void callback();
     }
 
-    public void removePages(int pstart, int pend, final Callback cb) {
-
-        if (pstart == -1) pstart = 0;
-        if (pend == -1) pend = adapter.getCount();
-
-        if (pstart >= adapter.getCount()) return;
-        if (pend < 1 || pend < pstart) return;
-
-        final int start = pstart;
-        final int end = pend;
-
-        this.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    public void openPage(Fragment f, final Callback callback) {
+        this.adapter.push(f);
+        this.setCurrentItem(adapter.getCount() - 1);
+        this.addOnPageChangeListener(new OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -167,24 +159,59 @@ public class CustomViewPager extends ViewPager {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    for (int i = start; i < end; i++) adapter.remove(i);
+                if (state == SCROLL_STATE_IDLE) {
                     CustomViewPager.this.removeOnPageChangeListener(this);
-                    cb.callback();
+                    if (callback != null) callback.callback();
                 }
             }
         });
     }
 
+    public void removePages(int pstart, int pend, final Callback cb) {
+
+        if (pstart == -1) pstart = 0;
+        if (pend == -1) pend = adapter.getCount();
+
+        if (pstart >= adapter.getCount()) return;
+        if (pend < 1 || pend < pstart) return;
+
+
+        final int start = pstart;
+        final int end = pend;
+
+        this.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                Log.d(APPTAG, "SCROLLING " + positionOffset);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    Log.d(APPTAG, "SCROLL FINISHED!");
+                    for (int i = start; i < end; i++) adapter.remove(i);
+                    CustomViewPager.this.removeOnPageChangeListener(this);
+                    if (cb != null) cb.callback();
+                } else Log.d(APPTAG, "SCROLL STARTED!");
+            }
+        });
+    }
+
+    private static final boolean SCROLL = false;
 
     @Override
     public boolean onTouchEvent(MotionEvent evt) {
-        return false;
+        return SCROLL && super.onTouchEvent(evt);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        return false;
+        return SCROLL && super.onInterceptTouchEvent(event);
     }
 
 }

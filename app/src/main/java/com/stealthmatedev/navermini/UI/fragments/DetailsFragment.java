@@ -2,6 +2,7 @@ package com.stealthmatedev.navermini.UI.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.state.StateManager;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/22 0022.
@@ -26,7 +29,7 @@ public class DetailsFragment extends Fragment {
     private boolean isCreated = false;
 
     public void clear() {
-        if(root == null) return;
+        if (root == null) return;
         root.removeAllViews();
         root.addView(loadingView);
         loadingView.setVisibility(View.GONE);
@@ -39,9 +42,9 @@ public class DetailsFragment extends Fragment {
     }
 
     public void populate(DetailsVisualizer adapter) {
-        if(!this.isCreated) return;
-        if(adapter != null) this.currentAdapter = adapter;
-        if(this.currentAdapter == null) return;
+        if (adapter != null) this.currentAdapter = adapter;
+        if (this.currentAdapter == null) return;
+        if (!this.isCreated) return;
         root.addView(this.currentAdapter.getView(root));
         loadingView.setVisibility(View.GONE);
     }
@@ -56,23 +59,28 @@ public class DetailsFragment extends Fragment {
 
         this.root = (ViewGroup) inflater.inflate(R.layout.layout_details, container, false);
 
-        this.loadingView = (LinearLayout) this.root.findViewById(R.id.view_loading);
-        this.loadingView.setVisibility(View.GONE);
-
-        this.currentAdapter = DetailsVisualizer.fromSavedState(savedInstanceState);
-
-        this.isCreated = true;
-        populate(this.currentAdapter);
-
         return this.root;
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        this.loadingView = (LinearLayout) this.root.findViewById(R.id.view_loading);
+        this.loadingView.setVisibility(View.GONE);
+
+        if(this.currentAdapter == null) this.currentAdapter = DetailsVisualizer.fromSavedState(savedInstanceState);
+
+        this.isCreated = true;
+        populate(this.currentAdapter);
+    }
+
     public StateManager getState() {
-        return ((MainActivity)getActivity()).getState();
+        return ((MainActivity) getActivity()).getState();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(currentAdapter != null) currentAdapter.saveState(outState);
+        if (currentAdapter != null) currentAdapter.saveState(outState);
     }
 }

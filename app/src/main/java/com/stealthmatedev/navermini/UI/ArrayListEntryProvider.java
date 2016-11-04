@@ -1,5 +1,6 @@
-package com.stealthmatedev.navermini.UI.generic;
+package com.stealthmatedev.navermini.UI;
 
+import com.stealthmatedev.navermini.UI.generic.EntryProvider;
 import com.stealthmatedev.navermini.data.Entry;
 
 import java.util.ArrayList;

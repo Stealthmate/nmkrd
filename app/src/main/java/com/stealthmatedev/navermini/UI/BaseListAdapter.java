@@ -62,7 +62,7 @@ public abstract class BaseListAdapter extends BaseAdapter implements ListAdapter
     }
 
     private View generateAd(ViewGroup parent) {
-        ViewGroup view = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.view_listitem_ad, parent, false);
+        ViewGroup view = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.view_ad_container, parent, false);
         AdView ad = StateManager.getState(parent.getContext()).getActivity().resultListBannerAd();
         if (ad.getParent() != null) ((ViewGroup) ad.getParent()).removeView(ad);
         view.addView(ad);
@@ -72,19 +72,17 @@ public abstract class BaseListAdapter extends BaseAdapter implements ListAdapter
     @Override
     public final int getCount() {
         if (getItemCountInternal() == 0) return 0;
-        else return getItemCountInternal() + 1;
+        else return getItemCountInternal();
     }
 
     @NonNull
     @Override
     public final View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        if(position == 0) return generateAd(parent);
-        return generateItem(position-1, convertView, parent);
+        return generateItem(position, convertView, parent);
     }
 
     public final boolean onItemClicked(int position) {
-        if (position == 0) return true;
-        return onClick(position-1);
+        return onClick(position);
     }
 
     protected abstract int getItemCountInternal();
