@@ -46,7 +46,7 @@ public class ResultListSearchVisualizer extends SearchVisualizer {
 
     public ResultListSearchVisualizer(StateManager state, Serializable data) {
         super(state.getActivity());
-        this.adapter = (NetworkEntryListAdapter) BaseListAdapter.deserialize(state, (BaseListAdapter.SerializableRepresentation) data);
+        this.adapter = (NetworkEntryListAdapter) EntryListAdapter.deserialize(state, (EntryListAdapter.SerializableRepresentation) data);
     }
 
     public void setAdapter(NetworkEntryListAdapter adapter) {

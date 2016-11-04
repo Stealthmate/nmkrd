@@ -23,7 +23,7 @@ public class NetworkEntryListAdapter extends EntryListAdapter {
     }
 
     @Override
-    protected boolean onClick(int position) {
+    public boolean onItemClicked(int position) {
         final Entry item = (Entry) getItem(position);
         if(item instanceof DetailedEntry) state.openDetails((DetailedEntry) item, true);
         return true;
