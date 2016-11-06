@@ -22,6 +22,6 @@
 
     </FrameLayout>
 
-    <include layout="@layout/view_ad_container"/>
+    <!--<include layout="@layout/view_ad_container"/>-->
 
 </LinearLayout>

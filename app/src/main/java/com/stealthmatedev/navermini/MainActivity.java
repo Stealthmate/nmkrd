@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         MobileAds.initialize(this, MY_PUB_ID);
 
-        AdView resultListBannerAd = new AdView(this);
+        /*AdView resultListBannerAd = new AdView(this);
         resultListBannerAd.setAdSize(AdSize.SMART_BANNER);
         resultListBannerAd.setAdUnitId(ADUNIT);
 
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         resultListBannerAd.loadAd(adRequest);
 
         LinearLayout adContainer = (LinearLayout) findViewById(R.id.view_ad_container);
-        adContainer.addView(resultListBannerAd);
+        adContainer.addView(resultListBannerAd);*/
 
         this.state = new StateManager(this);
 
