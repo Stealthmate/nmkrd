@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import static android.R.attr.name;
+
 /**
  * Created by Stealthmate on 16/09/30 0030.
  */
@@ -122,6 +124,8 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
 
         JpWord details = (JpWord) getDetails();
+
+        if(details.word.length() == 0) return view;
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);

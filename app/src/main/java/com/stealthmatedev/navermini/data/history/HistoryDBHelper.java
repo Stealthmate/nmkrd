@@ -1,6 +1,7 @@
 package com.stealthmatedev.navermini.data.history;
 
 import android.content.AsyncQueryHandler;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,16 +29,22 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
     public static final String HISTORY_DATABASE_NAME = "History";
 
     private static final String HISTORY_TABLE_NAME = "history";
+    private static final String HISTORY_TABLE_INDEX = "historyindex";
 
     private static final String COLUMN_ID = "ID";
     private static final String COLUMN_DATA = "DATA";
+    private static final String COLUMN_SEEN = "SEEN";
 
     private static final String SQL_CREATE =
             "CREATE TABLE " + HISTORY_TABLE_NAME + " (" +
                     COLUMN_ID + " char(64), " +
-                    COLUMN_DATA + " text"
+                    COLUMN_DATA + " text," +
+                    COLUMN_SEEN + " integer"
                     + "," +
                     "PRIMARY KEY (" + COLUMN_ID + "));";
+
+    private static final String SQL_CREATE_INDEX =
+            "CREATE UNIQUE INDEX " + HISTORY_TABLE_INDEX + " ON " + " " + HISTORY_TABLE_NAME + "(" + COLUMN_ID + ");";
 
     private static final String SQL_DELETE_ALL =
             "DELETE FROM " + HISTORY_TABLE_NAME;
@@ -51,22 +58,18 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
             "SELECT \"" + COLUMN_DATA + "\"" +
                     " FROM \"" + HISTORY_TABLE_NAME + "\" ORDER BY " + COLUMN_ID + " DESC ;";
 
-    private static final String SQL_PUT_ENTRY =
-            "INSERT OR REPLACE INTO \"" + HISTORY_TABLE_NAME + "\" (" + COLUMN_ID + "," + COLUMN_DATA + ")  VALUES (?, ?);";
-
     private final SQLiteStatement queryById;
-    private final SQLiteStatement putEntry;
 
     public HistoryDBHelper(Context context) {
         super(context, HISTORY_DATABASE_NAME, null, DATABASE_VERSION);
         queryById = getReadableDatabase().compileStatement(SQL_QUERY_BY_ID);
-        putEntry = getWritableDatabase().compileStatement(SQL_PUT_ENTRY);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE);
+        db.execSQL(SQL_CREATE_INDEX);
         Log.d(APPTAG, "Created DB.");
     }
 
@@ -87,29 +90,34 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         try {
             data = queryById.simpleQueryForString();
         } catch (SQLiteDoneException ex) {
-            Log.d(APPTAG, "Could not find entry with ID " + id);
             return null;
         }
-        return new GsonBuilder().registerTypeAdapter(HistoryEntry.class, new HistoryEntry.Deserializer()).create().fromJson(data, HistoryEntry.class);
+        HistoryEntry he = new GsonBuilder().registerTypeAdapter(HistoryEntry.class, new HistoryEntry.Deserializer()).create().fromJson(data, HistoryEntry.class);
+        return he;
     }
 
     public void put(DetailedEntry entry) {
         HistoryEntry he = new HistoryEntry(entry);
-        Log.d(APPTAG, "Put entry " + he.getId());
-        putEntry.clearBindings();
-        putEntry.bindString(1, he.getId());
-        putEntry.bindString(2, he.getJson());
-        putEntry.execute();
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(HISTORY_TABLE_NAME, COLUMN_ID + "=?", new String[] {he.getId()});
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_ID, he.getId());
+        values.put(COLUMN_DATA, he.getJson());
+        values.put(COLUMN_SEEN, System.currentTimeMillis() / 1000);
+        db.replace(HISTORY_TABLE_NAME, null, values);
     }
 
     public ArrayList<DetailedEntry> queryAll() {
-        Cursor c = getReadableDatabase().rawQuery(SQL_QUERY_ALL, null);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.query(HISTORY_TABLE_NAME, new String[]{COLUMN_DATA}, null, null, null, null, COLUMN_SEEN + " DESC");
         ArrayList<DetailedEntry> arr = new ArrayList<>(c.getCount());
         if(c.getCount() == 0) return arr;
         c.moveToFirst();
         do {
             arr.add(HistoryEntry.fromJson(c.getString(0)).data);
         } while (c.moveToNext());
+
+        c.close();
 
         return arr;
     }

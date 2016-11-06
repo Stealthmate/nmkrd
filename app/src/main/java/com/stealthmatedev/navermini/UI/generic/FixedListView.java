@@ -30,7 +30,6 @@ public class FixedListView extends ListView {
         int newsize = Integer.MAX_VALUE >> 2;
         int newmode = MeasureSpec.AT_MOST;
 
-        Log.i(APPTAG, this.toString());
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(newsize, newmode));
         ViewGroup.LayoutParams params = getLayoutParams();
         params.height = getMeasuredHeight();

@@ -46,6 +46,7 @@ public class JpKanji implements DetailedEntry {
     public final ArrayList<WordLinkPair> kunex;
     public final ArrayList<WordLinkPair> onex;
     public final String more;
+    public final boolean partial;
 
     public JpKanji() {
         this.kanji = '\0';
@@ -62,12 +63,14 @@ public class JpKanji implements DetailedEntry {
         this.onex = new ArrayList<>();
 
         this.more = "";
+
+        this.partial = true;
     }
 
 
     @Override
     public boolean isPartial() {
-        return more.length() > 0;
+        return partial;
     }
 
     @Override

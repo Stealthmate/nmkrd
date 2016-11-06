@@ -1,5 +1,9 @@
 package com.stealthmatedev.navermini.serverapi;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
 import com.stealthmatedev.navermini.serverapi.en.EnWordResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.jp.JpWordKanjiResponseTranslator;
@@ -11,21 +15,23 @@ import com.stealthmatedev.navermini.serverapi.kr.KrWordResponseTranslator;
  */
 public enum EntryListDictionary {
     KOREAN("/kr", new SubDictionary[]{
-            new SubDictionary("Words", "", new KrWordResponseTranslator()),
-            new SubDictionary("Examples", "/ex", new KrExampleResponseTranslator())}),
+            new SubDictionary("KOREAN", R.string.subdict_words, "", new KrWordResponseTranslator()),
+            new SubDictionary("KOREAN", R.string.subdict_ex, "/ex", new KrExampleResponseTranslator())}),
     JAPANESE("/jp", new SubDictionary[]{
-            new SubDictionary("Words", "", new JpWordKanjiResponseTranslator())}),
+            new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator())}),
     ENGLISH("/en", new SubDictionary[]{
-            new SubDictionary("Words", "", new EnWordResponseTranslator())});
+            new SubDictionary("ENGLISH", R.string.subdict_words, "", new EnWordResponseTranslator())});
 
     public static class SubDictionary {
 
-        public final String name;
+        public final String parent;
+        public final int name;
         public final String path;
         public final Class<? extends NetworkEntryListAdapter> resultAdapter;
         public final ResponseTranslator translator;
 
-        private SubDictionary(String name, String path, ResponseTranslator translator) {
+        private SubDictionary(String parent, int name, String path, ResponseTranslator translator) {
+            this.parent = parent;
             this.name = name;
             this.path = path;
             this.resultAdapter = null;
@@ -41,9 +47,10 @@ public enum EntryListDictionary {
         this.subdicts = subdicts;
     }
 
-    public SubDictionary getSubDict(String subdict) {
+    public SubDictionary getSubDict(Context context, String subdict) {
         for (int i = 0; i <= subdicts.length - 1; i++) {
-            if (subdicts[i].name.equals(subdict)) return subdicts[i];
+            String dictname = context.getResources().getString(subdicts[i].name);
+            if (dictname.equals(subdict)) return subdicts[i];
         }
 
         return null;

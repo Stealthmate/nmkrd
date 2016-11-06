@@ -92,29 +92,8 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            try {
-                String url = DetailsDictionary.JAPANESE_DETAILS.path + "?lnk=" + URLEncoder.encode(links.get(position).lnk, "utf-8");
-
-                final StateManager state = StateManager.getState(parent.getContext());
-                final DetailsFragment dfrag = state.openDetailsPage();
-                final JpWordDetailsVisualizer visualizer = new JpWordDetailsVisualizer();
-
-                state.getSearchEngine().queryDetails(url, new SearchEngine.OnResponse() {
-                    @Override
-                    public void responseReady(String response) {
-                        visualizer.populate((DetailedEntry) new Entry.Translator(JpWord.class).translate(response));
-                    }
-
-                    @Override
-                    public void onError(VolleyError err) {
-                        state.closePage(dfrag);
-                    }
-                });
-
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            final StateManager state = StateManager.getState(parent.getContext());
+            state.openDetails(new JpWord(links.get(position).lnk), true);
         }
     }
 

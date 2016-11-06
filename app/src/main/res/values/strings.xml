@@ -1,8 +1,11 @@
 <resources>
-    <string name="app_name">Naver Mini</string>
+    <string name="app_name">NMKRD</string>
     <string name="cc_kr">KR</string>
     <string name="cc_jp">JP</string>
     <string name="cc_en">EN</string>
+
+    <string name="subdict_words">Words</string>
+    <string name="subdict_ex">Examples</string>
 
     <string name="label_search_hint">Search...</string>
     <string name="label_search_more">Load more</string>
@@ -19,7 +22,15 @@
     <string name="label_kunyomi_ex">Kunyomi examples</string>
     <string name="label_onyomi_ex">Onyomi examples</string>
 
+    <string name="label_heading_history">History</string>
+
+    <string name="label_menu_home">Home</string>
+    <string name="label_menu_history">History</string>
+    <string name="label_menu_clear_history">Clear history</string>
+
     <string name="backpress_exit_message">Press twice to exit</string>
+    <string name="history_cleared_message">History cleared</string>
+
 
     <string name="square_brackets">[%s]</string>
 

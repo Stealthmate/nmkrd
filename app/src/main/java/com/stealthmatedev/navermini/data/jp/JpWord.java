@@ -107,18 +107,30 @@ public class JpWord implements DetailedEntry {
     public final String word;
     public final String kanji;
     public final String more;
+    public final boolean partial;
     public final ArrayList<WordClassGroup> clsgrps;
 
     public JpWord() {
         this.word = "";
         this.kanji = "";
         this.more = "";
+        this.partial = true;
+        this.clsgrps = new ArrayList<>();
+    }
+
+
+    //For link generation from kanji
+    public JpWord(String more) {
+        this.word = "";
+        this.kanji = "";
+        this.more = more;
+        this.partial = true;
         this.clsgrps = new ArrayList<>();
     }
 
     @Override
     public boolean isPartial() {
-        return more.length() > 0;
+        return partial;
     }
 
     @Override

@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:text="履歴"
+        android:text="@string/label_heading_history"
         android:gravity="center"
-        android:textSize="30sp"
+        android:textSize="@dimen/textSizeH1"
         android:background="@color/nm_colorPrimary"/>
 
     <ListView

@@ -1,7 +1,6 @@
 package com.stealthmatedev.navermini.state;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
@@ -11,6 +10,7 @@ import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.specific.EntryUIMapper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.history.HistoryManager;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
@@ -43,7 +43,7 @@ public class StateManager {
     }
 
     public void openDetails(final DetailedEntry entry, final boolean save) {
-        final DetailsFragment dfrag = openDetailsPage();
+        final DetailsFragment dfrag = openDetailsPage(entry);
         DetailsVisualizer visualizer = null;
         try {
             visualizer = EntryUIMapper.forEntry(entry).detailsVisualizerClass.newInstance();
@@ -55,7 +55,7 @@ public class StateManager {
         visualizer.populate(entry);
 
         final DetailsVisualizer finalVisualizer = visualizer;
-        dfrag.populate(finalVisualizer);
+        dfrag.setVisualizer(finalVisualizer);
 
         history().get(entry, new HistoryManager.Callback() {
             @Override
@@ -78,7 +78,6 @@ public class StateManager {
                             DetailedEntry detailedEntry = (DetailedEntry) new Entry.Translator(finalEntry.getClass()).translate(response);
                             if(save) history.save(detailedEntry);
                             finalVisualizer.populate(detailedEntry);
-                            dfrag.populate(finalVisualizer);
                         }
 
                         @Override
@@ -91,9 +90,9 @@ public class StateManager {
         });
     }
 
-    public DetailsFragment openDetailsPage() {
+    public DetailsFragment openDetailsPage(DetailedEntry entry) {
         DetailsFragment dfrag = new DetailsFragment();
-        activity.openNewDetailsPage(dfrag);
+        activity.openNewDetailsPage(dfrag, entry);
         return dfrag;
     }
 

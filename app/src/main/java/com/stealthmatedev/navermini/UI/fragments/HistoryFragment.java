@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.stealthmatedev.navermini.R;
@@ -16,6 +17,7 @@ import com.stealthmatedev.navermini.UI.CursorEntryProvider;
 import com.stealthmatedev.navermini.UI.HistoryEntryListAdapter;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.history.HistoryEntry;
 import com.stealthmatedev.navermini.data.history.HistoryManager;
 import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -32,26 +34,20 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 
 public class HistoryFragment extends Fragment {
 
-    private static class MyPageTransformer implements ViewPager.PageTransformer {
-
-        @Override
-        public void transformPage(View page, float position) {
-            Log.d(APPTAG, "transforming at position " + position);
-        }
-    }
-
     private StateManager state;
 
     private View loadingView;
     private ListView list;
 
     private void populate(ArrayList<Entry> data) {
-        list.setAdapter(new HistoryEntryListAdapter(state, new ArrayListEntryProvider(data)));
-        loadingView.setVisibility(View.GONE);
-    }
-
-    private void populate(Cursor cursor) {
-        list.setAdapter(new HistoryEntryListAdapter(state, new CursorEntryProvider(cursor)));
+        final HistoryEntryListAdapter adapter = new HistoryEntryListAdapter(state, new ArrayListEntryProvider(data));
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.onItemClicked(position);
+            }
+        });
         loadingView.setVisibility(View.GONE);
     }
 
@@ -99,23 +95,6 @@ public class HistoryFragment extends Fragment {
             public void onFinish(Object result) {
                 ArrayList<Entry> arr = new ArrayList<Entry>((ArrayList<DetailedEntry>) result);
                 populate(arr);
-                //populate((Cursor) result);
-               /* ArrayList<Entry> entries = new ArrayList<>();
-                for(int i=0;i<=10;i++) {
-                    entries.add(
-                            new KrWord(
-                                    "asd",
-                                    "asd",
-                                    "asd",
-                                    "asd",
-                                    new ArrayList<>(Arrays.asList(
-                                            new KrWord.Definition[]{
-                                                    new KrWord.Definition(
-                                                            "asd",
-                                                            new ArrayList<String>())}
-                                    )), "asd", false));
-                }*/
-                //populate(entries);
             }
         });
     }

@@ -28,9 +28,9 @@ import static android.content.ContentValues.TAG;
 
 public class ResultListSearchVisualizer extends SearchVisualizer {
 
-    public static ResultListSearchVisualizer mapFromSearch(StateManager state, EntryListDictionary.SubDictionary dict, ResultListQuery query, String response) {
+    public static ResultListSearchVisualizer mapFromSearch(StateManager state, ResultListQuery query, String response) {
 
-        ArrayList<Entry> entries = dict.translator.translate(response);
+        ArrayList<Entry> entries = query.getSubDictionary().translator.translate(response);
         if(entries.size() == 0) return new ResultListSearchVisualizer(state, null);
         NetworkEntryListAdapter adapter = new NetworkEntryListAdapter(state, entries, query);
 

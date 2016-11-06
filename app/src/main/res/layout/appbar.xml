@@ -6,6 +6,10 @@
     android:layout_height="?attr/actionBarSize"
     android:id="@+id/my_toolbar"
     android:background="@color/nm_colorPrimary"
+    app:titleTextColor="@color/nm_colorText"
+    android:titleTextColor="@color/nm_colorText"
+    android:subtitleTextColor="@color/nm_colorText"
+    app:subtitleTextColor="@color/nm_colorText"
     android:elevation="4dp"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">

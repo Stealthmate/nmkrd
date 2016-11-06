@@ -44,6 +44,7 @@ public class EnWord implements DetailedEntry {
     public final String wclass;
     public final ArrayList<WordClassGroup> clsgrps;
     public final String more;
+    public final boolean partial;
 
     public EnWord() {
         this.word = "";
@@ -52,11 +53,12 @@ public class EnWord implements DetailedEntry {
         this.wclass = "";
         this.more = "";
         this.clsgrps = new ArrayList<>();
+        this.partial = true;
     }
 
     @Override
     public boolean isPartial() {
-        return true;
+        return partial;
     }
 
     @Override

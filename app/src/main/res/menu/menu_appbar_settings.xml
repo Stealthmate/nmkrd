@@ -3,14 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_home"
+        android:title="@string/label_menu_home"
+        android:icon="@drawable/s_ic_home_48dp"
+        app:showAsAction="always"
+        />
+
+    <item
         android:id="@+id/menu_history"
-        android:title="History"
+        android:title="@string/label_menu_history"
         android:icon="@drawable/s_ic_history_48dp"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/menu_settings"
-        android:title="Settings"
-        android:icon="@drawable/ic_settings_48dp"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/menu_clear_history"
+        android:title="@string/label_menu_clear_history"
+        app:showAsAction="never" />
 </menu>

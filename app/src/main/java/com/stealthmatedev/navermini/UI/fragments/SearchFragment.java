@@ -95,7 +95,7 @@ public class SearchFragment extends Fragment {
         EntryListDictionary.SubDictionary[] subdicts = dict.subdicts;
         ArrayList<String> subdictStrings = new ArrayList<>(subdicts.length);
         for (int i = 0; i <= subdicts.length - 1; i++) {
-            subdictStrings.add(subdicts[i].name);
+            subdictStrings.add(getContext().getResources().getString(subdicts[i].name));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, subdictStrings);
         subdictList.setAdapter(adapter);
@@ -119,12 +119,12 @@ public class SearchFragment extends Fragment {
 
         if (querystring.length() == 0) return;
 
-        final ResultListQuery query = new ResultListQuery(path, querystring, 1, 10);
+        final ResultListQuery query = new ResultListQuery(path, querystring, 1, 10, currentSubDictionary);
 
         state.getSearchEngine().queryResultList(query, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
-                populate(ResultListSearchVisualizer.mapFromSearch(state, currentSubDictionary, query, response));
+                populate(ResultListSearchVisualizer.mapFromSearch(state, query, response));
             }
 
             @Override
@@ -165,13 +165,19 @@ public class SearchFragment extends Fragment {
 
         this.dictAdapter = new DictionarySpinnerAdapter();
 
+
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         EntryListDictionary dict = null;
         EntryListDictionary.SubDictionary subdict = null;
 
         if (savedInstanceState != null) {
             dict = EntryListDictionary.valueOf(savedInstanceState.getString(SAVE_KEY_DICT));
             if (dict != null) {
-                subdict = dict.getSubDict(savedInstanceState.getString(SAVE_KEY_SUBDICT));
+                subdict = dict.getSubDict(container.getContext(), savedInstanceState.getString(SAVE_KEY_SUBDICT));
             }
         }
 
@@ -187,10 +193,6 @@ public class SearchFragment extends Fragment {
             this.currentSubDictionary = this.currentDictionary.subdicts[0];
         }
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
@@ -242,11 +244,9 @@ public class SearchFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         if (currentVisualizer != null) {
             currentVisualizer.saveState(outState);
-            System.out.println("DICT!");
-            System.out.println(currentDictionary);
-            outState.putString(SAVE_KEY_DICT, currentDictionary.name());
-            outState.putString(SAVE_KEY_SUBDICT, currentSubDictionary.name);
         }
+        outState.putString(SAVE_KEY_DICT, currentDictionary.name());
+        outState.putString(SAVE_KEY_SUBDICT, getContext().getResources().getString(currentSubDictionary.name));
     }
 
 }

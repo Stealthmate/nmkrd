@@ -8,6 +8,8 @@ import com.stealthmatedev.navermini.UI.generic.EntryProvider;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.history.HistoryEntry;
 
+import java.io.Serializable;
+
 import static android.R.attr.data;
 import static com.stealthmatedev.navermini.App.APPTAG;
 
@@ -32,5 +34,10 @@ public class CursorEntryProvider extends EntryProvider {
     @Override
     public int getCount() {
         return cursor.getCount();
+    }
+
+    @Override
+    protected Serializable serialize() {
+        return null;
     }
 }

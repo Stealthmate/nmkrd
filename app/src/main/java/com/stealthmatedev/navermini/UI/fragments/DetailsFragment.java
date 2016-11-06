@@ -20,6 +20,8 @@ import static com.stealthmatedev.navermini.App.APPTAG;
  */
 public class DetailsFragment extends Fragment {
 
+    private DetailsVisualizer.Observer detailsObserver;
+
     private ViewGroup root;
 
     private LinearLayout loadingView;
@@ -28,25 +30,40 @@ public class DetailsFragment extends Fragment {
 
     private boolean isCreated = false;
 
+    public DetailsFragment() {
+        detailsObserver = new DetailsVisualizer.Observer() {
+            @Override
+            public void onPopulated() {
+                update();
+            }
+        };
+    }
+
     public void clear() {
         if (root == null) return;
         root.removeAllViews();
         root.addView(loadingView);
         loadingView.setVisibility(View.GONE);
-        this.currentAdapter = null;
     }
 
-    public void setCurrentAdapter(DetailsVisualizer adapter) {
-        this.currentAdapter = adapter;
-        populate(adapter);
-    }
-
-    public void populate(DetailsVisualizer adapter) {
-        if (adapter != null) this.currentAdapter = adapter;
-        if (this.currentAdapter == null) return;
-        if (!this.isCreated) return;
+    public void update() {
+        if (!isCreated || this.currentAdapter == null) return;
+        root.removeAllViews();
         root.addView(this.currentAdapter.getView(root));
         loadingView.setVisibility(View.GONE);
+    }
+
+    public void setVisualizer(DetailsVisualizer adapter) {
+
+        if (this.currentAdapter != null) this.currentAdapter.unregisterObserver(detailsObserver);
+
+        this.currentAdapter = adapter;
+
+        if (this.currentAdapter == null) return;
+
+        this.currentAdapter = adapter;
+        this.currentAdapter.registerObserver(detailsObserver);
+        update();
     }
 
     public void waitForData() {
@@ -69,10 +86,14 @@ public class DetailsFragment extends Fragment {
         this.loadingView = (LinearLayout) this.root.findViewById(R.id.view_loading);
         this.loadingView.setVisibility(View.GONE);
 
-        if(this.currentAdapter == null) this.currentAdapter = DetailsVisualizer.fromSavedState(savedInstanceState);
+        if (this.currentAdapter == null) {
+            this.currentAdapter = DetailsVisualizer.fromSavedState(savedInstanceState);
+        }
+
+        if (this.currentAdapter != null) this.currentAdapter.registerObserver(detailsObserver);
 
         this.isCreated = true;
-        populate(this.currentAdapter);
+        update();
     }
 
     public StateManager getState() {

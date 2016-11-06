@@ -18,12 +18,12 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
 import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
+import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.state.StateManager;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -31,11 +31,12 @@ import static com.stealthmatedev.navermini.App.ADUNIT;
 import static com.stealthmatedev.navermini.App.APPTAG;
 import static com.stealthmatedev.navermini.App.MY_PUB_ID;
 import static com.stealthmatedev.navermini.App.TEST_DEVICES;
+import static com.stealthmatedev.navermini.data.history.HistoryDBHelper.HISTORY_DATABASE_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String KEY_FRAGMENT_COUNT = "nm_key_fragment_count";
-    private static final String KEY_FRAGMENT = "nm_key_fragment_";
+    private static final String KEY_PAGE_COUNT = "nm_key_fragment_count";
+    private static final String KEY_PAGE = "nm_key_fragment_";
 
     private static class Page {
         private final Fragment fragment;
@@ -56,9 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Stack<Page> pagestack;
 
-    public static final int PAGE_SEARCH = 0;
-    public static final int PAGE_HISTORY = 1;
-
     private static final long EXIT_DOUBLEPRESS_TIME_THRESHOLD = 300;
 
     private long lastExitPress = 0;
@@ -69,42 +67,10 @@ public class MainActivity extends AppCompatActivity {
 
     private AdView resultListBannerAd;
 
-    private ArrayList<Fragment> restoreFragments(Bundle state) {
-
-        ArrayList<Fragment> fragments = new ArrayList<>();
-        if (state == null) return fragments;
-
-        if (!state.containsKey(KEY_FRAGMENT_COUNT)) return fragments;
-
-        int size = state.getInt(KEY_FRAGMENT_COUNT);
-        fragments = new ArrayList<>(size);
-
-        FragmentManager fm = getSupportFragmentManager();
-
-        for (int i = 0; i <= size - 1; i++) {
-            Fragment f = fm.getFragment(state, KEY_FRAGMENT + i);
-            if (f == null) return fragments;
-            fragments.add(f);
-        }
-
-        return fragments;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        ArrayList<Fragment> storedFragments = restoreFragments(savedInstanceState);
-
         super.onCreate(savedInstanceState);
-
-        if (getSupportFragmentManager().getFragments() != null && getSupportFragmentManager().getFragments().size() == 0) {
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentTransaction trans = fm.beginTransaction();
-            for (Fragment f : storedFragments) {
-                trans = trans.add(f, "" + f.getId());
-            }
-            trans.commitNow();
-        }
 
         setContentView(R.layout.activity_main);
 
@@ -133,69 +99,73 @@ public class MainActivity extends AppCompatActivity {
         this.content = (FrameLayout) findViewById(R.id.main_content);
 
         this.pagestack = new Stack<>();
-        Page search = new Page(FTAG_SEARCH, new SearchFragment());
-        this.pagestack.push(search);
-        getSupportFragmentManager().beginTransaction().add(this.content.getId(), search.fragment, search.tag).commitNow();
 
-        this.getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-
-            private int lastCount = 0;
-
-            @Override
-            public void onBackStackChanged() {
-                int count = getSupportFragmentManager().getBackStackEntryCount();
-
-                if(count < lastCount) {
-                    pagestack.pop();
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(KEY_PAGE_COUNT)) {
+                int count = savedInstanceState.getInt(KEY_PAGE_COUNT);
+                for (int i = 0; i < count; i++) {
+                    String tag = savedInstanceState.getString(KEY_PAGE + i);
+                    Fragment f = getSupportFragmentManager().findFragmentByTag(tag);
+                    pagestack.push(new Page(tag, f));
                 }
-                lastCount = count;
             }
-        });
+        } else {
+            Page search = new Page(FTAG_SEARCH, new SearchFragment());
+            this.pagestack.push(search);
+            getSupportFragmentManager().beginTransaction().add(this.content.getId(), search.fragment, search.tag).commitNow();
+        }
 
         getWindow().clearFlags(FLAG_FULLSCREEN);
     }
 
-    private FragmentTransaction getBaseTransaction() {
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+
+    }
+
+    private FragmentTransaction beginTransaction() {
         return getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in, R.anim.slide_out);
     }
 
-    private FragmentTransaction transactionHideAllPages() {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction trans = getBaseTransaction();
-        Fragment f = fm.findFragmentByTag(pagestack.peek().tag);
-        trans = trans.hide(f);
-        return trans;
-    }
-
     private void openNewPage(Fragment fragment, String tag) {
-        FragmentTransaction trans = transactionHideAllPages();
-        Page p = new Page(tag, fragment);
-        pagestack.push(p);
-        trans.add(this.content.getId(), fragment, tag).addToBackStack(null).commit();
-    }
-
-    private void showPage(String tag) {
-
-        if(pagestack.peek().tag.equals(tag)) return;
-
-        FragmentTransaction trans = transactionHideAllPages();
         for (Page p : pagestack) {
-            if (tag.equals(p.tag)) {
+            if (p.tag.equals(tag)) {
                 pagestack.remove(p);
+                Page old = pagestack.peek();
                 pagestack.push(p);
-                trans.show(p.fragment).commit();
+                beginTransaction().hide(old.fragment).show(p.fragment).commit();
                 return;
             }
         }
+
+        Page p = new Page(tag, fragment);
+        Page old = pagestack.peek();
+        pagestack.push(p);
+        beginTransaction().hide(old.fragment).add(this.content.getId(), p.fragment, p.tag).commit();
     }
 
-    public void openNewDetailsPage(Fragment frag) {
-        int i = 0;
-        for(Page p : pagestack){
-            if(p.fragment instanceof DetailsFragment) i++;
-        }
-        String tag = FTAG_DETAILS + i;
+    public void openNewDetailsPage(Fragment frag, DetailedEntry entry) {
+        String tag = FTAG_DETAILS + entry.getLinkToDetails();
+        Log.d(APPTAG, "Open new details fragment " + tag + " " + frag);
         openNewPage(frag, tag);
+    }
+
+    private void navigateBack() {
+        Page p = pagestack.pop();
+        Page pbehind = pagestack.peek();
+        beginTransaction().remove(p.fragment).show(pbehind.fragment).commit();
+    }
+
+    private void navigateHome() {
+        FragmentTransaction ft = beginTransaction();
+        while(pagestack.size() > 1) {
+            Page p = pagestack.pop();
+            ft = ft.hide(p.fragment).remove(p.fragment);
+        }
+        ft = ft.show(pagestack.peek().fragment);
+        ft.commit();
     }
 
     @Override
@@ -209,19 +179,41 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_settings: {
+            case R.id.menu_clear_history: {
                 state.history().clearHistory();
                 Toast.makeText(this, "Cleared history", Toast.LENGTH_SHORT).show();
             }
             break;
             case R.id.menu_history: {
-                Fragment f = getSupportFragmentManager().findFragmentByTag(FTAG_HISTORY);
-                if(f != null) showPage(FTAG_HISTORY);
-                else openNewPage(new HistoryFragment(), FTAG_HISTORY);
+                Page page = null;
+                for(Page p : pagestack) {
+                    if(p.tag.equals(FTAG_HISTORY)) {
+                        page = p;
+                        break;
+                    }
+                }
+                if (page != null) {
+                    onBackPressed();
+                    break;
+                }
+                openNewPage(new HistoryFragment(), FTAG_HISTORY);
+            } break;
+            case R.id.menu_home: {
+                navigateHome();
             }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt(KEY_PAGE_COUNT, pagestack.size());
+        for (int i = 0; i < pagestack.size(); i++) {
+            outState.putString(KEY_PAGE + i, pagestack.get(i).tag);
+        }
     }
 
     public StateManager getState() {
@@ -231,8 +223,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if(pagestack.size() > 1) {
-            super.onBackPressed();
+        if (pagestack.size() > 1) {
+            navigateBack();
             return;
         }
 
@@ -244,10 +236,5 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
         }
 
-    }
-
-
-    public AdView resultListBannerAd() {
-        return resultListBannerAd;
     }
 }

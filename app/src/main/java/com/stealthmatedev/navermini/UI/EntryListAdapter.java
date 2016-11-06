@@ -11,12 +11,12 @@ import com.stealthmatedev.navermini.UI.generic.EntryProvider;
 import com.stealthmatedev.navermini.UI.specific.EntryUIMapper;
 import com.stealthmatedev.navermini.UI.specific.EntryVisualizer;
 import com.stealthmatedev.navermini.data.Entry;
-import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 
+import static android.R.attr.data;
 import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
@@ -28,9 +28,13 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
     protected static class SerializableRepresentation implements Serializable {
 
         protected final Class<? extends EntryListAdapter> childClass;
+        protected final Serializable provider;
+        protected final Serializable data;
 
-        protected SerializableRepresentation(Class<? extends EntryListAdapter> childClass) {
+        protected SerializableRepresentation(Class<? extends EntryListAdapter> childClass, Serializable providerRepresentation, Serializable data) {
             this.childClass = childClass;
+            this.provider = providerRepresentation;
+            this.data = data;
         }
     }
 
@@ -38,7 +42,6 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
         if (repr == null) return null;
 
         Class<? extends EntryListAdapter> _class = repr.childClass;
-        if (_class == null) return null;
 
         try {
             return _class.getConstructor(StateManager.class, SerializableRepresentation.class).newInstance(state, repr);
@@ -53,11 +56,17 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
             e.printStackTrace();
         }
 
+        Log.e(APPTAG, "COULD NOT DESERIALIZE ENTRYLISTADAPTER! " + repr.childClass);
+
         return null;
 
     }
 
     private EntryProvider entryProvider;
+
+    protected EntryListAdapter(SerializableRepresentation repr) {
+        this.entryProvider = EntryProvider.deserialize((EntryProvider.EntryProviderRepresentation) repr.provider);
+    }
 
     public EntryListAdapter(EntryProvider entryProvider) {
 
@@ -76,7 +85,12 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
 
     }
 
-    protected EntryProvider getEntryProvider() {
+    public void setEntryProvider(EntryProvider provider) {
+        this.entryProvider = provider;
+        notifyDataSetChanged();
+    }
+
+    public EntryProvider getEntryProvider() {
         return this.entryProvider;
     }
 
@@ -116,8 +130,8 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
         return entryProvider.getEntry(position).hashCode();
     }
 
-    public Serializable getDataRepresentation() {
-        return new EntryListAdapter.SerializableRepresentation(this.getClass());
+    public final Serializable getDataRepresentation() {
+        return new EntryListAdapter.SerializableRepresentation(this.getClass(), this.entryProvider.getDataRepresentation(), serialize());
     }
 
     @Override
@@ -128,6 +142,10 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
     @Override
     public final boolean isEnabled(int position) {
         return true;
+    }
+
+    protected Serializable serialize() {
+        return null;
     }
 
 }

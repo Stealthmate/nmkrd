@@ -24,14 +24,11 @@ public class HistoryEntryListAdapter extends EntryListAdapter {
 
     @Override
     public Object getItem(int position) {
-        long t1 = System.currentTimeMillis();
-        getEntryProvider().getEntry(position);
-        Log.d(APPTAG, "Count took " + (System.currentTimeMillis() - t1));
         return getEntryProvider().getEntry(position);
     }
 
     @Override
-    protected boolean onClick(int position) {
+    public boolean onItemClicked(int position) {
         final Entry item = (Entry) getItem(position);
         if (item instanceof DetailedEntry) state.openDetails((DetailedEntry) item, false);
         return true;

@@ -142,9 +142,6 @@ public abstract class SectionedListAdapter<K, V> extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        Log.i(APPTAG, position + "");
-
         switch (getItemViewType(position)) {
             case TYPE_HEADER:
                 return getHeaderView((K) getItem(position), parent);
