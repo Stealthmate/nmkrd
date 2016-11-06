@@ -49,7 +49,6 @@ public class SearchEngine {
 
     private void request(final String url, final OnResponse callback) {
         cancellAllQueries();
-        Log.d(APPTAG, "REQUEST! " + url);
         StringRequest req = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

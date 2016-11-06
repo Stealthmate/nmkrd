@@ -2,7 +2,6 @@ package com.stealthmatedev.navermini;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +22,6 @@ import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.state.StateManager;
 
-import java.util.List;
 import java.util.Stack;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
@@ -31,7 +29,6 @@ import static com.stealthmatedev.navermini.App.ADUNIT;
 import static com.stealthmatedev.navermini.App.APPTAG;
 import static com.stealthmatedev.navermini.App.MY_PUB_ID;
 import static com.stealthmatedev.navermini.App.TEST_DEVICES;
-import static com.stealthmatedev.navermini.data.history.HistoryDBHelper.HISTORY_DATABASE_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,12 +39,9 @@ public class MainActivity extends AppCompatActivity {
         private final Fragment fragment;
         private final String tag;
 
-        private boolean shown;
-
         Page(String tag, Fragment fragment) {
             this.tag = tag;
             this.fragment = fragment;
-            this.shown = false;
         }
     }
 
@@ -65,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
     private StateManager state;
 
-    private AdView resultListBannerAd;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -76,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         MobileAds.initialize(this, MY_PUB_ID);
 
-        resultListBannerAd = new AdView(this);
+        AdView resultListBannerAd = new AdView(this);
         resultListBannerAd.setAdSize(AdSize.SMART_BANNER);
         resultListBannerAd.setAdUnitId(ADUNIT);
 
@@ -148,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void openNewDetailsPage(Fragment frag, DetailedEntry entry) {
         String tag = FTAG_DETAILS + entry.getLinkToDetails();
-        Log.d(APPTAG, "Open new details fragment " + tag + " " + frag);
         openNewPage(frag, tag);
     }
 

@@ -70,7 +70,6 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE);
         db.execSQL(SQL_CREATE_INDEX);
-        Log.d(APPTAG, "Created DB.");
     }
 
     @Override
