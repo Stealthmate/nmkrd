@@ -1,10 +1,11 @@
 package com.stealthmatedev.navermini.serverapi;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
+import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
+import com.stealthmatedev.navermini.UI.specific.kr.search.KrExampleEntryListAdapter;
 import com.stealthmatedev.navermini.serverapi.en.EnWordResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.jp.JpWordKanjiResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.kr.KrExampleResponseTranslator;
@@ -15,26 +16,26 @@ import com.stealthmatedev.navermini.serverapi.kr.KrWordResponseTranslator;
  */
 public enum EntryListDictionary {
     KOREAN("/kr", new SubDictionary[]{
-            new SubDictionary("KOREAN", R.string.subdict_words, "", new KrWordResponseTranslator()),
-            new SubDictionary("KOREAN", R.string.subdict_ex, "/ex", new KrExampleResponseTranslator())}),
+            new SubDictionary("KOREAN", R.string.subdict_words, "", new KrWordResponseTranslator(), null),
+            new SubDictionary("KOREAN", R.string.subdict_ex, "/ex", new KrExampleResponseTranslator(), KrExampleEntryListAdapter.class)}),
     JAPANESE("/jp", new SubDictionary[]{
-            new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator())}),
+            new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator(), null)}),
     ENGLISH("/en", new SubDictionary[]{
-            new SubDictionary("ENGLISH", R.string.subdict_words, "", new EnWordResponseTranslator())});
+            new SubDictionary("ENGLISH", R.string.subdict_words, "", new EnWordResponseTranslator(), null)});
 
     public static class SubDictionary {
 
         public final String parent;
         public final int name;
         public final String path;
-        public final Class<? extends NetworkEntryListAdapter> resultAdapter;
+        public final Class<? extends ResultListSearchVisualizer> resultVisualizer;
         public final ResponseTranslator translator;
 
-        private SubDictionary(String parent, int name, String path, ResponseTranslator translator) {
+        private SubDictionary(String parent, int name, String path, ResponseTranslator translator, Class<? extends ResultListSearchVisualizer> resultVisualizer) {
             this.parent = parent;
             this.name = name;
             this.path = path;
-            this.resultAdapter = null;
+            this.resultVisualizer = resultVisualizer;
             this.translator = translator;
         }
     }

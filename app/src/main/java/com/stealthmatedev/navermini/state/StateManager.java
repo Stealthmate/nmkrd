@@ -1,19 +1,16 @@
 package com.stealthmatedev.navermini.state;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.specific.EntryUIMapper;
+import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
-import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.history.HistoryManager;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -23,11 +20,17 @@ public class StateManager {
     private MainActivity activity;
     private SearchEngine searchEngine;
     private HistoryManager history;
+    private DBHelper dbHelper;
 
     public StateManager(MainActivity activity) {
         this.activity = activity;
         this.searchEngine = new SearchEngine(this);
         this.history = new HistoryManager(activity);
+        this.dbHelper = new DBHelper(activity);
+    }
+
+    public DBHelper dbhelper() {
+        return dbHelper;
     }
 
     public MainActivity getActivity() {

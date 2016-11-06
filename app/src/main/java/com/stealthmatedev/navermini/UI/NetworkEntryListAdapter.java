@@ -35,7 +35,7 @@ public class NetworkEntryListAdapter extends EntryListAdapter {
     }
 
     private ResultListQuery query;
-    private StateManager state;
+    protected final StateManager state;
 
     private boolean hasMore;
     private boolean loading;

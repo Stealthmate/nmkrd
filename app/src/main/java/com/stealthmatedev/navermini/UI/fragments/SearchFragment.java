@@ -3,16 +3,18 @@ package com.stealthmatedev.navermini.UI.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,16 +22,17 @@ import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
+import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
 import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
-import com.stealthmatedev.navermini.UI.SearchVisualizer;
+import com.stealthmatedev.navermini.data.DetailedEntry;
+import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/20 0020.
@@ -64,17 +67,18 @@ public class SearchFragment extends Fragment {
 
     private static final String SAVE_KEY_DICT = "dict";
     private static final String SAVE_KEY_SUBDICT = "subdict";
+    private static final String SAVE_KEY_ADAPTER = "adapter";
 
     private EntryListDictionary currentDictionary;
     private EntryListDictionary.SubDictionary currentSubDictionary;
 
     private StateManager state;
-    private LinearLayout resultcontainer;
+    private ListView resultcontainer;
     private Spinner subdictList;
     private Spinner dictList;
     private DictionarySpinnerAdapter dictAdapter;
 
-    private SearchVisualizer currentVisualizer;
+    private NetworkEntryListAdapter currentAdapter;
 
     private boolean created = false;
 
@@ -135,27 +139,28 @@ public class SearchFragment extends Fragment {
         this.waitForResults();
     }
 
-    public void populate(final SearchVisualizer visualizer) {
+    public void populate(final NetworkEntryListAdapter visualizer) {
 
-        if (visualizer != null) this.currentVisualizer = visualizer;
+        if (visualizer != null) this.currentAdapter = visualizer;
 
         if (this.resultcontainer == null) return;
 
         clear();
 
-        if (this.currentVisualizer == null) return;
+        if (this.currentAdapter == null) return;
 
-        resultcontainer.addView(currentVisualizer.getView(resultcontainer));
+        resultcontainer.setAdapter(visualizer);
+
     }
 
     public void waitForResults() {
         if (resultcontainer == null) return;
         clear();
-        LayoutInflater.from(getContext()).inflate(R.layout.view_loading, this.resultcontainer, true);
     }
 
     public void clear() {
         if (resultcontainer == null) return;
+        //unregisterForContextMenu(resultcontainer);
         resultcontainer.removeAllViewsInLayout();
     }
 
@@ -200,8 +205,8 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.resultcontainer = (LinearLayout) view.findViewById(R.id.result);
-        LayoutInflater.from(getContext()).inflate(R.layout.layout_results, resultcontainer, true);
+        this.resultcontainer = (ListView) view.findViewById(R.id.result);
+        registerForContextMenu(resultcontainer);
 
         this.dictList = (Spinner) view.findViewById(R.id.view_search_select_dict);
         this.subdictList = (Spinner) view.findViewById(R.id.spinner_select_enigne);
@@ -232,18 +237,44 @@ public class SearchFragment extends Fragment {
         created = true;
 
         if (savedInstanceState != null) {
-            SearchVisualizer vis = ResultListSearchVisualizer.fromSavedState(state, savedInstanceState);
-            if (vis != null) this.currentVisualizer = vis;
+            NetworkEntryListAdapter vis = ResultListSearchVisualizer.fromSavedState(state, savedInstanceState);
+            if (vis != null) this.currentAdapter = vis;
         }
 
-        populate(this.currentVisualizer);
+        populate(this.currentAdapter);
 
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+
+        int pos = ((AdapterView.AdapterContextMenuInfo) menuInfo).position;
+        Entry entry = (Entry) currentAdapter.getItem(pos);
+
+        if(entry instanceof SentenceEntry) {
+            super.onCreateContextMenu(menu, view, menuInfo);
+            menu.add(Menu.NONE, 0, 0, "Save");
+        }
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0: {
+                AdapterView.AdapterContextMenuInfo minfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                SentenceEntry entry = (SentenceEntry) this.currentAdapter.getItem(minfo.position);
+                state.dbhelper().sentenceStore.put(entry);
+            }
+
+            break;
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (currentVisualizer != null) {
-            currentVisualizer.saveState(outState);
+        if (currentAdapter != null) {
+            outState.putSerializable(SAVE_KEY_ADAPTER, currentAdapter.getDataRepresentation());
         }
         outState.putString(SAVE_KEY_DICT, currentDictionary.name());
         outState.putString(SAVE_KEY_SUBDICT, getContext().getResources().getString(currentSubDictionary.name));

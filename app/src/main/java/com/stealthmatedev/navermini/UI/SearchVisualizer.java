@@ -23,7 +23,7 @@ public abstract class SearchVisualizer {
     private static final String STATE_CLASS = "NM_SEARCH_STATE_CLASS";
     private static final String STATE_DATA = "NM_SEARCH_STATE_DATA";
 
-    public static SearchVisualizer fromSavedState(StateManager state, Bundle savedState) {
+    public static NetworkEntryListAdapter fromSavedState(StateManager state, Bundle savedState) {
 
         if (savedState == null) return null;
 
@@ -33,22 +33,12 @@ public abstract class SearchVisualizer {
         try {
             Class<?> adapterClass = Class.forName(classname);
             Serializable data = savedState.getSerializable(STATE_DATA);
-            return (SearchVisualizer) adapterClass.getConstructor(StateManager.class, Serializable.class).newInstance(state, data);
+            //return (SearchVisualizer) adapterClass.getConstructor(StateManager.class, Serializable.class).newInstance(state, data);
+            return (NetworkEntryListAdapter) EntryListAdapter.deserialize(state, (EntryListAdapter.SerializableRepresentation) data);
         } catch (ClassNotFoundException e) {
             Log.e(APPTAG, "Could not find class " + classname + " from saved state!");
             return null;
-        } catch (NoSuchMethodException e) {
-            Log.e(APPTAG, "Could not find constructor in class " + classname + " from saved state!");
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         }
-
-        return null;
     }
 
     private Context context;

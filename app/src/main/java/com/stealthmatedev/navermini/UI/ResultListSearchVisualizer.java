@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
+import javax.xml.transform.Result;
+
 import static android.R.attr.data;
 import static android.content.ContentValues.TAG;
 
@@ -28,13 +30,13 @@ import static android.content.ContentValues.TAG;
 
 public class ResultListSearchVisualizer extends SearchVisualizer {
 
-    public static ResultListSearchVisualizer mapFromSearch(StateManager state, ResultListQuery query, String response) {
+    public static NetworkEntryListAdapter mapFromSearch(StateManager state, ResultListQuery query, String response) {
 
         ArrayList<Entry> entries = query.getSubDictionary().translator.translate(response);
-        if(entries.size() == 0) return new ResultListSearchVisualizer(state, null);
+        if(entries.size() == 0) return null;
         NetworkEntryListAdapter adapter = new NetworkEntryListAdapter(state, entries, query);
 
-        return new ResultListSearchVisualizer(state.getActivity(), adapter);
+        return adapter;
     }
 
     private NetworkEntryListAdapter adapter;
