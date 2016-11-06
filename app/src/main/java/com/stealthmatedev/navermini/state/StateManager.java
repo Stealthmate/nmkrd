@@ -57,6 +57,7 @@ public class StateManager {
         final DetailsVisualizer finalVisualizer = visualizer;
         dfrag.setVisualizer(finalVisualizer);
 
+        dfrag.waitForData();
         history().get(entry, new HistoryManager.Callback() {
             @Override
             public void onFinish(Object historyEntry) {
@@ -67,11 +68,8 @@ public class StateManager {
                     actualEntry = (DetailedEntry) historyEntry;
                 }
 
-                finalVisualizer.populate(actualEntry);
-
                 if (actualEntry.isPartial()) {
                     final DetailedEntry finalEntry = actualEntry;
-                    dfrag.waitForData();
                     getSearchEngine().queryDetails(actualEntry.getLinkToDetails(), new SearchEngine.OnResponse() {
                         @Override
                         public void responseReady(String response) {
@@ -85,7 +83,10 @@ public class StateManager {
                             closePage(dfrag);
                         }
                     });
-                } else if(save) history.save(actualEntry);
+                } else {
+                    finalVisualizer.populate(actualEntry);
+                    if(save) history.save(actualEntry);
+                }
             }
         });
     }

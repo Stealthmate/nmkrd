@@ -3,6 +3,7 @@ package com.stealthmatedev.navermini;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(toolbar);
 
+
         this.content = (FrameLayout) findViewById(R.id.main_content);
 
         this.pagestack = new Stack<>();
@@ -107,14 +109,18 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().add(this.content.getId(), search.fragment, search.tag).commitNow();
         }
 
+        updateBackButton();
+
         getWindow().clearFlags(FLAG_FULLSCREEN);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
 
-
+    private void updateBackButton() {
+        this.getSupportActionBar().setDisplayHomeAsUpEnabled(pagestack.size() > 1);
     }
 
     private FragmentTransaction beginTransaction() {
@@ -135,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
         Page p = new Page(tag, fragment);
         Page old = pagestack.peek();
         pagestack.push(p);
-        beginTransaction().hide(old.fragment).add(this.content.getId(), p.fragment, p.tag).commit();
+        beginTransaction().hide(old.fragment).add(this.content.getId(), p.fragment, p.tag).commitNow();
+        updateBackButton();
     }
 
     public void openNewDetailsPage(Fragment frag, DetailedEntry entry) {
@@ -147,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         Page p = pagestack.pop();
         Page pbehind = pagestack.peek();
         beginTransaction().remove(p.fragment).show(pbehind.fragment).commit();
+        updateBackButton();
     }
 
     private void navigateHome() {
@@ -157,6 +165,11 @@ public class MainActivity extends AppCompatActivity {
         }
         ft = ft.show(pagestack.peek().fragment);
         ft.commit();
+        updateBackButton();
+    }
+
+    public void onBurgerBack() {
+        if(pagestack.size() > 1) onBackPressed();
     }
 
     @Override
@@ -170,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+            case android.R.id.home : {
+                onBurgerBack();
+            } break;
             case R.id.menu_clear_history: {
                 state.history().clearHistory();
                 Toast.makeText(this, "Cleared history", Toast.LENGTH_SHORT).show();
