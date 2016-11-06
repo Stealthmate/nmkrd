@@ -18,6 +18,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
 import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
 import com.stealthmatedev.navermini.data.DetailedEntry;
@@ -127,14 +128,14 @@ public class MainActivity extends AppCompatActivity {
         return getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.slide_in, R.anim.slide_out, R.anim.slide_in, R.anim.slide_out);
     }
 
-    private void openNewPage(Fragment fragment, String tag) {
+    private Page openNewPage(Fragment fragment, String tag) {
         for (Page p : pagestack) {
             if (p.tag.equals(tag)) {
                 pagestack.remove(p);
                 Page old = pagestack.peek();
                 pagestack.push(p);
-                beginTransaction().hide(old.fragment).show(p.fragment).commit();
-                return;
+                beginTransaction().hide(old.fragment).show(p.fragment).commitNow();
+                return p;
             }
         }
 
@@ -143,17 +144,18 @@ public class MainActivity extends AppCompatActivity {
         pagestack.push(p);
         beginTransaction().hide(old.fragment).add(this.content.getId(), p.fragment, p.tag).commitNow();
         updateBackButton();
+        return p;
     }
 
-    public void openNewDetailsPage(Fragment frag, DetailedEntry entry) {
+    public DetailsFragment openNewDetailsPage(DetailedEntry entry) {
         String tag = FTAG_DETAILS + entry.getLinkToDetails();
-        openNewPage(frag, tag);
+        return (DetailsFragment) openNewPage(new DetailsFragment(), tag).fragment;
     }
 
     private void navigateBack() {
         Page p = pagestack.pop();
         Page pbehind = pagestack.peek();
-        beginTransaction().remove(p.fragment).show(pbehind.fragment).commit();
+        beginTransaction().remove(p.fragment).show(pbehind.fragment).commitNow();
         updateBackButton();
     }
 
@@ -164,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
             ft = ft.hide(p.fragment).remove(p.fragment);
         }
         ft = ft.show(pagestack.peek().fragment);
-        ft.commit();
+        ft.commitNow();
         updateBackButton();
     }
 

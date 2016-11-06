@@ -92,8 +92,7 @@ public class StateManager {
     }
 
     public DetailsFragment openDetailsPage(DetailedEntry entry) {
-        DetailsFragment dfrag = new DetailsFragment();
-        activity.openNewDetailsPage(dfrag, entry);
+        DetailsFragment dfrag = activity.openNewDetailsPage(entry);
         return dfrag;
     }
 
