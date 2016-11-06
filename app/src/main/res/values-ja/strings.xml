@@ -23,6 +23,12 @@
     <string name="label_kunyomi_ex">訓読み例</string>
     <string name="label_onyomi_ex">音読み例</string>
 
+    <string name="label_heading_history">履歴</string>
+
+    <string name="label_menu_home">ホーム</string>
+    <string name="label_menu_history">履歴</string>
+    <string name="label_menu_clear_history">履歴を削除する</string>
+
     <string name="backpress_exit_message">2回をタップすると終了します</string>
     <string name="history_cleared_message">履歴が削除されました</string>
 

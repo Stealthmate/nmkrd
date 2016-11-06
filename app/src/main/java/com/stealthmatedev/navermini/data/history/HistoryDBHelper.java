@@ -1,6 +1,5 @@
 package com.stealthmatedev.navermini.data.history;
 
-import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,15 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 
 import java.util.ArrayList;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/03 0003.
@@ -25,7 +21,6 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 public class HistoryDBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    public static final String DB_NAME = "TESTDB";
     public static final String HISTORY_DATABASE_NAME = "History";
 
     private static final String HISTORY_TABLE_NAME = "history";
@@ -60,7 +55,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 
     private final SQLiteStatement queryById;
 
-    public HistoryDBHelper(Context context) {
+    HistoryDBHelper(Context context) {
         super(context, HISTORY_DATABASE_NAME, null, DATABASE_VERSION);
         queryById = getReadableDatabase().compileStatement(SQL_QUERY_BY_ID);
     }
@@ -77,12 +72,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 
     }
 
-    private DetailedEntry parseJson(String json) {
-        HistoryEntry entry = new Gson().fromJson(json, HistoryEntry.class);
-        return entry.data;
-    }
-
-    public HistoryEntry findById(String id) {
+    HistoryEntry findById(String id) {
         queryById.clearBindings();
         queryById.bindString(1, id);
         String data;
@@ -95,7 +85,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         return he;
     }
 
-    public void put(DetailedEntry entry) {
+    void put(DetailedEntry entry) {
         HistoryEntry he = new HistoryEntry(entry);
         SQLiteDatabase db = getWritableDatabase();
         db.delete(HISTORY_TABLE_NAME, COLUMN_ID + "=?", new String[] {he.getId()});
@@ -106,7 +96,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         db.replace(HISTORY_TABLE_NAME, null, values);
     }
 
-    public ArrayList<DetailedEntry> queryAll() {
+    ArrayList<DetailedEntry> queryAll() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(HISTORY_TABLE_NAME, new String[]{COLUMN_DATA}, null, null, null, null, COLUMN_SEEN + " DESC");
         ArrayList<DetailedEntry> arr = new ArrayList<>(c.getCount());
@@ -121,11 +111,11 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         return arr;
     }
 
-    public Cursor getCursor() {
+    Cursor getCursor() {
         return getReadableDatabase().rawQuery(SQL_QUERY_ALL, null);
     }
 
-    public void deleteAll() {
+    void deleteAll() {
         getWritableDatabase().execSQL(SQL_DELETE_ALL);
     }
 

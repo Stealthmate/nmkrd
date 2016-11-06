@@ -1,7 +1,5 @@
 package com.stealthmatedev.navermini.data.history;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
@@ -9,20 +7,11 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.annotations.Expose;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.kr.KrWord;
-
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/01 0001.
@@ -31,17 +20,14 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 public class HistoryEntry {
 
     private enum Type {
-        KR_WORD(0, KrWord.class),
-        JP_WORD(1, JpWord.class),
-        JP_KANJI(2, JpKanji.class),
-        EN_WORD(3, EnWord.class);
-
-        private final int id;
+        KR_WORD(KrWord.class),
+        JP_WORD(JpWord.class),
+        JP_KANJI(JpKanji.class),
+        EN_WORD(EnWord.class);
 
         private final transient Class<? extends DetailedEntry> classType;
 
-        Type(int id, Class<? extends DetailedEntry> classType) {
-            this.id = id;
+        Type(Class<? extends DetailedEntry> classType) {
             this.classType = classType;
         }
 
@@ -56,15 +42,6 @@ public class HistoryEntry {
             return null;
         }
 
-        private static Type forId(int id) {
-            switch(id){
-                case 0: return KR_WORD;
-                case 1: return JP_WORD;
-                case 2: return JP_KANJI;
-                case 3: return EN_WORD;
-                default: return null;
-            }
-        }
     }
 
     public static class Deserializer implements JsonDeserializer<HistoryEntry> {
