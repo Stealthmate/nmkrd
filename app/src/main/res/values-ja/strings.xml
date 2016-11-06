@@ -29,6 +29,8 @@
     <string name="label_menu_history">履歴</string>
     <string name="label_menu_clear_history">履歴を削除する</string>
 
+    <string name="label_context_menu_history_delete_entry">削除</string>
+
     <string name="backpress_exit_message">2回をタップすると終了します</string>
     <string name="history_cleared_message">履歴が削除されました</string>
 

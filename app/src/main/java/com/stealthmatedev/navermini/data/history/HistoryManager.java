@@ -19,6 +19,7 @@ public class HistoryManager {
 
     public interface Observer {
         void onChanged();
+
         void onInvalidated();
     }
 
@@ -77,7 +78,7 @@ public class HistoryManager {
             @Override
             protected Cursor doInBackground(Void... params) {
                 Cursor c = dbHelper.getCursor();
-                if(c.getCount() > 0) c.moveToFirst();
+                if (c.getCount() > 0) c.moveToFirst();
                 return c;
             }
 
@@ -100,8 +101,26 @@ public class HistoryManager {
     }
 
     public void clearHistory() {
-        dbHelper.deleteAll();
-        notifyChanged();
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                dbHelper.deleteAll();
+                notifyChanged();
+                return null;
+            }
+        }.execute();
+    }
+
+    public void removeEntry(final DetailedEntry entry) {
+        new AsyncTask<DetailedEntry, Void, Void>() {
+
+            @Override
+            protected Void doInBackground(DetailedEntry... params) {
+                dbHelper.deleteSingle(params[0]);
+                notifyChanged();
+                return null;
+            }
+        }.execute(entry);
     }
 
     public void registerObserver(Observer observer) {
@@ -113,6 +132,6 @@ public class HistoryManager {
     }
 
     private void notifyChanged() {
-        for(Observer obs : observers) obs.onChanged();
+        for (Observer obs : observers) obs.onChanged();
     }
 }

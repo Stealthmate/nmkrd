@@ -28,6 +28,8 @@
     <string name="label_menu_history">History</string>
     <string name="label_menu_clear_history">Clear history</string>
 
+    <string name="label_context_menu_history_delete_entry">Delete</string>
+
     <string name="backpress_exit_message">Press twice to exit</string>
     <string name="history_cleared_message">History cleared</string>
 

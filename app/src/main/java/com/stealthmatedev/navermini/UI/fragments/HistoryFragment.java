@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -48,6 +51,8 @@ public class HistoryFragment extends Fragment {
                 adapter.onItemClicked(position);
             }
         });
+
+        registerForContextMenu(list);
         loadingView.setVisibility(View.GONE);
     }
 
@@ -97,6 +102,29 @@ public class HistoryFragment extends Fragment {
                 populate(arr);
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+
+        menu.add(Menu.NONE, 0, 0, R.string.label_context_menu_history_delete_entry);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0: {
+
+                AdapterView.AdapterContextMenuInfo minfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                DetailedEntry entry = (DetailedEntry) list.getAdapter().getItem(minfo.position);
+                state.history().removeEntry(entry);
+
+            }
+
+            break;
+        }
+
+        return super.onContextItemSelected(item);
     }
 
 }

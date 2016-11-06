@@ -119,4 +119,12 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
         getWritableDatabase().execSQL(SQL_DELETE_ALL);
     }
 
+    void deleteSingle(DetailedEntry entry) {
+        ContentValues values = new ContentValues();
+        HistoryEntry he = new HistoryEntry(entry);
+        values.put(COLUMN_ID, he.getId());
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(HISTORY_TABLE_NAME, COLUMN_ID + "=?", new String[]{he.getId()});
+    }
+
 }
