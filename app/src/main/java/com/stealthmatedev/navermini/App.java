@@ -12,7 +12,7 @@ public class App {
             "47E36A7D3CA090778B4C1BF8682BF772"
     };
 
-    public static final String HOST = "http://naver-mini-dev.herokuapp.com/v2";
+    public static final String HOST = "http://naver-mini.herokuapp.com/v2";
     public static final String APPTAG = "NaverMini";
     public static boolean DEBUG_TEST = false;
 }
