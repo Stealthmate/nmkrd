@@ -21,6 +21,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
 import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
+import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.state.StateManager;
 
@@ -63,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        this.deleteDatabase(DBHelper.DATABASE_NAME);
+
 
         super.onCreate(savedInstanceState);
 

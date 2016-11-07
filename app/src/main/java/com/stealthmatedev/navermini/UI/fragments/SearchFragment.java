@@ -150,6 +150,12 @@ public class SearchFragment extends Fragment {
         if (this.currentAdapter == null) return;
 
         resultcontainer.setAdapter(visualizer);
+        resultcontainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                currentAdapter.onItemClicked(position);
+            }
+        });
 
     }
 

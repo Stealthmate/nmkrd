@@ -4,11 +4,14 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 
 import java.util.ArrayList;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/06 0006.
@@ -45,9 +48,9 @@ public class SentenceStore implements DBHelper.TableManager {
 
 
     @Override
-    public void onCreate() {
-        dbHelper.getWritableDatabase().execSQL(SQL_CREATE_TABLE);
-        dbHelper.getWritableDatabase().execSQL(SQL_CREATE_INDEX);
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(SQL_CREATE_TABLE);
+        db.execSQL(SQL_CREATE_INDEX);
     }
 
     @Override
@@ -68,5 +71,16 @@ public class SentenceStore implements DBHelper.TableManager {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.query(TABLE_NAME, null, COLUMN_KEYWORD + "=? OR " + COLUMN_SENTENCE + " LIKE %?%;", new String[]{word, word}, null, null, null);
         return c;
+    }
+
+    public ArrayList<String> getAll() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
+        ArrayList<String> entries = new ArrayList<>(c.getCount());
+        for(int i=0;c.moveToNext();i++) {
+            entries.add(c.getString(1) + c.getString(2) + c.getString(3));
+        }
+        c.close();
+        return entries;
     }
 }

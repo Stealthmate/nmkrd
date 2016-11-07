@@ -99,6 +99,8 @@ public class HistoryFragment extends Fragment {
             @Override
             public void onFinish(Object result) {
                 ArrayList<Entry> arr = new ArrayList<Entry>((ArrayList<DetailedEntry>) result);
+                ArrayList<String> ex = state.dbhelper().sentenceStore.getAll();
+                for(String s : ex) Log.i(APPTAG, s != null ? s : "null");
                 populate(arr);
             }
         });

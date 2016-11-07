@@ -21,13 +21,12 @@ import java.util.ArrayList;
 public class DBHelper extends SQLiteOpenHelper{
 
     public interface TableManager {
-        void onCreate();
+        void onCreate(SQLiteDatabase db);
         void onUpdate();
     }
 
     private static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "NMKRD_DB";
-    public static final String HISTORY_DATABASE_NAME = "History";
 
     private static final String HISTORY_TABLE_NAME = "history";
     private static final String HISTORY_TABLE_INDEX = "historyindex";
@@ -59,21 +58,20 @@ public class DBHelper extends SQLiteOpenHelper{
             "SELECT \"" + COLUMN_DATA + "\"" +
                     " FROM \"" + HISTORY_TABLE_NAME + "\" ORDER BY " + COLUMN_ID + " DESC ;";
 
-    private final SQLiteStatement queryById;
+    private final SQLiteStatement queryById = null;
 
     public final SentenceStore sentenceStore;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.sentenceStore = new SentenceStore(this);
-        queryById = getReadableDatabase().compileStatement(SQL_QUERY_BY_ID);
+        //queryById = getReadableDatabase().compileStatement(SQL_QUERY_BY_ID);
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE);
-        db.execSQL(SQL_CREATE_INDEX);
+        sentenceStore.onCreate(db);
     }
 
     @Override
