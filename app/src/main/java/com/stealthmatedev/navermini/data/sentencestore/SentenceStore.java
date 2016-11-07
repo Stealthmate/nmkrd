@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.stealthmatedev.navermini.data.DBHelper;
+import com.stealthmatedev.navermini.data.ExampleSentence;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 
 import java.util.ArrayList;
@@ -72,12 +73,12 @@ public class SentenceStore implements DBHelper.TableManager {
         return db.query(TABLE_NAME, null, COLUMN_KEYWORD + "=? OR " + COLUMN_SENTENCE + " LIKE ?;", new String[]{word, "%" + word + "%"}, null, null, null);
     }
 
-    public ArrayList<String> getAll() {
+    public ArrayList<ExampleSentence> getAll() {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-        ArrayList<String> entries = new ArrayList<>(c.getCount());
+        ArrayList<ExampleSentence> entries = new ArrayList<>(c.getCount());
         for(int i=0;c.moveToNext();i++) {
-            entries.add(c.getString(1) + c.getString(2) + c.getString(3));
+            entries.add(new ExampleSentence(SentenceEntry.Language.valueOf(c.getString(1)), SentenceEntry.Language.valueOf(c.getString(2)),  c.getString(3), c.getString(4), c.getString(0)));
         }
         c.close();
         return entries;

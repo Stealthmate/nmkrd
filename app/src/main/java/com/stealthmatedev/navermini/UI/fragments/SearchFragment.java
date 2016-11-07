@@ -74,14 +74,16 @@ public class SearchFragment extends Fragment {
 
     private StateManager state;
     private ListView resultcontainer;
+    private View loadingView;
+
     private Spinner subdictList;
     private Spinner dictList;
+
     private DictionarySpinnerAdapter dictAdapter;
 
     private NetworkEntryListAdapter currentAdapter;
 
     private boolean created = false;
-
 
     public void setCurrentSubDictionary(int i) {
         if (i < 0 || i >= currentDictionary.subdicts.length) {
@@ -157,16 +159,20 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        this.loadingView.setVisibility(View.GONE);
+        this.resultcontainer.setVisibility(View.VISIBLE);
+
     }
 
     public void waitForResults() {
         if (resultcontainer == null) return;
         clear();
+        this.loadingView.setVisibility(View.VISIBLE);
+        this.resultcontainer.setVisibility(View.GONE);
     }
 
     public void clear() {
         if (resultcontainer == null) return;
-        //unregisterForContextMenu(resultcontainer);
         resultcontainer.removeAllViewsInLayout();
     }
 
@@ -223,6 +229,9 @@ public class SearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         this.state = ((MainActivity) getActivity()).getState();
+
+        this.loadingView = getView().findViewById(R.id.view_loading);
+        this.loadingView.setVisibility(View.GONE);
 
         this.dictList.setAdapter(this.dictAdapter);
         this.dictList.setOnItemSelectedListener(new OnSelectDictionaryListener());

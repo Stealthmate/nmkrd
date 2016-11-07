@@ -2,6 +2,7 @@ package com.stealthmatedev.navermini.UI.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,16 +14,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
-import com.stealthmatedev.navermini.data.history.HistoryManager;
+import com.stealthmatedev.navermini.data.ExampleSentence;
 import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreManager;
-import com.stealthmatedev.navermini.state.ResultListQuery;
-import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+
+import static android.R.attr.key;
+import static android.R.attr.resource;
 
 /**
  * Created by Stealthmate on 16/11/07 0007.
@@ -34,7 +36,34 @@ public class SentenceStoreFragment extends Fragment {
     private View loadingView;
     private StateManager state;
 
+    private class SentenceAdapter extends ArrayAdapter<ExampleSentence> {
 
+        public SentenceAdapter(Context context, ArrayList<ExampleSentence> sentences) {
+            super(context, 0, sentences);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            ExampleSentence item = getItem(position);
+
+            if(convertView == null) convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_listitem_sentence, parent, false);
+
+            TextView cc = (TextView) convertView.findViewById(R.id.view_listitem_sentence_cc);
+            cc.setText(item.from.code + " " + item.to.code);
+
+            TextView keyword = (TextView) convertView.findViewById(R.id.view_listitem_sentence_keyword);
+            keyword.setText(item.keyword);
+
+            TextView original = (TextView) convertView.findViewById(R.id.view_listitem_sentence_original);
+            original.setText(item.original);
+
+            TextView translated = (TextView) convertView.findViewById(R.id.view_listitem_sentence_translated);
+            translated.setText(item.translated);
+
+            return convertView;
+        }
+    }
 
     public void performSearch() {
 
@@ -52,7 +81,7 @@ public class SentenceStoreFragment extends Fragment {
         state.sentenceStore().queryByWord(querystring, new SentenceStoreManager.Callback() {
             @Override
             public void callback(Object result) {
-                list.setAdapter(new ArrayAdapter<>(getContext(), R.layout.view_listitem_minimal, (ArrayList<String>)result));
+                list.setAdapter(new SentenceAdapter(getContext(), (ArrayList<ExampleSentence>)result));
                 loadingView.setVisibility(View.GONE);
             }
         });

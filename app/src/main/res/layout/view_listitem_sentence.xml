@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    >
+
+    <TextView
+        android:id="@+id/view_listitem_sentence_cc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:text="KR-KR"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/view_listitem_sentence_keyword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@id/view_listitem_sentence_cc"
+        android:layout_toRightOf="@id/view_listitem_sentence_cc"
+        android:gravity="center"
+        android:text="KEYWORD"
+        android:textSize="17sp" />
+
+    <com.stealthmatedev.navermini.UI.generic.FuriganaTextView
+        android:id="@+id/view_listitem_sentence_original"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/view_listitem_sentence_cc"
+        android:layout_marginTop="10dp"
+        android:text="VERY LONG LONG LONG ONG LONG LOLNG LONG TEXT"
+        android:textSize="20sp" />
+
+
+    <com.stealthmatedev.navermini.UI.generic.FuriganaTextView
+        android:id="@+id/view_listitem_sentence_translated"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/view_listitem_sentence_original"
+        android:text="VERY LONG LONG LONG ONG LONG LOLNG LONG TEXT"
+        android:textSize="20sp" />
+</RelativeLayout>
