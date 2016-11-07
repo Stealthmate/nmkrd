@@ -69,8 +69,7 @@ public class SentenceStore implements DBHelper.TableManager {
 
     public Cursor findByWord(String word) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor c = db.query(TABLE_NAME, null, COLUMN_KEYWORD + "=? OR " + COLUMN_SENTENCE + " LIKE %?%;", new String[]{word, word}, null, null, null);
-        return c;
+        return db.query(TABLE_NAME, null, COLUMN_KEYWORD + "=? OR " + COLUMN_SENTENCE + " LIKE ?;", new String[]{word, "%" + word + "%"}, null, null, null);
     }
 
     public ArrayList<String> getAll() {

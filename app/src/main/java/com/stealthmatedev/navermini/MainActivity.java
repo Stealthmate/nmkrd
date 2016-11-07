@@ -3,24 +3,19 @@ package com.stealthmatedev.navermini;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
 import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
+import com.stealthmatedev.navermini.UI.fragments.SentenceStoreFragment;
 import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -28,10 +23,7 @@ import com.stealthmatedev.navermini.state.StateManager;
 import java.util.Stack;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
-import static com.stealthmatedev.navermini.App.ADUNIT;
-import static com.stealthmatedev.navermini.App.APPTAG;
 import static com.stealthmatedev.navermini.App.MY_PUB_ID;
-import static com.stealthmatedev.navermini.App.TEST_DEVICES;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String FTAG_SEARCH = "nm_FTAG_SEARCH";
     private static final String FTAG_HISTORY = "nm_FTAG_HISTORY";
     private static final String FTAG_DETAILS = "nm_FTAG_DETAILS";
+    private static final String FTAG_SENTENCE_STORE = "nm_FTAG_SENTENCE_STORE";
 
     private Stack<Page> pagestack;
 
@@ -210,6 +203,20 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 openNewPage(new HistoryFragment(), FTAG_HISTORY);
+            } break;
+            case R.id.menu_sentence_store: {
+                Page page = null;
+                for(Page p : pagestack) {
+                    if(p.tag.equals(FTAG_SENTENCE_STORE)) {
+                        page = p;
+                        break;
+                    }
+                }
+                if (page != null) {
+                    onBackPressed();
+                    break;
+                }
+                openNewPage(new SentenceStoreFragment(), FTAG_SENTENCE_STORE);
             } break;
             case R.id.menu_home: {
                 navigateHome();

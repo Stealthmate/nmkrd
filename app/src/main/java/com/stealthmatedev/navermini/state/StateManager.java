@@ -11,6 +11,8 @@ import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.history.HistoryManager;
+import com.stealthmatedev.navermini.data.sentencestore.SentenceStore;
+import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreManager;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -21,12 +23,18 @@ public class StateManager {
     private SearchEngine searchEngine;
     private HistoryManager history;
     private DBHelper dbHelper;
+    private SentenceStoreManager sentenceManager;
 
     public StateManager(MainActivity activity) {
         this.activity = activity;
         this.searchEngine = new SearchEngine(this);
         this.history = new HistoryManager(activity);
         this.dbHelper = new DBHelper(activity);
+        this.sentenceManager = new SentenceStoreManager(dbHelper);
+    }
+
+    public SentenceStoreManager sentenceStore() {
+        return sentenceManager;
     }
 
     public DBHelper dbhelper() {
