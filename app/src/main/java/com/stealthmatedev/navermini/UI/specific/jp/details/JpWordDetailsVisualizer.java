@@ -1,6 +1,9 @@
 package com.stealthmatedev.navermini.UI.specific.jp.details;
 
 import android.animation.LayoutTransition;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -12,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
@@ -127,8 +131,12 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
         glossList.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         glossList.getLayoutTransition().setDuration(100);
-        glossList.setAdapter(makeGlossAdapter(meaning));
+        glossAdapter = makeGlossAdapter(meaning);
+        glossList.setAdapter(glossAdapter);
     }
+
+    private WCGAdapter meaningAdapter;
+    private GlossAdapter glossAdapter;
 
     @Override
     public View getView(Fragment containerFragment, ViewGroup container) {
@@ -149,9 +157,9 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         deflist.getLayoutTransition().setDuration(100);
 
-        WCGAdapter adapter = makeWCGAdapter(container, details);
-        deflist.setAdapter(adapter);
-        deflist.setOnItemClickListener(adapter.getSubitemClickListener());
+        meaningAdapter = makeWCGAdapter(container, details);
+        deflist.setAdapter(meaningAdapter);
+        deflist.setOnItemClickListener(meaningAdapter.getSubitemClickListener());
         containerFragment.registerForContextMenu(deflist);
 
 
@@ -167,14 +175,39 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         ListAdapter adapter = ((ListView) view).getAdapter();
         if (adapter instanceof JpWordDetailsVisualizer.GlossAdapter) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, "Copy");
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, R.string.label_menu_copy);
         } else if (adapter.getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position) instanceof JpWord.WordClassGroup.Meaning) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, "Copy");
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, R.string.label_menu_copy);
         }
     }
 
     @Override
-    public boolean onContextItemSelected(Fragment containerFragment, MenuItem item) {
-        return false;
+    public boolean onContextItemSelected(Fragment containerFragment, MenuItem menuItem) {
+        String text = "WHAT THE FUCK";
+
+        switch (menuItem.getItemId()) {
+            case CONTEXT_MENU_ID_DEFS: {
+                int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
+                Object item = meaningAdapter.getItem(pos);
+                if (item instanceof EnWord.WordClassGroup)
+                    text = ((EnWord.WordClassGroup) item).wclass;
+                else if (item instanceof EnWord.WordClassGroup.Meaning)
+                    text = ((EnWord.WordClassGroup.Meaning) item).m;
+            }
+            break;
+            case CONTEXT_MENU_ID_EX: {
+                int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
+                Object item = glossAdapter.getItem(pos);
+                text = ((Meaning.Gloss) item).g;
+            }
+        }
+
+
+        ClipboardManager cbm = (ClipboardManager) containerFragment.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        cbm.setPrimaryClip(ClipData.newPlainText(null, text));
+
+        Toast.makeText(containerFragment.getContext(), "Copied", Toast.LENGTH_SHORT).show();
+
+        return true;
     }
 }

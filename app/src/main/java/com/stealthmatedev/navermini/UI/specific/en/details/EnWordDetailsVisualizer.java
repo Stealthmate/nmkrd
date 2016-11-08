@@ -135,9 +135,9 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
 
         ListAdapter adapter = ((ListView) view).getAdapter();
         if (adapter instanceof ExAdapter) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, "Copy");
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, R.string.label_menu_copy);
         } else if (adapter.getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position) instanceof EnWord.WordClassGroup.Meaning) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, "Copy");
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, R.string.label_menu_copy);
         }
     }
 

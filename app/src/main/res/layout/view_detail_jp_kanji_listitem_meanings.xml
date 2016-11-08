@@ -2,16 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/view_detail_jp_kanji_listitem_meaning_meaning"
         style="@style/textSimple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/nm_colorTextAccent"
+        android:textSize="@dimen/textSizeH2"
         android:text="싹이 나다." />
 
     <com.stealthmatedev.navermini.UI.generic.FixedListView
+        style="@style/simpleListStyle"
         android:id="@+id/view_detail_jp_kanji_listitem_meaning_ex"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
