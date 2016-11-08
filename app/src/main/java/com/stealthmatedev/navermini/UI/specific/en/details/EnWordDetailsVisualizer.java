@@ -33,6 +33,9 @@ import java.util.LinkedHashMap;
 
 public class EnWordDetailsVisualizer extends DetailsVisualizer {
 
+    private static final int CONTEXT_MENU_ID_DEFS = 0;
+    private static final int CONTEXT_MENU_ID_EX = 1;
+
     private WCGAdapter makeAdapter(ViewGroup parent, EnWord details) {
         LinkedHashMap<EnWord.WordClassGroup, ArrayList<EnWord.WordClassGroup.Meaning>> map = new LinkedHashMap<>();
 
@@ -127,17 +130,14 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         return view;
     }
 
-    private static final int CONTEXT_DEFS = 0;
-    private static final int CONTEXT_EX = 1;
-
     @Override
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
 
         ListAdapter adapter = ((ListView) view).getAdapter();
         if (adapter instanceof ExAdapter) {
-            menu.add(Menu.NONE, CONTEXT_EX, 0, "Copy");
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, "Copy");
         } else if (adapter.getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position) instanceof EnWord.WordClassGroup.Meaning) {
-            menu.add(Menu.NONE, CONTEXT_DEFS, 0, "Copy");
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, "Copy");
         }
     }
 
@@ -147,7 +147,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         String text = "WHAT THE FUCK";
 
         switch (menuItem.getItemId()) {
-            case CONTEXT_DEFS: {
+            case CONTEXT_MENU_ID_DEFS: {
                 int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
                 Object item = wcgadapter.getItem(pos);
                 if (item instanceof EnWord.WordClassGroup)
@@ -156,7 +156,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
                     text = ((EnWord.WordClassGroup.Meaning) item).m;
             }
             break;
-            case CONTEXT_EX: {
+            case CONTEXT_MENU_ID_EX: {
                 int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
                 Object item = exadapter.getItem(pos);
                 text = (String) item;
