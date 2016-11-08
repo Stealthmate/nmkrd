@@ -13,9 +13,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.stealthmatedev.navermini.App;
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -80,6 +78,10 @@ public class SearchEngine {
         req.setShouldCache(true);
         req.setRetryPolicy(new DefaultRetryPolicy(20000, 2, 1));
         queue.add(req);
+    }
+
+    public RequestQueue getRequestQueue() {
+        return queue;
     }
 
     private void cancellAllQueries() {

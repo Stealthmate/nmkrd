@@ -2,7 +2,12 @@ package com.stealthmatedev.navermini.UI.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,7 +18,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,15 +31,21 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
 import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
 import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
+import com.stealthmatedev.navermini.UI.generic.FilterlessArrayAdapter;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
+import com.stealthmatedev.navermini.state.Autocompleter;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/20 0020.
@@ -159,6 +172,7 @@ public class SearchFragment extends Fragment {
             }
         });
 
+
         this.loadingView.setVisibility(View.GONE);
         this.resultcontainer.setVisibility(View.VISIBLE);
 
@@ -240,12 +254,50 @@ public class SearchFragment extends Fragment {
         setCurrentSubDictionary(this.currentDictionary.indexOf(this.currentSubDictionary));
 
 
-        EditText searchBox = (EditText) getView().findViewById(R.id.search_bar);
+        final AutoCompleteTextView searchBox = (AutoCompleteTextView) getView().findViewById(R.id.search_bar);
         searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 performSearch();
                 return true;
+            }
+        });
+        searchBox.setFilters(new InputFilter[]{});
+        searchBox.setAdapter(new FilterlessArrayAdapter<>(getContext(), R.layout.view_listitem_minimal, new ArrayList<String>()));
+        searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                performSearch();
+            }
+        });
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                currentDictionary.autocompleter.getSuggestions(state, s.toString(), new Autocompleter.OnSuggestions() {
+                    @Override
+                    public void received(ArrayList<String> suggestions) {
+                        ArrayAdapter<String> adapter = (ArrayAdapter<String>) searchBox.getAdapter();
+                        adapter.clear();
+                        adapter.addAll(suggestions);
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void error(VolleyError error) {
+                        Log.d(APPTAG, "ERROR");
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
