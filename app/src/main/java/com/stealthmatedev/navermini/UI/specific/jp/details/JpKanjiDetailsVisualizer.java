@@ -42,13 +42,6 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 
 public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
-    private static final int CONTEXT_MENU_ID_KUNYOMI = 0;
-    private static final int CONTEXT_MENU_ID_ONYOMI = 1;
-    private static final int CONTEXT_MENU_ID_KRYOMI = 2;
-    private static final int CONTEXT_MENU_ID_MEANING = 1;
-    private static final int CONTEXT_MENU_ID_EX = 2;
-    private static final int CONTEXT_MENU_ID_YOMI_EX = 3;
-
     private class KanjiMeaningsAdapter extends ArrayAdapter<JpKanji.Meaning> {
 
         private class ExAdapter extends CustomizableArrayAdapter<String> {
