@@ -12,6 +12,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.data.AutocompleteSuggestion;
 
 import org.json.JSONException;
 
@@ -29,7 +30,7 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 public abstract class Autocompleter {
 
     public interface OnSuggestions {
-        void received(ArrayList<String> suggestions);
+        void received(ArrayList<AutocompleteSuggestion> suggestions);
 
         void error(VolleyError error);
     }
@@ -48,26 +49,26 @@ public abstract class Autocompleter {
                         @Override
                         public void onResponse(String response) {
                             try {
-                                ArrayList<String> suglist = parseResponse(response);
-                                Collections.sort(suglist, new Comparator<String>() {
+                                ArrayList<AutocompleteSuggestion> suglist = parseResponse(response);
+                                Collections.sort(suglist, new Comparator<AutocompleteSuggestion>() {
                                     @Override
-                                    public int compare(String o1, String o2) {
-                                        int index1 = o1.indexOf(query);
-                                        int index2 = o2.indexOf(query);
+                                    public int compare(AutocompleteSuggestion o1, AutocompleteSuggestion o2) {
+                                        int index1 = o1.word.indexOf(query);
+                                        int index2 = o2.word.indexOf(query);
 
                                         if (index1 == -1 && index2 > -1) return +1;
                                         if (index2 == -1 && index1 > -1) return -1;
-                                        if (index1 == index2 && index1 == -1) return o2.length() - o1.length();
+                                        if (index1 == index2 && index1 == -1) return o1.word.length() - o2.word.length();
 
                                         if (index1 < index2) return -1;
                                         if (index2 < index1 ) return +1;
-                                        return o2.length() - o1.length();
+                                        return o1.word.length() - o2.word.length();
                                     }
                                 });
                                 callback.received(suglist);
                             } catch (JSONException e) {
                                 e.printStackTrace();
-                                callback.received(new ArrayList<String>());
+                                callback.received(new ArrayList<AutocompleteSuggestion>());
                             }
                         }
                     }, new Response.ErrorListener() {
@@ -91,7 +92,7 @@ public abstract class Autocompleter {
             });
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            callback.received(new ArrayList<String>());
+            callback.received(new ArrayList<AutocompleteSuggestion>());
         }
         req.setTag(TAG);
         req.setShouldCache(true);
@@ -101,5 +102,5 @@ public abstract class Autocompleter {
 
     protected abstract String getURL(String query) throws UnsupportedEncodingException;
 
-    protected abstract ArrayList<String> parseResponse(String response) throws JSONException;
+    protected abstract ArrayList<AutocompleteSuggestion> parseResponse(String response) throws JSONException;
 }

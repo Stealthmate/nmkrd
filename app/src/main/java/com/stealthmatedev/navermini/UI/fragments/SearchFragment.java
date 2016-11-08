@@ -1,6 +1,7 @@
 package com.stealthmatedev.navermini.UI.fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Filter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,6 +34,8 @@ import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
 import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
 import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
 import com.stealthmatedev.navermini.UI.generic.FilterlessArrayAdapter;
+import com.stealthmatedev.navermini.UI.specific.ACSuggestionAdapter;
+import com.stealthmatedev.navermini.data.AutocompleteSuggestion;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.SentenceEntry;
@@ -89,6 +93,8 @@ public class SearchFragment extends Fragment {
     private ListView resultcontainer;
     private View loadingView;
 
+    private AutoCompleteTextView searchBox;
+
     private Spinner subdictList;
     private Spinner dictList;
 
@@ -125,6 +131,8 @@ public class SearchFragment extends Fragment {
     public void performSearch() {
 
         if (!created) return;
+
+        searchBox.dismissDropDown();
 
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -254,7 +262,7 @@ public class SearchFragment extends Fragment {
         setCurrentSubDictionary(this.currentDictionary.indexOf(this.currentSubDictionary));
 
 
-        final AutoCompleteTextView searchBox = (AutoCompleteTextView) getView().findViewById(R.id.search_bar);
+        searchBox = (AutoCompleteTextView) getView().findViewById(R.id.search_bar);
         searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -263,7 +271,7 @@ public class SearchFragment extends Fragment {
             }
         });
         searchBox.setFilters(new InputFilter[]{});
-        searchBox.setAdapter(new FilterlessArrayAdapter<>(getContext(), R.layout.view_listitem_minimal, new ArrayList<String>()));
+        searchBox.setAdapter(new ACSuggestionAdapter(getContext(), new ArrayList<AutocompleteSuggestion>()));
         searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -278,14 +286,25 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(currentDictionary.autocompleter == null) return;
+
                 currentDictionary.autocompleter.getSuggestions(state, s.toString(), new Autocompleter.OnSuggestions() {
                     @Override
-                    public void received(ArrayList<String> suggestions) {
-                        ArrayAdapter<String> adapter = (ArrayAdapter<String>) searchBox.getAdapter();
-                        adapter.clear();
-                        adapter.addAll(suggestions);
-                        adapter.notifyDataSetChanged();
-
+                    public void received(final ArrayList<AutocompleteSuggestion> suggestions) {
+                        final ArrayAdapter<AutocompleteSuggestion> adapter = (ACSuggestionAdapter) searchBox.getAdapter();
+                        new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                adapter.clear();
+                                adapter.addAll(suggestions);
+                                adapter.notifyDataSetChanged();
+                                return null;
+                            }
+                            @Override
+                            protected void onPostExecute(Void result) {
+                            }
+                        }.execute();
                     }
 
                     @Override

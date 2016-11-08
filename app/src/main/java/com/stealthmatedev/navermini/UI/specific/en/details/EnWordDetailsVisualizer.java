@@ -97,6 +97,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         ListView defs = (ListView) view.findViewById(R.id.view_generic_detail_word_deflist);
         WCGAdapter adapter = WCGAdapter.makeAdapter(container, details);
         defs.setAdapter(adapter);
+        
         defs.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
         defs.getLayoutTransition().setDuration(100);
         defs.setOnItemClickListener(adapter.getSubitemClickListener());

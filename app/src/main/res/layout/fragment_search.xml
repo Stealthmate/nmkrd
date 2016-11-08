@@ -38,7 +38,7 @@
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"
                 android:maxEms="5"
-                android:dropDownHeight="100dp"
+                android:dropDownHeight="200dp"
                 android:completionThreshold="1"
                 android:textSize="20sp" />
         </LinearLayout>

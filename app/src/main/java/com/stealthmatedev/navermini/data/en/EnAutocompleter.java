@@ -2,6 +2,7 @@ package com.stealthmatedev.navermini.data.en;
 
 import android.util.Log;
 
+import com.stealthmatedev.navermini.data.AutocompleteSuggestion;
 import com.stealthmatedev.navermini.state.Autocompleter;
 
 import org.json.JSONArray;
@@ -10,11 +11,8 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -35,15 +33,15 @@ public class EnAutocompleter extends Autocompleter {
     }
 
     @Override
-    protected ArrayList<String> parseResponse(String response) throws JSONException {
+    protected ArrayList<AutocompleteSuggestion> parseResponse(String response) throws JSONException {
         JSONObject obj = new JSONObject(response);
         JSONArray items = obj.getJSONArray("items");
-        Set<String> suggestions = new LinkedHashSet<>();
+        Set<AutocompleteSuggestion> suggestions = new LinkedHashSet<>();
         for (int i = 0; i < items.length(); i++) {
             JSONArray item = items.getJSONArray(i);
             for (int j = 0; j < item.length() ; j++) {
                 JSONArray itemOfItem = item.getJSONArray(j);
-                suggestions.add(itemOfItem.getJSONArray(0).getString(0));
+                suggestions.add(new AutocompleteSuggestion(itemOfItem.getJSONArray(0).getString(0).trim(), itemOfItem.getJSONArray(1).getString(0).trim()));
             }
         }
 
