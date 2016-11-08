@@ -2,7 +2,10 @@ package com.stealthmatedev.navermini.UI.specific.kr.details;
 
 import android.animation.LayoutTransition;
 import android.content.Context;
+import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -49,7 +52,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
     }
 
     @Override
-    public View getView(final ViewGroup container) {
+    public View getView(Fragment containerFragment, final ViewGroup container) {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
 
@@ -95,6 +98,16 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         ex.setAdapter(new ArrayAdapter<>(container.getContext(), R.layout.view_listitem_text_wide, def.ex));
 
         return view;
+    }
+
+    @Override
+    public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(Fragment containerFragment, MenuItem item) {
+        return false;
     }
 
 }

@@ -2,32 +2,27 @@ package com.stealthmatedev.navermini.UI.specific.jp.details;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.generic.FixedListView;
 import com.stealthmatedev.navermini.UI.generic.ListLayout;
-import com.stealthmatedev.navermini.data.DetailedEntry;
-import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
-import com.stealthmatedev.navermini.serverapi.DetailsDictionary;
-import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -98,7 +93,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
     }
 
     @Override
-    public View getView(final ViewGroup container) {
+    public View getView(Fragment containerFragment, final ViewGroup container) {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_jp_detail_kanji, container, false);
 
@@ -149,5 +144,15 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
 
         return view;
 
+    }
+
+    @Override
+    public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(Fragment containerFragment, MenuItem item) {
+        return false;
     }
 }

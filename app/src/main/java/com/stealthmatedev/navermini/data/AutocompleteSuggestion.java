@@ -14,4 +14,9 @@ public class AutocompleteSuggestion {
         this.word = word;
         this.meaning = meaning;
     }
+
+    @Override
+    public String toString() {
+        return this.word;
+    }
 }

@@ -1,7 +1,10 @@
 package com.stealthmatedev.navermini.UI.specific.jp.details;
 
 import android.animation.LayoutTransition;
+import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -18,8 +21,6 @@ import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-
-import static android.R.attr.name;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.
@@ -119,7 +120,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     }
 
     @Override
-    public View getView(ViewGroup container) {
+    public View getView(Fragment containerFragment, ViewGroup container) {
 
         View view = LayoutInflater.from(container.getContext()).inflate(R.layout.layout_generic_detail_word, container, false);
 
@@ -144,5 +145,15 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         setDefinition(view, details.clsgrps.get(0).meanings.get(0));
 
         return view;
+    }
+
+    @Override
+    public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(Fragment containerFragment, MenuItem item) {
+        return false;
     }
 }
