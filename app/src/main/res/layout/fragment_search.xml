@@ -29,25 +29,48 @@
                 android:layout_height="match_parent"
                 android:background="@color/nm_colorPrimaryLight" />
 
-            <AutoCompleteTextView
-                android:id="@+id/search_bar"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:hint="@string/label_search_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="textNoSuggestions"
-                android:maxLines="1"
-                android:maxEms="5"
-                android:dropDownHeight="200dp"
-                android:completionThreshold="1"
-                android:textSize="20sp" />
+                android:layout_weight="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentStart="true"
+                    android:completionThreshold="1"
+                    android:dropDownHeight="200dp"
+                    android:hint="@string/label_search_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textNoSuggestions"
+                    android:maxEms="5"
+                    android:maxLines="1"
+                    android:textSize="20sp" />
+
+                <ProgressBar
+                    android:id="@+id/view_search_autocomplete_loading"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/view_search_searchbar"
             android:layout_alignParentBottom="true"
+            android:layout_below="@id/view_search_searchbar"
             android:orientation="vertical">
 
 

@@ -3,7 +3,6 @@ package com.stealthmatedev.navermini.UI.fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -21,8 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,10 +30,8 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
 import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
 import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
-import com.stealthmatedev.navermini.UI.generic.FilterlessArrayAdapter;
 import com.stealthmatedev.navermini.UI.specific.ACSuggestionAdapter;
 import com.stealthmatedev.navermini.data.AutocompleteSuggestion;
-import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
@@ -46,8 +41,6 @@ import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
 
@@ -94,6 +87,7 @@ public class SearchFragment extends Fragment {
     private View loadingView;
 
     private AutoCompleteTextView searchBox;
+    private View acloadingView;
 
     private Spinner subdictList;
     private Spinner dictList;
@@ -262,6 +256,8 @@ public class SearchFragment extends Fragment {
         setCurrentSubDictionary(this.currentDictionary.indexOf(this.currentSubDictionary));
 
 
+        this.acloadingView = getView().findViewById(R.id.view_search_autocomplete_loading);
+
         searchBox = (AutoCompleteTextView) getView().findViewById(R.id.search_bar);
         searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -288,6 +284,7 @@ public class SearchFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 if(currentDictionary.autocompleter == null) return;
+                acloadingView.setVisibility(View.VISIBLE);
 
                 currentDictionary.autocompleter.getSuggestions(state, s.toString(), new Autocompleter.OnSuggestions() {
                     @Override
@@ -303,6 +300,7 @@ public class SearchFragment extends Fragment {
                             }
                             @Override
                             protected void onPostExecute(Void result) {
+                                acloadingView.setVisibility(View.GONE);
                             }
                         }.execute();
                     }
