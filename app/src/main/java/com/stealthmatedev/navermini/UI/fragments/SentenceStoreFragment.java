@@ -39,6 +39,10 @@ import java.util.TreeSet;
 
 public class SentenceStoreFragment extends Fragment {
 
+    private static final int MENU_ID_COPY_ORIGINAL = 0;
+    private static final int MENU_ID_COPY_TRANSLATED = 1;
+    private static final int MENU_ID_DELETE = 2;
+
     private ListView list;
     private View loadingView;
     private StateManager state;
@@ -192,37 +196,42 @@ public class SentenceStoreFragment extends Fragment {
 
 
         this.state = StateManager.getState(getContext());
+
+        searchBox.setFocusable(true);
+        searchBox.requestFocus();
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
-        menu.add(Menu.NONE, 0, 1, "Copy sentence");
+        menu.add(Menu.NONE, MENU_ID_COPY_ORIGINAL, 1, "Copy sentence");
         String translated = ((SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position)).tr;
         if (translated != null && translated.length() > 0)
-            menu.add(Menu.NONE, 1, 2, "Copy translated");
+            menu.add(Menu.NONE, MENU_ID_COPY_TRANSLATED, 2, "Copy translated");
 
-        menu.add(Menu.NONE, 2, 3, "Delete");
+        menu.add(Menu.NONE, MENU_ID_DELETE, 3, "Delete");
     }
 
     public boolean onContextItemSelected(MenuItem item) {
 
         SentenceEntry entry = (SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position);
 
-        if (item.getItemId() == 3) {
+        if (item.getItemId() == MENU_ID_DELETE) {
             state.sentenceStore().remove(entry, new SentenceStoreManager.Callback() {
                 @Override
                 public void callback(Object result) {
                     update();
+                    Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
                 }
             });
+            return true;
         }
 
 
         String text = null;
-        if (item.getItemId() == 0)
+        if (item.getItemId() == MENU_ID_COPY_ORIGINAL)
             text = entry.ex;
-        else if (item.getItemId() == 1)
+        else if (item.getItemId() == MENU_ID_COPY_TRANSLATED)
             text = entry.tr;
 
         ClipboardManager cbm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
