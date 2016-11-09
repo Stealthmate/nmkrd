@@ -14,7 +14,7 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField "String", "HOST", "\"http://naver-mini-dev.herokuapp.com/v2\""
+            buildConfigField "String", "HOST", "\"http://naver-mini-dev.herokuapp.com/\""
             buildConfigField "String", "ADMOB_PUB_ID", "" + APP_ADMOB_PUB_ID
             buildConfigField "String", "ADMOB_UNIT_ID", "" + APP_ADMOB_ADUNIT_ID
             buildConfigField "String", "TEST_DEVICES", "" + APP_TEST_DEVICES
@@ -23,7 +23,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "HOST", "\"http://naver-mini.herokuapp.com/v2\""
+            buildConfigField "String", "HOST", "\"http://naver-mini.herokuapp.com/\""
             buildConfigField "String", "ADMOB_PUB_ID", "" + APP_ADMOB_PUB_ID
             buildConfigField "String", "ADMOB_UNIT_ID", "" + APP_ADMOB_ADUNIT_ID
             buildConfigField "String", "TEST_DEVICES", "" + APP_TEST_DEVICES
