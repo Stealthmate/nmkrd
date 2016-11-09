@@ -8,15 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -25,14 +22,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stealthmatedev.navermini.EarliestStringMatchComparator;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreManager;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by Stealthmate on 16/11/07 0007.
@@ -48,6 +47,7 @@ public class SentenceStoreFragment extends Fragment {
 
         private class SentenceFilter extends Filter {
 
+
             ArrayList<SentenceEntry> entries;
 
             SentenceFilter(ArrayList<SentenceEntry> entries) {
@@ -55,22 +55,27 @@ public class SentenceStoreFragment extends Fragment {
             }
 
             @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
+            protected FilterResults performFiltering(final CharSequence constraint) {
 
-                Log.d(APPTAG, "Query wit " + constraint + " " + entries.size());
                 FilterResults fr = new FilterResults();
-                ArrayList<SentenceEntry> filteredEntries = new ArrayList<>();
+                SortedSet<SentenceEntry> filteredEntries = new TreeSet<>(new Comparator<SentenceEntry>() {
+                    @Override
+                    public int compare(SentenceEntry o1, SentenceEntry o2) {
+                        if(o1.keyword.equals(constraint) ^ o2.keyword.equals(constraint)) return o1.keyword.equals(constraint) ? -1 : +1;
+                        return new EarliestStringMatchComparator(constraint.toString()).compare(o1.ex, o2.ex);
+                    }
+                });
+
                 String match = constraint.toString().trim();
                 for (SentenceEntry entry : entries) {
                     if ((entry.keyword.contains(match + " ") || entry.keyword.contains(" " + match))
                             || (entry.ex.contains(constraint))) {
-                        Log.d(APPTAG, entry.ex);
                         filteredEntries.add(entry);
                     }
                 }
 
 
-                fr.values = filteredEntries;
+                fr.values = new ArrayList<>(filteredEntries);
                 fr.count = filteredEntries.size();
                 return fr;
             }
@@ -83,7 +88,6 @@ public class SentenceStoreFragment extends Fragment {
                 adapter.clear();
                 adapter.addAll(entries);
                 adapter.notifyDataSetChanged();
-                Log.d(APPTAG, entries.size() + " found");
                 loadingView.setVisibility(View.GONE);
             }
         }
@@ -92,7 +96,6 @@ public class SentenceStoreFragment extends Fragment {
 
         public SentenceAdapter(Context context, ArrayList<SentenceEntry> sentences) {
             super(context, 0);
-            Log.d(APPTAG, "New adapter with " + sentences.size());
             this.filter = new SentenceFilter(sentences);
             this.addAll(sentences);
         }
@@ -138,7 +141,6 @@ public class SentenceStoreFragment extends Fragment {
         state.sentenceStore().queryAll(new SentenceStoreManager.Callback() {
             @Override
             public void callback(Object result) {
-                Log.d(APPTAG, ((ArrayList) result).size() + "");
                 list.setAdapter(new SentenceAdapter(getContext(), (ArrayList<SentenceEntry>) result));
                 loadingView.setVisibility(View.GONE);
             }
@@ -226,7 +228,6 @@ public class SentenceStoreFragment extends Fragment {
         ClipboardManager cbm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cbm.setPrimaryClip(ClipData.newPlainText(null, text));
 
-        Log.d(APPTAG, "Copied " + text);
         Toast.makeText(getContext(), "Copied", Toast.LENGTH_SHORT).show();
 
         return true;
