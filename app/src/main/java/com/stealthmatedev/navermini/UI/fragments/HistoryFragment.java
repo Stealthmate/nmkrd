@@ -108,7 +108,7 @@ public class HistoryFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
 
-        menu.add(Menu.NONE, 0, 0, R.string.label_context_menu_history_delete_entry);
+        menu.add(Menu.NONE, 0, 0, R.string.label_menu_delete);
     }
 
     public boolean onContextItemSelected(MenuItem item) {

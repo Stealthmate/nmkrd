@@ -175,9 +175,9 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         ListAdapter adapter = ((ListView) view).getAdapter();
         if (adapter instanceof JpWordDetailsVisualizer.GlossAdapter) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, R.string.label_menu_copy);
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, android.R.string.copy);
         } else if (adapter.getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position) instanceof JpWord.WordClassGroup.Meaning) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, R.string.label_menu_copy);
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, android.R.string.copy);
         }
     }
 

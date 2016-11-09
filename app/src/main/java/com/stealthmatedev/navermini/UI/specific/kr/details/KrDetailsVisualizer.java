@@ -113,7 +113,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
     @Override
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         int menuid = view.getId();
-        menu.add(Menu.NONE, menuid, 0, R.string.label_menu_copy).setActionView(view);
+        menu.add(Menu.NONE, menuid, 0, android.R.string.copy).setActionView(view);
     }
 
     @Override

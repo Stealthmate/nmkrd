@@ -204,12 +204,12 @@ public class SentenceStoreFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
-        menu.add(Menu.NONE, MENU_ID_COPY_ORIGINAL, 1, "Copy sentence");
+        menu.add(Menu.NONE, MENU_ID_COPY_ORIGINAL, 1, R.string.label_menu_sentence_copy_original);
         String translated = ((SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position)).tr;
         if (translated != null && translated.length() > 0)
-            menu.add(Menu.NONE, MENU_ID_COPY_TRANSLATED, 2, "Copy translated");
+            menu.add(Menu.NONE, MENU_ID_COPY_TRANSLATED, 2, R.string.label_menu_sentence_copy_translation);
 
-        menu.add(Menu.NONE, MENU_ID_DELETE, 3, "Delete");
+        menu.add(Menu.NONE, MENU_ID_DELETE, 3, R.string.label_menu_delete);
     }
 
     public boolean onContextItemSelected(MenuItem item) {
@@ -221,7 +221,7 @@ public class SentenceStoreFragment extends Fragment {
                 @Override
                 public void callback(Object result) {
                     update();
-                    Toast.makeText(getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.toast_deleted, Toast.LENGTH_SHORT).show();
                 }
             });
             return true;
@@ -237,7 +237,7 @@ public class SentenceStoreFragment extends Fragment {
         ClipboardManager cbm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cbm.setPrimaryClip(ClipData.newPlainText(null, text));
 
-        Toast.makeText(getContext(), "Copied", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.toast_copied, Toast.LENGTH_SHORT).show();
 
         return true;
     }

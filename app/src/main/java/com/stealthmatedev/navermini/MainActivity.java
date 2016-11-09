@@ -13,21 +13,17 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.MobileAds;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
 import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
 import com.stealthmatedev.navermini.UI.fragments.SentenceStoreFragment;
-import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
-import com.stealthmatedev.navermini.data.sentencestore.SentenceStore;
 import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreManager;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.Stack;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
-import static com.stealthmatedev.navermini.App.MY_PUB_ID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -172,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             break;
             case R.id.menu_clear_history: {
                 state.history().clearHistory();
-                Toast.makeText(this, R.string.history_cleared_message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.toest_cleared_history, Toast.LENGTH_SHORT).show();
             }
             break;
             case R.id.menu_history: {
@@ -209,19 +205,19 @@ public class MainActivity extends AppCompatActivity {
                 // Use the Builder class for convenient dialog construction
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setCancelable(false);
-                builder.setTitle("Clear sentence store");
-                builder.setMessage("All of your sentences will be deleted!");
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.label_menu_clear_sentence_store);
+                builder.setMessage(R.string.dialog_clear_sentance_message);
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         state.sentenceStore().removeAll(new SentenceStoreManager.Callback() {
                             @Override
                             public void callback(Object result) {
-                                Toast.makeText(MainActivity.this, "Cleared sentence store", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, R.string.toast_cleared_sentence_store, Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-                }).setNegativeButton("Cancel ", null);
+                }).setNegativeButton(android.R.string.cancel, null);
                 builder.create().show();
             }
             break;
@@ -259,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
         if (press - lastExitPress <= EXIT_DOUBLEPRESS_TIME_THRESHOLD) super.onBackPressed();
         else {
             lastExitPress = press;
-            Toast toast = Toast.makeText(this, getString(R.string.backpress_exit_message), Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, getString(R.string.toast_backpress_exit), Toast.LENGTH_SHORT);
             toast.show();
         }
 

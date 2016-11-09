@@ -337,7 +337,7 @@ public class SearchFragment extends Fragment {
 
         if(entry instanceof SentenceEntry) {
             super.onCreateContextMenu(menu, view, menuInfo);
-            menu.add(Menu.NONE, 0, 0, "Save");
+            menu.add(Menu.NONE, 0, 0, R.string.label_menu_save);
         }
     }
 

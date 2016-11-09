@@ -200,7 +200,7 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         ListView lv = ((ListView) view);
         int menuid = lv.getId();
-        menu.add(Menu.NONE, menuid, 0, R.string.label_menu_copy).setActionView(lv);
+        menu.add(Menu.NONE, menuid, 0, android.R.string.copy).setActionView(lv);
     }
 
     @Override
