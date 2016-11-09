@@ -7,6 +7,7 @@ import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
 import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
 import com.stealthmatedev.navermini.UI.specific.kr.search.KrExampleEntryListAdapter;
 import com.stealthmatedev.navermini.data.en.EnAutocompleter;
+import com.stealthmatedev.navermini.data.kr.KrAutocompleter;
 import com.stealthmatedev.navermini.serverapi.en.EnWordResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.jp.JpWordKanjiResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.kr.KrExampleResponseTranslator;
@@ -19,7 +20,7 @@ import com.stealthmatedev.navermini.state.Autocompleter;
 public enum EntryListDictionary {
     KOREAN("/kr", new SubDictionary[]{
             new SubDictionary("KOREAN", R.string.subdict_words, "", new KrWordResponseTranslator(), null),
-            new SubDictionary("KOREAN", R.string.subdict_ex, "/ex", new KrExampleResponseTranslator(), KrExampleEntryListAdapter.class)}, null),
+            new SubDictionary("KOREAN", R.string.subdict_ex, "/ex", new KrExampleResponseTranslator(), KrExampleEntryListAdapter.class)}, new KrAutocompleter()),
     JAPANESE("/jp", new SubDictionary[]{
             new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator(), null)}, null),
     ENGLISH("/en", new SubDictionary[]{
