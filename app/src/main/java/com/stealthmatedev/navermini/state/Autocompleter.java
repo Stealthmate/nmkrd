@@ -54,10 +54,11 @@ public abstract class Autocompleter {
 
                                         if (index1 == -1 && index2 > -1) return +1;
                                         if (index2 == -1 && index1 > -1) return -1;
-                                        if (index1 == index2 && index1 == -1) return o1.word.length() - o2.word.length();
+                                        if (index1 == index2 && index1 == -1)
+                                            return o1.word.length() - o2.word.length();
 
                                         if (index1 < index2) return -1;
-                                        if (index2 < index1 ) return +1;
+                                        if (index2 < index1) return +1;
                                         return o1.word.length() - o2.word.length();
                                     }
                                 });
@@ -71,18 +72,6 @@ public abstract class Autocompleter {
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
-                    String msg = "Unknown error";
-
-                    if (error.networkResponse == null) {
-                        msg = state.getActivity().getResources().getString(R.string.err_no_internet);
-                    } else if (error.getClass().equals(TimeoutError.class)) {
-                        msg = "Connection timed out. Is your connection unstable?";
-                    } else {
-                        int status = error.networkResponse.statusCode;
-                        msg = "Error code: " + status;
-                    }
-                    Toast toast = Toast.makeText(state.getActivity(), msg, Toast.LENGTH_SHORT);
-                    toast.show();
                     callback.error(error);
                 }
             });

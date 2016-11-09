@@ -150,6 +150,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onError(VolleyError err) {
                 clear();
+                loadingView.setVisibility(View.GONE);
             }
         });
         this.waitForResults();
@@ -306,7 +307,7 @@ public class SearchFragment extends Fragment {
 
                     @Override
                     public void error(VolleyError error) {
-                        Log.d(APPTAG, "ERROR");
+                        acloadingView.setVisibility(View.GONE);
                     }
                 });
             }

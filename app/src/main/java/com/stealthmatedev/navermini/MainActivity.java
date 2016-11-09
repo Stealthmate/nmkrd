@@ -26,14 +26,12 @@ import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.history.HistoryDBHelper;
 import com.stealthmatedev.navermini.data.history.HistoryManager;
 import com.stealthmatedev.navermini.data.kr.KrWord;
-import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreTableManager;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
@@ -48,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String KEY_PAGE_COUNT = "nm_key_fragment_count";
     private static final String KEY_PAGE = "nm_key_fragment_";
-    private static final String CHANGELOG = "changelog.txt";
+    private static final String CHANGELOG = "CHANGELOG.md";
 
     private static class Page {
         private final Fragment fragment;
@@ -188,8 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 while(true) {
                     String line = reader.readLine();
                     if(line == null) break;
-                    Log.d(APPTAG, "Read line " + line);
-                    changelogText += line;
+                    changelogText += line + "\n";
                 }
 
             } catch (IOException e) {
