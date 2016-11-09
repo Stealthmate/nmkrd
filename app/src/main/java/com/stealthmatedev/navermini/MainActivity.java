@@ -1,6 +1,8 @@
 package com.stealthmatedev.navermini;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,6 +29,11 @@ import com.stealthmatedev.navermini.data.kr.KrWord;
 import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreTableManager;
 import com.stealthmatedev.navermini.state.StateManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Stack;
@@ -36,8 +43,12 @@ import static com.stealthmatedev.navermini.App.APPTAG;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String PREF_FILE = "NMKRDPrefsFile";
+    private static final String KEY_PREFS_VERSION = "nmkrd_Version";
+
     private static final String KEY_PAGE_COUNT = "nm_key_fragment_count";
     private static final String KEY_PAGE = "nm_key_fragment_";
+    private static final String CHANGELOG = "changelog.txt";
 
     private static class Page {
         private final Fragment fragment;
@@ -64,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
     private StateManager state;
 
+    private boolean isFirstRunAfterUpdate = false;
+
 
     private void migrateOldHistoryDB() {
         HistoryManager old = new HistoryManager(this);
@@ -89,10 +102,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
+    private void checkFirstRun() {
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        //Check if first run, set boolean and store new version
+        {
+            int currentVersion = -1;
+            try {
+                currentVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            SharedPreferences prefs = getSharedPreferences(PREF_FILE, MODE_PRIVATE);
+            int savedVersion = prefs.getInt(KEY_PREFS_VERSION, -1);
+
+            if (currentVersion > savedVersion) {
+                isFirstRunAfterUpdate = true;
+            }
+
+            isFirstRunAfterUpdate = true;
+            prefs.edit().putInt(KEY_PREFS_VERSION, currentVersion).apply();
+        }
 
         /**
          * migrate old DB to new DB
@@ -134,6 +173,39 @@ public class MainActivity extends AppCompatActivity {
         updateBackButton();
 
         getWindow().clearFlags(FLAG_FULLSCREEN);
+
+        if(isFirstRunAfterUpdate) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setCancelable(false);
+            builder.setTitle(R.string.dialog_changelog_title);
+
+            String changelogText = "";
+
+            InputStream input = null;
+            try {
+                input = getAssets().open(CHANGELOG);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
+                while(true) {
+                    String line = reader.readLine();
+                    if(line == null) break;
+                    Log.d(APPTAG, "Read line " + line);
+                    changelogText += line;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            builder.setMessage(changelogText);
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+                    isFirstRunAfterUpdate = false;
+                }
+            });
+            builder.create().show();
+        }
+
     }
 
     @Override
@@ -250,7 +322,6 @@ public class MainActivity extends AppCompatActivity {
             }
             break;
             case R.id.menu_clear_sentence_store: {
-                // Use the Builder class for convenient dialog construction
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setCancelable(false);
                 builder.setTitle(R.string.label_menu_clear_sentence_store);

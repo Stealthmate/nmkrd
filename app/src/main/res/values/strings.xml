@@ -42,6 +42,7 @@
     <string name="toast_cleared_sentence_store">Cleared sentence store</string>
 
     <string name="dialog_clear_sentance_message">All of your saved sentences will be deleted!</string>
+    <string name="dialog_changelog_title">Changelog</string>
 
     <string name="square_brackets">[%s]</string>
 
