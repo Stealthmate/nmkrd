@@ -22,11 +22,11 @@
 
     <item
         android:id="@+id/menu_sentence_store"
-        android:title="Sentence store"
+        android:title="@string/label_menu_sentence_store"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/menu_clear_sentence_store"
-        android:title="Clear sentence store"
+        android:title="@string/label_menu_clear_sentence_store"
         app:showAsAction="never"/>
 </menu>
