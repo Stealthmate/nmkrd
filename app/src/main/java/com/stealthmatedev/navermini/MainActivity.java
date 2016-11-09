@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             break;
             case R.id.menu_clear_history: {
                 state.history().clearHistory();
-                Toast.makeText(this, R.string.toest_cleared_history, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.toast_cleared_history, Toast.LENGTH_SHORT).show();
             }
             break;
             case R.id.menu_history: {
