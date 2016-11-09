@@ -1,15 +1,19 @@
 package com.stealthmatedev.navermini.UI;
 
 import android.database.DataSetObserver;
+import android.support.v4.widget.Space;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.stealthmatedev.navermini.UI.generic.EntryProvider;
 import com.stealthmatedev.navermini.UI.specific.EntryUIMapper;
 import com.stealthmatedev.navermini.UI.specific.EntryVisualizer;
+import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.state.StateManager;
 
@@ -113,7 +117,14 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
             e.printStackTrace();
         }
 
-        return visualizer.visualize((Entry) getItem(position), parent);
+        try {
+            return visualizer.visualize(entry, parent);
+        } catch (Exception ex) {
+            Toast.makeText(parent.getContext(), "Error! Encountered corrupted item at position " + position + " (not displayed). Will be removed from history if exists.", Toast.LENGTH_SHORT).show();
+            Log.e(APPTAG, "Corrupted item: " + (entry != null ? entry.getLinkToDetails() : null));
+            if(entry instanceof DetailedEntry) StateManager.getState(parent.getContext()).history().delete(((DetailedEntry) entry), null);
+            return new Space(parent.getContext());
+        }
     }
 
     public boolean onItemClicked(int position) {

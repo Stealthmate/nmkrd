@@ -18,6 +18,8 @@ import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.ArrayListEntryProvider;
 import com.stealthmatedev.navermini.UI.CursorEntryProvider;
 import com.stealthmatedev.navermini.UI.HistoryEntryListAdapter;
+import com.stealthmatedev.navermini.data.CallbackAsyncTask;
+import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.history.HistoryEntry;
@@ -30,6 +32,7 @@ import java.util.Arrays;
 
 import static android.R.attr.entries;
 import static com.stealthmatedev.navermini.App.APPTAG;
+import static com.stealthmatedev.navermini.R.id.result;
 
 /**
  * Created by Stealthmate on 16/10/26 0026.
@@ -75,14 +78,9 @@ public class HistoryFragment extends Fragment {
 
         this.state = StateManager.getState(getContext());
 
-        this.state.history().registerObserver(new HistoryManager.Observer() {
+        this.state.history().registerObserver(new DBHelper.TableManager.Observer() {
             @Override
             public void onChanged() {
-                update();
-            }
-
-            @Override
-            public void onInvalidated() {
                 update();
             }
         });
@@ -95,9 +93,9 @@ public class HistoryFragment extends Fragment {
     }
 
     public void update() {
-        state.history().getAll(new HistoryManager.Callback() {
+        state.history().queryAll(new CallbackAsyncTask.Callback() {
             @Override
-            public void onFinish(Object result) {
+            public void callback(Object result) {
                 ArrayList<Entry> arr = new ArrayList<Entry>((ArrayList<DetailedEntry>) result);
                 populate(arr);
             }
@@ -117,8 +115,7 @@ public class HistoryFragment extends Fragment {
 
                 AdapterView.AdapterContextMenuInfo minfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 DetailedEntry entry = (DetailedEntry) list.getAdapter().getItem(minfo.position);
-                state.history().removeEntry(entry);
-
+                state.history().delete(entry, null);
             }
 
             break;

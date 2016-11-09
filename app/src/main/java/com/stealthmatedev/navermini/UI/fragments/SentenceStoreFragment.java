@@ -24,14 +24,16 @@ import android.widget.Toast;
 
 import com.stealthmatedev.navermini.EarliestStringMatchComparator;
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.data.CallbackAsyncTask;
 import com.stealthmatedev.navermini.data.SentenceEntry;
-import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreManager;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import static com.stealthmatedev.navermini.R.id.result;
 
 /**
  * Created by Stealthmate on 16/11/07 0007.
@@ -65,7 +67,8 @@ public class SentenceStoreFragment extends Fragment {
                 SortedSet<SentenceEntry> filteredEntries = new TreeSet<>(new Comparator<SentenceEntry>() {
                     @Override
                     public int compare(SentenceEntry o1, SentenceEntry o2) {
-                        if(o1.keyword.equals(constraint) ^ o2.keyword.equals(constraint)) return o1.keyword.equals(constraint) ? -1 : +1;
+                        if (o1.keyword.equals(constraint) ^ o2.keyword.equals(constraint))
+                            return o1.keyword.equals(constraint) ? -1 : +1;
                         return new EarliestStringMatchComparator(constraint.toString()).compare(o1.ex, o2.ex);
                     }
                 });
@@ -142,7 +145,7 @@ public class SentenceStoreFragment extends Fragment {
     }
 
     private void update() {
-        state.sentenceStore().queryAll(new SentenceStoreManager.Callback() {
+        state.sentenceStore().getAll(new CallbackAsyncTask.Callback() {
             @Override
             public void callback(Object result) {
                 list.setAdapter(new SentenceAdapter(getContext(), (ArrayList<SentenceEntry>) result));
@@ -189,7 +192,7 @@ public class SentenceStoreFragment extends Fragment {
         });
 
 
-        this.list = (ListView) getView().findViewById(R.id.result);
+        this.list = (ListView) getView().findViewById(result);
         registerForContextMenu(this.list);
 
         update();
@@ -217,7 +220,7 @@ public class SentenceStoreFragment extends Fragment {
         SentenceEntry entry = (SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position);
 
         if (item.getItemId() == MENU_ID_DELETE) {
-            state.sentenceStore().remove(entry, new SentenceStoreManager.Callback() {
+            state.sentenceStore().remove(entry, new CallbackAsyncTask.Callback() {
                 @Override
                 public void callback(Object result) {
                     update();

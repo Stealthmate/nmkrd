@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,13 +18,21 @@ import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.fragments.HistoryFragment;
 import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
 import com.stealthmatedev.navermini.UI.fragments.SentenceStoreFragment;
+import com.stealthmatedev.navermini.data.CallbackAsyncTask;
+import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
-import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreManager;
+import com.stealthmatedev.navermini.data.history.HistoryDBHelper;
+import com.stealthmatedev.navermini.data.history.HistoryManager;
+import com.stealthmatedev.navermini.data.kr.KrWord;
+import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreTableManager;
 import com.stealthmatedev.navermini.state.StateManager;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Stack;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,10 +64,45 @@ public class MainActivity extends AppCompatActivity {
 
     private StateManager state;
 
+
+    private void migrateOldHistoryDB() {
+        HistoryManager old = new HistoryManager(this);
+        final String TAG = APPTAG + " Migrate ";
+        KrWord test = new KrWord("Test", "Hanja", "Pronun", "Word", new ArrayList<KrWord.Definition>(), "linktomore", false);
+        old.save(test);
+        Log.i(TAG, "Querying all entries...");
+        old.getAll(new HistoryManager.Callback() {
+            @Override
+            public void onFinish(Object result) {
+                ArrayList<DetailedEntry> entries = (ArrayList<DetailedEntry>) result;
+                Log.i(TAG, "Old db has " + entries.size() + " entries");
+                DBHelper dbHelper = new DBHelper(MainActivity.this);
+                for (DetailedEntry entry : entries) {
+                    Log.d(TAG, "Migrating entry: " + entry.getRawLink());
+                    dbHelper.history().put(entry, null);
+                }
+                Log.i(TAG, "Migration successful");
+                Log.i(TAG, "Deleting old database...");
+                MainActivity.this.deleteDatabase(HistoryDBHelper.HISTORY_DATABASE_NAME);
+                Log.i(TAG, "Deleted old database!");
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        /**
+         * migrate old DB to new DB
+         * */
+        ArrayList<String> dbs = new ArrayList<>(Arrays.asList(databaseList()));
+        if (dbs.contains(HistoryDBHelper.HISTORY_DATABASE_NAME)) {
+            Log.i(APPTAG, "Found old history db. Initiating migration procedure...");
+            migrateOldHistoryDB();
+        }
+
 
         setContentView(R.layout.activity_main);
 
@@ -167,8 +211,12 @@ public class MainActivity extends AppCompatActivity {
             }
             break;
             case R.id.menu_clear_history: {
-                state.history().clearHistory();
-                Toast.makeText(this, R.string.toast_cleared_history, Toast.LENGTH_SHORT).show();
+                state.history().deleteAll(new CallbackAsyncTask.Callback() {
+                    @Override
+                    public void callback(Object param) {
+                        Toast.makeText(MainActivity.this, R.string.toast_cleared_history, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             break;
             case R.id.menu_history: {
@@ -210,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        state.sentenceStore().removeAll(new SentenceStoreManager.Callback() {
+                        state.sentenceStore().removeAll(new CallbackAsyncTask.Callback() {
                             @Override
                             public void callback(Object result) {
                                 Toast.makeText(MainActivity.this, R.string.toast_cleared_sentence_store, Toast.LENGTH_SHORT).show();

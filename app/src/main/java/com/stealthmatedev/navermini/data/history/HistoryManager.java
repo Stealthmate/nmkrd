@@ -19,7 +19,6 @@ public class HistoryManager {
 
     public interface Observer {
         void onChanged();
-
         void onInvalidated();
     }
 

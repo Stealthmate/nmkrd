@@ -29,7 +29,6 @@ import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
 import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
-import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
 import com.stealthmatedev.navermini.UI.specific.ACSuggestionAdapter;
 import com.stealthmatedev.navermini.data.AutocompleteSuggestion;
 import com.stealthmatedev.navermini.data.Entry;
@@ -145,7 +144,7 @@ public class SearchFragment extends Fragment {
         state.getSearchEngine().queryResultList(query, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
-                populate(ResultListSearchVisualizer.mapFromSearch(state, query, response));
+                populate(NetworkEntryListAdapter.mapFromSearch(state, query, response));
             }
 
             @Override
@@ -321,7 +320,7 @@ public class SearchFragment extends Fragment {
         created = true;
 
         if (savedInstanceState != null) {
-            NetworkEntryListAdapter vis = ResultListSearchVisualizer.fromSavedState(state, savedInstanceState);
+            NetworkEntryListAdapter vis = NetworkEntryListAdapter.fromSavedState(state, savedInstanceState);
             if (vis != null) this.currentAdapter = vis;
         }
 
@@ -346,7 +345,7 @@ public class SearchFragment extends Fragment {
             case 0: {
                 AdapterView.AdapterContextMenuInfo minfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 SentenceEntry entry = (SentenceEntry) this.currentAdapter.getItem(minfo.position);
-                state.dbhelper().sentenceStore.put(entry);
+                state.dbhelper().sentenceStore().put(entry, null);
             }
 
             break;
