@@ -6,6 +6,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -55,6 +57,7 @@ public class SentenceStoreFragment extends Fragment {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
 
+                Log.d(APPTAG, "Query wit " + constraint + " " + entries.size());
                 FilterResults fr = new FilterResults();
                 ArrayList<SentenceEntry> filteredEntries = new ArrayList<>();
                 String match = constraint.toString().trim();
@@ -80,6 +83,7 @@ public class SentenceStoreFragment extends Fragment {
                 adapter.clear();
                 adapter.addAll(entries);
                 adapter.notifyDataSetChanged();
+                Log.d(APPTAG, entries.size() + " found");
                 loadingView.setVisibility(View.GONE);
             }
         }
@@ -87,8 +91,10 @@ public class SentenceStoreFragment extends Fragment {
         private SentenceFilter filter;
 
         public SentenceAdapter(Context context, ArrayList<SentenceEntry> sentences) {
-            super(context, 0, sentences);
+            super(context, 0);
+            Log.d(APPTAG, "New adapter with " + sentences.size());
             this.filter = new SentenceFilter(sentences);
+            this.addAll(sentences);
         }
 
         @NonNull
@@ -124,29 +130,20 @@ public class SentenceStoreFragment extends Fragment {
         }
     }
 
-    public void performSearch() {
-
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-
-        getView().requestLayout();
-
-        ViewGroup root = (ViewGroup) this.getView();
-        EditText searchBar = (EditText) root.findViewById(R.id.search_bar);
-        final String querystring = searchBar.getText().toString();
-
-        if (querystring.length() == 0) return;
-
-        ((ArrayAdapter) list.getAdapter()).getFilter().filter(querystring);
-        waitForData();
-
-
-    }
-
     private void waitForData() {
         loadingView.setVisibility(View.VISIBLE);
     }
 
+    private void update() {
+        state.sentenceStore().queryAll(new SentenceStoreManager.Callback() {
+            @Override
+            public void callback(Object result) {
+                Log.d(APPTAG, ((ArrayList) result).size() + "");
+                list.setAdapter(new SentenceAdapter(getContext(), (ArrayList<SentenceEntry>) result));
+                loadingView.setVisibility(View.GONE);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -165,12 +162,23 @@ public class SentenceStoreFragment extends Fragment {
 
         this.state = StateManager.getState(getContext());
 
-        EditText searchBox = (EditText) getView().findViewById(R.id.search_bar);
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        final EditText searchBox = (EditText) getView().findViewById(R.id.search_bar);
+        searchBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                performSearch();
-                return true;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 0) return;
+                ((ArrayAdapter) list.getAdapter()).getFilter().filter(s);
+                waitForData();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -178,14 +186,7 @@ public class SentenceStoreFragment extends Fragment {
         this.list = (ListView) getView().findViewById(R.id.result);
         registerForContextMenu(this.list);
 
-        state.sentenceStore().queryAll(new SentenceStoreManager.Callback() {
-            @Override
-            public void callback(Object result) {
-                Log.d(APPTAG, ((ArrayList) result).size() + "");
-                list.setAdapter(new SentenceAdapter(getContext(), (ArrayList<SentenceEntry>) result));
-                loadingView.setVisibility(View.GONE);
-            }
-        });
+        update();
 
 
         this.state = StateManager.getState(getContext());
@@ -194,18 +195,33 @@ public class SentenceStoreFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, view, menuInfo);
-        menu.add(Menu.NONE, 0, 0, "Copy sentence");
+        menu.add(Menu.NONE, 0, 1, "Copy sentence");
         String translated = ((SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position)).tr;
         if (translated != null && translated.length() > 0)
-            menu.add(Menu.NONE, 1, 0, "Copy translated");
+            menu.add(Menu.NONE, 1, 2, "Copy translated");
+
+        menu.add(Menu.NONE, 2, 3, "Delete");
     }
 
     public boolean onContextItemSelected(MenuItem item) {
+
+        SentenceEntry entry = (SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position);
+
+        if (item.getItemId() == 3) {
+            state.sentenceStore().remove(entry, new SentenceStoreManager.Callback() {
+                @Override
+                public void callback(Object result) {
+                    update();
+                }
+            });
+        }
+
+
         String text = null;
         if (item.getItemId() == 0)
-            text = ((SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position)).ex;
+            text = entry.ex;
         else if (item.getItemId() == 1)
-            text = ((SentenceEntry) this.list.getAdapter().getItem(((AdapterView.AdapterContextMenuInfo) item.getMenuInfo()).position)).tr;
+            text = entry.tr;
 
         ClipboardManager cbm = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cbm.setPrimaryClip(ClipData.newPlainText(null, text));

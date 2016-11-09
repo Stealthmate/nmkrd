@@ -86,6 +86,11 @@ public class SentenceStore implements DBHelper.TableManager {
         return entries;
     }
 
+    public void remove(SentenceEntry entry) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.delete(TABLE_NAME, COLUMN_SENTENCE + "=?", new String[]{entry.ex});
+    }
+
     public void removeAll() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete(TABLE_NAME, null, null);

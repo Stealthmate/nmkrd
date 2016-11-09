@@ -69,4 +69,18 @@ public class SentenceStoreManager {
             }
         }.execute();
     }
+
+    public void remove(SentenceEntry entry, final Callback callback) {
+        new AsyncTask<SentenceEntry, Void, Void>() {
+            @Override
+            protected Void doInBackground(SentenceEntry... params) {
+                store.remove(params[0]);
+                return null;
+            }
+            @Override
+            protected void onPostExecute(Void result) {
+                callback.callback(result);
+            }
+        }.execute(entry);
+    }
 }
