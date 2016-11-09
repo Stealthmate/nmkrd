@@ -45,7 +45,6 @@ public class KrAutocompleter extends Autocompleter {
             }
         }
 
-        Log.d(APPTAG, Arrays.toString(suggestions.toArray()));
         return new ArrayList<>(suggestions);
     }
 }

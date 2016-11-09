@@ -74,7 +74,6 @@ public class DetailsFragment extends Fragment {
 
     public void waitForData() {
         clear();
-        Log.d(APPTAG, (root == null) + "");
         loadingView.setVisibility(View.VISIBLE);
     }
 

@@ -233,7 +233,6 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
         ClipboardManager cbm = (ClipboardManager) containerFragment.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cbm.setPrimaryClip(ClipData.newPlainText(null, text));
 
-        Log.d(APPTAG, "Copied " + text);
         Toast.makeText(containerFragment.getContext(), "Copied", Toast.LENGTH_SHORT).show();
 
         return true;
