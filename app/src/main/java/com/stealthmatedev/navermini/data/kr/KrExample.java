@@ -2,20 +2,18 @@ package com.stealthmatedev.navermini.data.kr;
 
 import android.support.v4.util.Pair;
 
+import com.google.gson.Gson;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 
 /**
  * Created by Stealthmate on 16/10/07 0007.
  */
 
-public class KrExample implements SentenceEntry {
+public class KrExample extends SentenceEntry {
 
-    private final String text;
-
-    public KrExample(String text) {
-        this.text = text;
+    public KrExample() {
+        super();
     }
-
 
     @Override
     public boolean isPartial() {
@@ -29,30 +27,20 @@ public class KrExample implements SentenceEntry {
 
     @Override
     public String getRawLink() {
-        return text;
+        return ex;
     }
 
-    public String getText() {
-        return text;
+    public String getEx() {
+        return ex;
     }
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof KrExample && text.equals(((KrExample) obj).text);
+        return obj instanceof KrExample && ex.equals(((KrExample) obj).ex);
     }
 
     @Override
-    public String getUntranslated() {
-        return text;
-    }
-
-    @Override
-    public String getTranslated() {
-        return null;
-    }
-
-    @Override
-    public Pair<Language, Language> getLanguages() {
-        return new Pair<>(Language.KR, Language.KR);
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

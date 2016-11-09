@@ -1,8 +1,10 @@
 package com.stealthmatedev.navermini;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -18,6 +20,8 @@ import com.stealthmatedev.navermini.UI.fragments.SearchFragment;
 import com.stealthmatedev.navermini.UI.fragments.SentenceStoreFragment;
 import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
+import com.stealthmatedev.navermini.data.sentencestore.SentenceStore;
+import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreManager;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.Stack;
@@ -58,29 +62,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        this.deleteDatabase(DBHelper.DATABASE_NAME);
-
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-        MobileAds.initialize(this, MY_PUB_ID);
-
-        /*AdView resultListBannerAd = new AdView(this);
-        resultListBannerAd.setAdSize(AdSize.SMART_BANNER);
-        resultListBannerAd.setAdUnitId(ADUNIT);
-
-        AdRequest.Builder adBuilder = new AdRequest.Builder();
-        for (int i = 0; i <= TEST_DEVICES.length - 1; i++) {
-            adBuilder = adBuilder.addTestDevice(TEST_DEVICES[i]);
-        }
-        AdRequest adRequest = adBuilder.build();
-
-        resultListBannerAd.loadAd(adRequest);
-
-        LinearLayout adContainer = (LinearLayout) findViewById(R.id.view_ad_container);
-        adContainer.addView(resultListBannerAd);*/
 
         this.state = new StateManager(this);
 
@@ -158,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void navigateHome() {
         FragmentTransaction ft = beginTransaction();
-        while(pagestack.size() > 1) {
+        while (pagestack.size() > 1) {
             Page p = pagestack.pop();
             ft = ft.hide(p.fragment).remove(p.fragment);
         }
@@ -168,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBurgerBack() {
-        if(pagestack.size() > 1) onBackPressed();
+        if (pagestack.size() > 1) onBackPressed();
     }
 
     @Override
@@ -182,9 +166,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case android.R.id.home : {
+            case android.R.id.home: {
                 onBurgerBack();
-            } break;
+            }
+            break;
             case R.id.menu_clear_history: {
                 state.history().clearHistory();
                 Toast.makeText(this, R.string.history_cleared_message, Toast.LENGTH_SHORT).show();
@@ -192,8 +177,8 @@ public class MainActivity extends AppCompatActivity {
             break;
             case R.id.menu_history: {
                 Page page = null;
-                for(Page p : pagestack) {
-                    if(p.tag.equals(FTAG_HISTORY)) {
+                for (Page p : pagestack) {
+                    if (p.tag.equals(FTAG_HISTORY)) {
                         page = p;
                         break;
                     }
@@ -203,11 +188,12 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 openNewPage(new HistoryFragment(), FTAG_HISTORY);
-            } break;
+            }
+            break;
             case R.id.menu_sentence_store: {
                 Page page = null;
-                for(Page p : pagestack) {
-                    if(p.tag.equals(FTAG_SENTENCE_STORE)) {
+                for (Page p : pagestack) {
+                    if (p.tag.equals(FTAG_SENTENCE_STORE)) {
                         page = p;
                         break;
                     }
@@ -217,7 +203,28 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 openNewPage(new SentenceStoreFragment(), FTAG_SENTENCE_STORE);
-            } break;
+            }
+            break;
+            case R.id.menu_clear_sentence_store: {
+                // Use the Builder class for convenient dialog construction
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(false);
+                builder.setTitle("Clear sentence store");
+                builder.setMessage("All of your sentences will be deleted!");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        state.sentenceStore().removeAll(new SentenceStoreManager.Callback() {
+                            @Override
+                            public void callback(Object result) {
+                                Toast.makeText(MainActivity.this, "Cleared sentence store", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).setNegativeButton("Cancel ", null);
+                builder.create().show();
+            }
+            break;
             case R.id.menu_home: {
                 navigateHome();
             }

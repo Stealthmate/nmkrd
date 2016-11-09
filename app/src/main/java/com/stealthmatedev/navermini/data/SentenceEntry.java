@@ -1,14 +1,12 @@
 package com.stealthmatedev.navermini.data;
 
-import android.support.v4.util.Pair;
-
 /**
  * Created by Stealthmate on 16/11/06 0006.
  */
 
-public interface SentenceEntry extends Entry {
+public class SentenceEntry implements Entry {
 
-    enum Language {
+    public enum Language {
         KR("KR"),
         JP("JP"),
         EN("EN");
@@ -20,8 +18,43 @@ public interface SentenceEntry extends Entry {
         }
     }
 
+    public final Language from;
+    public final Language to;
 
-    String getUntranslated();
-    String getTranslated();
-    Pair<Language, Language> getLanguages();
+    public final String keyword;
+    public final String ex;
+    public final String tr;
+
+    public SentenceEntry() {
+        this.from = null;
+        this.to = null;
+
+        this.keyword = "";
+        this.ex = "";
+        this.tr = "";
+    }
+
+    public SentenceEntry(Language from, Language to, String keyword, String ex, String tr) {
+        this.from = from;
+        this.to = to;
+        this.keyword = keyword;
+        this.ex = ex;
+        this.tr = tr;
+    }
+
+
+    @Override
+    public boolean isPartial() {
+        return false;
+    }
+
+    @Override
+    public String getLinkToDetails() {
+        return null;
+    }
+
+    @Override
+    public String getRawLink() {
+        return null;
+    }
 }

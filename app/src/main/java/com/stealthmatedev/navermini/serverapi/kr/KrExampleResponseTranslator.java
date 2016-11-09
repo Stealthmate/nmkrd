@@ -1,11 +1,17 @@
 package com.stealthmatedev.navermini.serverapi.kr;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.kr.KrExample;
 import com.stealthmatedev.navermini.serverapi.ResponseTranslator;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/02 0002.
@@ -16,9 +22,9 @@ public class KrExampleResponseTranslator implements ResponseTranslator {
     public ArrayList<Entry> translate(String response) {
 
         ArrayList<Entry> entriesList = new ArrayList<>();
-        String[] entries = new Gson().fromJson(response, String[].class);
+        KrExample[] entries = new Gson().fromJson(response, KrExample[].class);
 
-        for (int i = 0; i <= entries.length - 1; i++) entriesList.add(new KrExample(entries[i]));
+        Collections.addAll(entriesList, entries);
 
         return entriesList;
     }
