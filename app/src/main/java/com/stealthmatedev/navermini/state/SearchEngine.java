@@ -29,6 +29,7 @@ public class SearchEngine {
     public interface OnResponse {
         void responseReady(String response);
         void onError(VolleyError err);
+        void onRedirect();
     }
 
     private static final String TAG = "tag";
@@ -106,6 +107,7 @@ public class SearchEngine {
     public void queryDetails(final String path, OnResponse callback) {
         if(path.startsWith("http")) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(path));
+            callback.onRedirect();
             state.getActivity().startActivity(browserIntent);
             return;
         }

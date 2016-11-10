@@ -152,6 +152,11 @@ public class SearchFragment extends Fragment {
                 clear();
                 loadingView.setVisibility(View.GONE);
             }
+
+            @Override
+            public void onRedirect() {
+
+            }
         });
         this.waitForResults();
     }

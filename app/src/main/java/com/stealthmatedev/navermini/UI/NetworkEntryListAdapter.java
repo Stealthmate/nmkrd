@@ -130,6 +130,11 @@ public class NetworkEntryListAdapter extends EntryListAdapter {
                     loading = false;
                     notifyDataSetChanged();
                 }
+
+                @Override
+                public void onRedirect() {
+
+                }
             });
         }
 

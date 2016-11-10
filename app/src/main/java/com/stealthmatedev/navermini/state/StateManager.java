@@ -90,6 +90,11 @@ public class StateManager {
                         public void onError(VolleyError err) {
                             closePage(dfrag);
                         }
+
+                        @Override
+                        public void onRedirect() {
+                            closePage(dfrag);
+                        }
                     });
                 } else {
                     finalVisualizer.populate(actualEntry);
