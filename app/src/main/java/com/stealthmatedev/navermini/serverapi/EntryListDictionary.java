@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.data.en.EnAutocompleter;
+import com.stealthmatedev.navermini.data.jp.JpAutocompleter;
 import com.stealthmatedev.navermini.data.kr.KrAutocompleter;
 import com.stealthmatedev.navermini.serverapi.en.EnWordResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.jp.JpWordKanjiResponseTranslator;
@@ -19,7 +20,7 @@ public enum EntryListDictionary {
             new SubDictionary("KOREAN", R.string.subdict_words, "", new KrWordResponseTranslator()),
             new SubDictionary("KOREAN", R.string.subdict_ex, "/ex", new KrExampleResponseTranslator())}, new KrAutocompleter()),
     JAPANESE("/jp", new SubDictionary[]{
-            new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator())}, null),
+            new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator())}, new JpAutocompleter()),
     ENGLISH("/en", new SubDictionary[]{
             new SubDictionary("ENGLISH", R.string.subdict_words, "", new EnWordResponseTranslator())}, new EnAutocompleter());
 
