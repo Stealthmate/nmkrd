@@ -40,6 +40,7 @@
 
     <string name="toast_deleted">Изтрито</string>
     <string name="toast_copied">Копирано</string>
+    <string name="toast_saved">Запазено</string>
 
     <string name="label_context_menu_history_delete_entry">Изтрий</string>
 

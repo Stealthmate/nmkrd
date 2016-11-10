@@ -38,6 +38,7 @@
 
     <string name="toast_deleted">Deleted</string>
     <string name="toast_copied">Copied</string>
+    <string name="toast_saved">Saved</string>
     <string name="toast_backpress_exit">Press twice to exit</string>
     <string name="toast_cleared_history">History cleared</string>
     <string name="toast_cleared_sentence_store">Cleared sentence store</string>

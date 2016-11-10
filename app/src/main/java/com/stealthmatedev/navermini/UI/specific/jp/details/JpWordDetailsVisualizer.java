@@ -220,7 +220,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
                 StateManager.getState(containerFragment.getContext()).sentenceStore().put(sent, new CallbackAsyncTask.Callback() {
                     @Override
                     public void callback(Object param) {
-                        Toast.makeText(containerFragment.getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(containerFragment.getContext(), R.string.toast_saved, Toast.LENGTH_SHORT).show();
                     }
                 });
                 return true;
