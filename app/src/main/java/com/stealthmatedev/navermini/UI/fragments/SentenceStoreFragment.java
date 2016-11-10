@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +34,8 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import static com.stealthmatedev.navermini.App.APPTAG;
+import static com.stealthmatedev.navermini.R.id.material_drawer_account_header;
 import static com.stealthmatedev.navermini.R.id.result;
 
 /**
@@ -63,24 +66,26 @@ public class SentenceStoreFragment extends Fragment {
             @Override
             protected FilterResults performFiltering(final CharSequence constraint) {
 
+                Log.d(APPTAG, entries.size() + "");
                 FilterResults fr = new FilterResults();
+                final String match = constraint.toString().trim().toUpperCase();
                 SortedSet<SentenceEntry> filteredEntries = new TreeSet<>(new Comparator<SentenceEntry>() {
                     @Override
                     public int compare(SentenceEntry o1, SentenceEntry o2) {
-                        if (o1.keyword.equals(constraint) ^ o2.keyword.equals(constraint))
-                            return o1.keyword.equals(constraint) ? -1 : +1;
-                        return new EarliestStringMatchComparator(constraint.toString()).compare(o1.ex, o2.ex);
+                        if (o1.keyword.toUpperCase().equals(match) ^ o2.keyword.equals(match))
+                            return o1.keyword.equals(match) ? -1 : +1;
+                        return new EarliestStringMatchComparator(match).compare(o1.ex, o2.ex);
                     }
                 });
 
-                String match = constraint.toString().trim();
                 for (SentenceEntry entry : entries) {
-                    if ((entry.keyword.contains(match + " ") || entry.keyword.contains(" " + match))
-                            || (entry.ex.contains(constraint))) {
+                    if ((entry.keyword.toUpperCase().equals(match))
+                            || (entry.keyword.toUpperCase().contains(match + " ") || entry.keyword.toUpperCase().contains(" " + match))
+                            || (entry.ex.toUpperCase().contains(match.toUpperCase()))
+                            || (entry.tr.toUpperCase().contains(match.toUpperCase()))) {
                         filteredEntries.add(entry);
                     }
                 }
-
 
                 fr.values = new ArrayList<>(filteredEntries);
                 fr.count = filteredEntries.size();
@@ -128,8 +133,7 @@ public class SentenceStoreFragment extends Fragment {
             if (item.tr.length() > 0) {
                 translated.setText(item.tr);
                 translated.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 translated.setVisibility(View.GONE);
             }
 

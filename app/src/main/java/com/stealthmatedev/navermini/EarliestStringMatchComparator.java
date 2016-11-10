@@ -16,6 +16,10 @@ public class EarliestStringMatchComparator implements Comparator<String> {
 
     @Override
     public int compare(String o1, String o2) {
+
+        o1 = o1.toUpperCase();
+        o2 = o2.toUpperCase();
+
         int index1 = o1.indexOf(query);
         int index2 = o2.indexOf(query);
 

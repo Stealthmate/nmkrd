@@ -68,6 +68,7 @@ public class SentenceStoreTableManager extends DBHelper.TableManager {
                 values.put(COLUMN_SENTENCE, params[0].ex);
                 values.put(COLUMN_TRANSLATION, params[0].tr);
                 db.replace(TABLE_NAME, null, values);
+                notifyChanged();
                 return null;
             }
         }.execute(entry);
@@ -80,9 +81,11 @@ public class SentenceStoreTableManager extends DBHelper.TableManager {
                 SQLiteDatabase db = helper.getReadableDatabase();
                 Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
                 ArrayList<SentenceEntry> entries = new ArrayList<>(c.getCount());
-                while (c.moveToNext()) {
+                c.moveToFirst();
+                do {
                     entries.add(new SentenceEntry(SentenceEntry.Language.valueOf(c.getString(1)), SentenceEntry.Language.valueOf(c.getString(2)), c.getString(0), c.getString(3), c.getString(4)));
                 }
+                while (c.moveToNext());
                 c.close();
                 return entries;
             }
@@ -95,6 +98,7 @@ public class SentenceStoreTableManager extends DBHelper.TableManager {
             protected Void doInBackground(SentenceEntry... params) {
                 SQLiteDatabase db = helper.getWritableDatabase();
                 db.delete(TABLE_NAME, COLUMN_SENTENCE + "=?", new String[]{params[0].ex});
+                notifyChanged();
                 return null;
             }
         }.execute(entry);
@@ -106,6 +110,7 @@ public class SentenceStoreTableManager extends DBHelper.TableManager {
             protected Void doInBackground(Void... params) {
                 SQLiteDatabase db = helper.getWritableDatabase();
                 db.delete(TABLE_NAME, null, null);
+                notifyChanged();
                 return null;
             }
         }.execute();

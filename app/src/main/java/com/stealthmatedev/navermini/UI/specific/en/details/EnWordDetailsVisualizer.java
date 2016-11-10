@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,6 +32,7 @@ import com.stealthmatedev.navermini.state.StateManager;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import static com.stealthmatedev.navermini.App.APPTAG;
 import static com.stealthmatedev.navermini.data.SentenceEntry.Language.EN;
 import static com.stealthmatedev.navermini.data.SentenceEntry.Language.JP;
 import static com.stealthmatedev.navermini.data.SentenceEntry.Language.KR;
@@ -166,15 +168,15 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
                 String item = (String) ((ListView) menuItem.getActionView()).getAdapter().getItem(pos);
 
                 SentenceEntry.Language from, to;
-                String word = ((EnWord) getDetails()).word;
+                String word = ((EnWord) getDetails()).word.trim();
                 String ex = item.split(" - ")[0];
                 String tr = item.split(" - ")[1];
-                if (ex.contains(word)) {
-                    from = KR;
-                    to = EN;
-                } else {
+                if (ex.toUpperCase().contains(word.toUpperCase())) {
                     from = EN;
                     to = KR;
+                } else {
+                    from = KR;
+                    to = EN;
                 }
                 SentenceEntry sent = new SentenceEntry(from, to, word, ex, tr);
                 StateManager.getState(containerFragment.getContext()).sentenceStore().put(sent, new CallbackAsyncTask.Callback() {
