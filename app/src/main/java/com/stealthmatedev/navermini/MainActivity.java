@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
                 isFirstRunAfterUpdate = true;
             }
 
-            isFirstRunAfterUpdate = true;
             prefs.edit().putInt(KEY_PREFS_VERSION, currentVersion).apply();
         }
 
