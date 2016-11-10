@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <com.stealthmatedev.navermini.UI.generic.FuriganaTextView
+        android:id="@+id/view_listitem_acsug_word"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:textColor="@color/nm_colorText"
+        android:maxLines="1"
+        android:text="LONG LONG LONG LONG LONG LONG LONG TEXT" />
+
+    <com.stealthmatedev.navermini.UI.generic.FuriganaTextView
+        android:id="@+id/view_listitem_acsug_meaning"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+</LinearLayout>

@@ -35,6 +35,7 @@
             android:layout_toEndOf="@id/view_generic_detail_word_word"
             android:layout_toRightOf="@id/view_generic_detail_word_word"
             android:focusable="true"
+            android:textIsSelectable="true"
             android:text="持つ" />
 
     </RelativeLayout>
@@ -74,6 +75,7 @@
                 android:gravity="center"
                 android:text="@string/label_details_def_ex"
                 android:textSize="20sp"
+                android:textIsSelectable="true"
                 android:textStyle="bold" />
 
             <ListView

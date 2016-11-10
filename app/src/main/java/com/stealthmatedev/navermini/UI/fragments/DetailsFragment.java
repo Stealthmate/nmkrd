@@ -3,14 +3,20 @@ package com.stealthmatedev.navermini.UI.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
+import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import static com.stealthmatedev.navermini.App.APPTAG;
@@ -49,7 +55,7 @@ public class DetailsFragment extends Fragment {
     public void update() {
         if (!isCreated || this.currentAdapter == null) return;
         root.removeAllViews();
-        root.addView(this.currentAdapter.getView(root));
+        root.addView(this.currentAdapter.getView(this, root));
         loadingView.setVisibility(View.GONE);
     }
 
@@ -68,7 +74,6 @@ public class DetailsFragment extends Fragment {
 
     public void waitForData() {
         clear();
-        Log.d(APPTAG, (root == null) + "");
         loadingView.setVisibility(View.VISIBLE);
     }
 
@@ -104,5 +109,16 @@ public class DetailsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if (currentAdapter != null) currentAdapter.saveState(outState);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, view, menuInfo);
+        if(this.currentAdapter != null) this.currentAdapter.onCreateContextMenu(this, menu, view, menuInfo);
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        if(this.currentAdapter != null) return this.currentAdapter.onContextItemSelected(this, item);
+        return false;
     }
 }

@@ -25,7 +25,7 @@ public class KrExampleEntryVisualizer extends EntryVisualizer {
 
         if (ex == null) return tv;
 
-        tv.setText(ex.getText());
+        tv.setText(ex.getEx());
 
         return tv;
     }

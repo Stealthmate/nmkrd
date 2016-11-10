@@ -1,0 +1,57 @@
+<resources>
+
+    <string name="app_name">NMKRD</string>
+    <string name="cc_kr">KR</string>
+    <string name="cc_jp">JP</string>
+    <string name="cc_en">EN</string>
+
+    <string name="subdict_words">Думи</string>
+    <string name="subdict_ex">Примери</string>
+
+    <string name="label_search_hint">Търсене...</string>
+    <string name="label_search_more">Зареди повече</string>
+    <string name="label_no_results_found">Няма намерени резултати</string>
+
+    <string name="label_details_def_ex">Дефиниции и примери</string>
+
+    <string name="label_jp_kanji_strokes">Черти: </string>
+    <string name="label_jp_kanji_radical">Радикал: </string>
+    <string name="label_jp_kanji_onyomi">Он-йоми: </string>
+    <string name="label_jp_kanji_kunyomi">Кун-йоми: </string>
+    <string name="label_jp_kanji_meaning">Значение: </string>
+
+    <string name="label_kunyomi_ex">Примери с он-йоми</string>
+    <string name="label_onyomi_ex">Пример с кун-йоми</string>
+
+    <string name="label_heading_history">История</string>
+
+    <string name="label_menu_sentence_store">Хранилище с изречения</string>
+    <string name="label_menu_clear_sentence_store">Изчисти хранилището с изречения</string>
+
+    <string name="label_menu_home">Начало</string>
+    <string name="label_menu_history">История</string>
+    <string name="label_menu_clear_history">Изчисти историята</string>
+
+    <string name="label_menu_save">Запази</string>
+    <string name="label_menu_sentence_copy_original">Копирай изречението</string>
+    <string name="label_menu_sentence_copy_translation">Копирай превода</string>
+    <string name="label_menu_delete">Изтрий</string>
+    <string name="label_menu_about">За приложението</string>
+
+    <string name="toast_deleted">Изтрито</string>
+    <string name="toast_copied">Копирано</string>
+
+    <string name="label_context_menu_history_delete_entry">Изтрий</string>
+
+    <string name="toast_backpress_exit">Натиснете 2 пъти за да излезете</string>
+
+    <string name="toast_cleared_history">Историята е изчистена</string>
+    <string name="toast_cleared_sentence_store">Хранилището с изречения е изчистено</string>
+
+    <string name="dialog_clear_sentance_message">Всички запазени изречения ще бъдат изтрити!</string>
+
+    <string name="square_brackets">[%s]</string>
+
+    <string name="err_no_internet">Няма връзка с интернет</string>
+
+</resources>

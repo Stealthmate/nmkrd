@@ -1,18 +1,26 @@
 package com.stealthmatedev.navermini.UI.fragments;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,9 +28,13 @@ import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DictionarySpinnerAdapter;
-import com.stealthmatedev.navermini.UI.ResultListSearchVisualizer;
-import com.stealthmatedev.navermini.UI.SearchVisualizer;
+import com.stealthmatedev.navermini.UI.NetworkEntryListAdapter;
+import com.stealthmatedev.navermini.UI.specific.ACSuggestionAdapter;
+import com.stealthmatedev.navermini.data.AutocompleteSuggestion;
+import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
+import com.stealthmatedev.navermini.state.Autocompleter;
 import com.stealthmatedev.navermini.state.ResultListQuery;
 import com.stealthmatedev.navermini.state.SearchEngine;
 import com.stealthmatedev.navermini.state.StateManager;
@@ -64,20 +76,26 @@ public class SearchFragment extends Fragment {
 
     private static final String SAVE_KEY_DICT = "dict";
     private static final String SAVE_KEY_SUBDICT = "subdict";
+    private static final String SAVE_KEY_ADAPTER = "adapter";
 
     private EntryListDictionary currentDictionary;
     private EntryListDictionary.SubDictionary currentSubDictionary;
 
     private StateManager state;
-    private LinearLayout resultcontainer;
+    private ListView resultcontainer;
+    private View loadingView;
+
+    private AutoCompleteTextView searchBox;
+    private View acloadingView;
+
     private Spinner subdictList;
     private Spinner dictList;
+
     private DictionarySpinnerAdapter dictAdapter;
 
-    private SearchVisualizer currentVisualizer;
+    private NetworkEntryListAdapter currentAdapter;
 
     private boolean created = false;
-
 
     public void setCurrentSubDictionary(int i) {
         if (i < 0 || i >= currentDictionary.subdicts.length) {
@@ -107,6 +125,8 @@ public class SearchFragment extends Fragment {
 
         if (!created) return;
 
+        searchBox.dismissDropDown();
+
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
@@ -124,34 +144,47 @@ public class SearchFragment extends Fragment {
         state.getSearchEngine().queryResultList(query, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
-                populate(ResultListSearchVisualizer.mapFromSearch(state, query, response));
+                populate(NetworkEntryListAdapter.mapFromSearch(state, query, response));
             }
 
             @Override
             public void onError(VolleyError err) {
                 clear();
+                loadingView.setVisibility(View.GONE);
             }
         });
         this.waitForResults();
     }
 
-    public void populate(final SearchVisualizer visualizer) {
+    public void populate(final NetworkEntryListAdapter visualizer) {
 
-        if (visualizer != null) this.currentVisualizer = visualizer;
+        if (visualizer != null) this.currentAdapter = visualizer;
 
         if (this.resultcontainer == null) return;
 
         clear();
 
-        if (this.currentVisualizer == null) return;
+        if (this.currentAdapter == null) return;
 
-        resultcontainer.addView(currentVisualizer.getView(resultcontainer));
+        resultcontainer.setAdapter(visualizer);
+        resultcontainer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                currentAdapter.onItemClicked(position);
+            }
+        });
+
+
+        this.loadingView.setVisibility(View.GONE);
+        this.resultcontainer.setVisibility(View.VISIBLE);
+
     }
 
     public void waitForResults() {
         if (resultcontainer == null) return;
         clear();
-        LayoutInflater.from(getContext()).inflate(R.layout.view_loading, this.resultcontainer, true);
+        this.loadingView.setVisibility(View.VISIBLE);
+        this.resultcontainer.setVisibility(View.GONE);
     }
 
     public void clear() {
@@ -200,8 +233,8 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        this.resultcontainer = (LinearLayout) view.findViewById(R.id.result);
-        LayoutInflater.from(getContext()).inflate(R.layout.layout_results, resultcontainer, true);
+        this.resultcontainer = (ListView) view.findViewById(R.id.result);
+        registerForContextMenu(resultcontainer);
 
         this.dictList = (Spinner) view.findViewById(R.id.view_search_select_dict);
         this.subdictList = (Spinner) view.findViewById(R.id.spinner_select_enigne);
@@ -213,6 +246,9 @@ public class SearchFragment extends Fragment {
 
         this.state = ((MainActivity) getActivity()).getState();
 
+        this.loadingView = getView().findViewById(R.id.view_loading);
+        this.loadingView.setVisibility(View.GONE);
+
         this.dictList.setAdapter(this.dictAdapter);
         this.dictList.setOnItemSelectedListener(new OnSelectDictionaryListener());
         this.subdictList.setOnItemSelectedListener(new OnSelectSubdictionaryListener());
@@ -220,7 +256,9 @@ public class SearchFragment extends Fragment {
         setCurrentSubDictionary(this.currentDictionary.indexOf(this.currentSubDictionary));
 
 
-        EditText searchBox = (EditText) getView().findViewById(R.id.search_bar);
+        this.acloadingView = getView().findViewById(R.id.view_search_autocomplete_loading);
+
+        searchBox = (AutoCompleteTextView) getView().findViewById(R.id.search_bar);
         searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -228,22 +266,90 @@ public class SearchFragment extends Fragment {
                 return true;
             }
         });
+        searchBox.setFilters(new InputFilter[]{});
+        searchBox.setAdapter(new ACSuggestionAdapter(getContext(), new ArrayList<AutocompleteSuggestion>()));
+        searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                performSearch();
+            }
+        });
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(currentDictionary.autocompleter == null) return;
+                acloadingView.setVisibility(View.VISIBLE);
+
+                currentDictionary.autocompleter.getSuggestions(state, s.toString(), new Autocompleter.OnSuggestions() {
+                    @Override
+                    public void received(final ArrayList<AutocompleteSuggestion> suggestions) {
+                        final ArrayAdapter<AutocompleteSuggestion> adapter = (ACSuggestionAdapter) searchBox.getAdapter();
+                        acloadingView.setVisibility(View.GONE);
+                        adapter.clear();
+                        adapter.addAll(suggestions);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void error(VolleyError error) {
+                        acloadingView.setVisibility(View.GONE);
+                    }
+                });
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         created = true;
 
         if (savedInstanceState != null) {
-            SearchVisualizer vis = ResultListSearchVisualizer.fromSavedState(state, savedInstanceState);
-            if (vis != null) this.currentVisualizer = vis;
+            NetworkEntryListAdapter vis = NetworkEntryListAdapter.fromSavedState(state, savedInstanceState);
+            if (vis != null) this.currentAdapter = vis;
         }
 
-        populate(this.currentVisualizer);
+        populate(this.currentAdapter);
 
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
+
+        int pos = ((AdapterView.AdapterContextMenuInfo) menuInfo).position;
+        Entry entry = (Entry) currentAdapter.getItem(pos);
+
+        if(entry instanceof SentenceEntry) {
+            super.onCreateContextMenu(menu, view, menuInfo);
+            menu.add(Menu.NONE, 0, 0, R.string.label_menu_save);
+        }
+    }
+
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0: {
+                AdapterView.AdapterContextMenuInfo minfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                SentenceEntry entry = (SentenceEntry) this.currentAdapter.getItem(minfo.position);
+                state.dbhelper().sentenceStore().put(entry, null);
+            }
+
+            break;
+        }
+
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (currentVisualizer != null) {
-            currentVisualizer.saveState(outState);
+        if (currentAdapter != null) {
+            outState.putSerializable(SAVE_KEY_ADAPTER, currentAdapter.getDataRepresentation());
         }
         outState.putString(SAVE_KEY_DICT, currentDictionary.name());
         outState.putString(SAVE_KEY_SUBDICT, getContext().getResources().getString(currentSubDictionary.name));

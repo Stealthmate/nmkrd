@@ -1,10 +1,14 @@
 package com.stealthmatedev.navermini.UI;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 
 import java.util.ArrayList;
@@ -70,7 +74,11 @@ public abstract class DetailsVisualizer {
         outState.putSerializable(STATE_DATA, details);
     }
 
-    public abstract View getView(ViewGroup container);
+    public abstract View getView(Fragment containerFragment, ViewGroup container);
+
+    public abstract void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo);
+
+    public abstract boolean onContextItemSelected(Fragment containerFragment, MenuItem item);
 
     public void registerObserver(Observer obs) {
         observers.add(obs);

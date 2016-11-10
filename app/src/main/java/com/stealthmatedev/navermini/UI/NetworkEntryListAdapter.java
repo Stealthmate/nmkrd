@@ -1,6 +1,8 @@
 package com.stealthmatedev.navermini.UI;
 
+import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import static android.R.attr.entries;
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/02 0002.
@@ -34,8 +37,32 @@ public class NetworkEntryListAdapter extends EntryListAdapter {
         }
     }
 
+    public static NetworkEntryListAdapter mapFromSearch(StateManager state, ResultListQuery query, String response) {
+
+        ArrayList<Entry> entries = query.getSubDictionary().translator.translate(response);
+        if (entries.size() == 0) return null;
+        NetworkEntryListAdapter adapter = new NetworkEntryListAdapter(state, entries, query);
+
+        return adapter;
+    }
+
+
+    private static final String STATE_CLASS = "NM_SEARCH_STATE_CLASS";
+    private static final String STATE_DATA = "NM_SEARCH_STATE_DATA";
+
+    public static NetworkEntryListAdapter fromSavedState(StateManager state, Bundle savedState) {
+
+        if (savedState == null) return null;
+
+        String classname = savedState.getString(STATE_CLASS);
+        if (classname == null) return null;
+
+        Serializable data = savedState.getSerializable(STATE_DATA);
+        return (NetworkEntryListAdapter) EntryListAdapter.deserialize(state, (SerializableRepresentation) data);
+    }
+
     private ResultListQuery query;
-    private StateManager state;
+    protected final StateManager state;
 
     private boolean hasMore;
     private boolean loading;

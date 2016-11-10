@@ -7,12 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDoneException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 
 import java.util.ArrayList;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/03 0003.
@@ -69,7 +72,7 @@ public class HistoryDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        Log.d(APPTAG, "UPDATED DB ");
     }
 
     HistoryEntry findById(String id) {

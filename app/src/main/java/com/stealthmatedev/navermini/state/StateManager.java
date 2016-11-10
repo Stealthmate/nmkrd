@@ -1,19 +1,19 @@
 package com.stealthmatedev.navermini.state;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.stealthmatedev.navermini.MainActivity;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.fragments.DetailsFragment;
 import com.stealthmatedev.navermini.UI.specific.EntryUIMapper;
+import com.stealthmatedev.navermini.data.CallbackAsyncTask;
+import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.DetailedEntry;
 import com.stealthmatedev.navermini.data.Entry;
-import com.stealthmatedev.navermini.data.en.EnWord;
-import com.stealthmatedev.navermini.data.history.HistoryManager;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
+import com.stealthmatedev.navermini.data.history.HistoryEntry;
+import com.stealthmatedev.navermini.data.history.HistoryTableManager;
+import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreTableManager;
 
 /**
  * Created by Stealthmate on 16/09/23 0023.
@@ -22,12 +22,20 @@ public class StateManager {
 
     private MainActivity activity;
     private SearchEngine searchEngine;
-    private HistoryManager history;
+    private DBHelper dbHelper;
 
     public StateManager(MainActivity activity) {
         this.activity = activity;
         this.searchEngine = new SearchEngine(this);
-        this.history = new HistoryManager(activity);
+        this.dbHelper = new DBHelper(activity);
+    }
+
+    public SentenceStoreTableManager sentenceStore() {
+        return dbHelper.sentenceStore();
+    }
+
+    public DBHelper dbhelper() {
+        return dbHelper;
     }
 
     public MainActivity getActivity() {
@@ -38,8 +46,8 @@ public class StateManager {
         return searchEngine;
     }
 
-    public HistoryManager history() {
-        return this.history;
+    public HistoryTableManager history() {
+        return dbHelper.history();
     }
 
     public void openDetails(final DetailedEntry entry, final boolean save) {
@@ -58,9 +66,9 @@ public class StateManager {
         dfrag.setVisualizer(finalVisualizer);
 
         dfrag.waitForData();
-        history().get(entry, new HistoryManager.Callback() {
+        history().findById(new HistoryEntry(entry).getId(), new CallbackAsyncTask.Callback() {
             @Override
-            public void onFinish(Object historyEntry) {
+            public void callback(Object historyEntry) {
 
                 DetailedEntry actualEntry = entry;
 
@@ -74,7 +82,7 @@ public class StateManager {
                         @Override
                         public void responseReady(String response) {
                             DetailedEntry detailedEntry = (DetailedEntry) new Entry.Translator(finalEntry.getClass()).translate(response);
-                            if(save) history.save(detailedEntry);
+                            if(save) history().put(detailedEntry, null);
                             finalVisualizer.populate(detailedEntry);
                         }
 
@@ -85,7 +93,7 @@ public class StateManager {
                     });
                 } else {
                     finalVisualizer.populate(actualEntry);
-                    if(save) history.save(actualEntry);
+                    if(save) history().put(actualEntry, null);
                 }
             }
         });

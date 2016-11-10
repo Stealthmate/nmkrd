@@ -8,14 +8,22 @@
         <item name="android:textColorPrimaryInverse">@color/nm_colorTextAccent</item>
         <item name="android:textColorSecondary">@android:color/black</item>
         <item name="android:textColorSecondaryInverse">@android:color/black</item>
-        <item name="android:windowBackground">@color/nm_colorBackground</item>
+        <item name="android:textColorHint">@android:color/tertiary_text_light</item>
+        <item name="android:textColorTertiary">@color/nm_colorText</item>
+        <item name="android:textColorTertiaryInverse">@color/nm_colorText</item>
         <item name="android:actionMenuTextColor">@color/nm_colorText</item>
+        <item name="android:windowBackground">@color/nm_colorBackground</item>
+        <item name="android:textColorHighlight">@color/nm_colorText</item>
         <item name="actionMenuTextColor">@color/nm_colorText</item>
         <item name="android:itemTextAppearance">@style/actionMenuTextStyle</item>
     </style>
 
     <style name="actionMenuTextStyle">
         <item name="android:textColor">@color/nm_colorText</item>
+    </style>
+
+    <style name="simpleListNoDividersStyle">
+        <item name="android:divider">@null</item>
     </style>
 
     <style name="simpleListStyle">
