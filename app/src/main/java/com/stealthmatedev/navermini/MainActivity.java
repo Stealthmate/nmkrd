@@ -1,8 +1,10 @@
 package com.stealthmatedev.navermini;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -38,6 +40,7 @@ import java.util.Stack;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 import static com.stealthmatedev.navermini.App.APPTAG;
+import static com.stealthmatedev.navermini.App.HOST;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -339,6 +342,10 @@ public class MainActivity extends AppCompatActivity {
             break;
             case R.id.menu_home: {
                 navigateHome();
+            } break;
+            case R.id.menu_about: {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(HOST));
+                state.getActivity().startActivity(browserIntent);
             }
         }
 
