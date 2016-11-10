@@ -1,5 +1,6 @@
 package com.stealthmatedev.navermini.state;
 
+import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -44,29 +45,41 @@ public abstract class Autocompleter {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            try {
-                                ArrayList<AutocompleteSuggestion> suglist = parseResponse(response);
-                                Collections.sort(suglist, new Comparator<AutocompleteSuggestion>() {
-                                    @Override
-                                    public int compare(AutocompleteSuggestion o1, AutocompleteSuggestion o2) {
-                                        int index1 = o1.word.indexOf(query);
-                                        int index2 = o2.word.indexOf(query);
+                            new AsyncTask<String, Void, ArrayList<AutocompleteSuggestion>>() {
+                                @Override
+                                protected ArrayList<AutocompleteSuggestion> doInBackground(String... params) {
+                                    try {
+                                        ArrayList<AutocompleteSuggestion> suglist = parseResponse(params[0]);
+                                        Collections.sort(suglist, new Comparator<AutocompleteSuggestion>() {
+                                            @Override
+                                            public int compare(AutocompleteSuggestion o1, AutocompleteSuggestion o2) {
+                                                int index1 = o1.word.indexOf(query);
+                                                int index2 = o2.word.indexOf(query);
 
-                                        if (index1 == -1 && index2 > -1) return +1;
-                                        if (index2 == -1 && index1 > -1) return -1;
-                                        if (index1 == index2 && index1 == -1)
-                                            return o1.word.length() - o2.word.length();
+                                                if (index1 == -1 && index2 > -1) return +1;
+                                                if (index2 == -1 && index1 > -1) return -1;
+                                                if (index1 == index2 && index1 == -1)
+                                                    return o1.word.length() - o2.word.length();
 
-                                        if (index1 < index2) return -1;
-                                        if (index2 < index1) return +1;
-                                        return o1.word.length() - o2.word.length();
+                                                if (index1 < index2) return -1;
+                                                if (index2 < index1) return +1;
+                                                return o1.word.length() - o2.word.length();
+                                            }
+                                        });
+                                        return suglist;
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        return new ArrayList<>();
                                     }
-                                });
-                                callback.received(suglist);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                callback.received(new ArrayList<AutocompleteSuggestion>());
-                            }
+                                }
+
+
+                                @Override
+                                public void onPostExecute(ArrayList<AutocompleteSuggestion> result){
+                                    callback.received(result);
+                                }
+
+                            }.execute(response);
                         }
                     }, new Response.ErrorListener() {
                 @Override

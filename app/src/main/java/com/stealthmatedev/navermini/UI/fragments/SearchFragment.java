@@ -290,19 +290,10 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void received(final ArrayList<AutocompleteSuggestion> suggestions) {
                         final ArrayAdapter<AutocompleteSuggestion> adapter = (ACSuggestionAdapter) searchBox.getAdapter();
-                        new AsyncTask<Void, Void, Void>() {
-                            @Override
-                            protected Void doInBackground(Void... params) {
-                                adapter.clear();
-                                adapter.addAll(suggestions);
-                                adapter.notifyDataSetChanged();
-                                return null;
-                            }
-                            @Override
-                            protected void onPostExecute(Void result) {
-                                acloadingView.setVisibility(View.GONE);
-                            }
-                        }.execute();
+                        acloadingView.setVisibility(View.GONE);
+                        adapter.clear();
+                        adapter.addAll(suggestions);
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override

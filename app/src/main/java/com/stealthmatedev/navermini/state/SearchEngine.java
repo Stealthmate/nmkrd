@@ -67,6 +67,7 @@ public class SearchEngine {
                 }
                 else {
                     int status = error.networkResponse.statusCode;
+                    Log.e(APPTAG, url);
                     msg = "Error code: " + status;
                 }
                 Toast toast = Toast.makeText(state.getActivity(), msg, Toast.LENGTH_SHORT);
