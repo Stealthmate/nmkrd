@@ -41,13 +41,12 @@
     <string name="toast_deleted">Изтрито</string>
     <string name="toast_copied">Копирано</string>
 
-    <string name="label_context_menu_history_delete_entry">Изтрий</string>
-
     <string name="toast_backpress_exit">Натиснете 2 пъти за да излезете</string>
 
     <string name="toast_cleared_history">Историята е изчистена</string>
     <string name="toast_cleared_sentence_store">Хранилището с изречения е изчистено</string>
 
+    <string name="dialog_changelog_title">Промени</string>
     <string name="dialog_clear_sentance_message">Всички запазени изречения ще бъдат изтрити!</string>
 
     <string name="square_brackets">[%s]</string>
