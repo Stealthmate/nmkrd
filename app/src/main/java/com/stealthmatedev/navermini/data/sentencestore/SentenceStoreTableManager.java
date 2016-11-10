@@ -3,12 +3,15 @@ package com.stealthmatedev.navermini.data.sentencestore;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.stealthmatedev.navermini.data.CallbackAsyncTask;
 import com.stealthmatedev.navermini.data.DBHelper;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 
 import java.util.ArrayList;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/06 0006.
@@ -64,6 +67,7 @@ public class SentenceStoreTableManager extends DBHelper.TableManager {
                 values.put(COLUMN_LANG_TO, params[0].to.name());
                 values.put(COLUMN_SENTENCE, params[0].ex);
                 values.put(COLUMN_TRANSLATION, params[0].tr);
+                Log.d(APPTAG, values.toString());
                 db.replace(TABLE_NAME, null, values);
                 return null;
             }

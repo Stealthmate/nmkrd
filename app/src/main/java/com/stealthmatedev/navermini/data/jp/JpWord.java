@@ -104,6 +104,14 @@ public class JpWord implements DetailedEntry {
 
     }
 
+    public static String stripFurigana(String string) {
+        return string.replaceAll("\\(([^;]+);[^\\)]+\\)", "($1)");
+    }
+
+    public static String stripKanji(String string) {
+        return string.replaceAll("\\([^;]+;([^\\)]+)\\)", "($1)");
+    }
+
     public final String word;
     public final String kanji;
     public final String more;

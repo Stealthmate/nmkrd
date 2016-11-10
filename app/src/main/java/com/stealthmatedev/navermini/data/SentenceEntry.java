@@ -1,5 +1,8 @@
 package com.stealthmatedev.navermini.data;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 /**
  * Created by Stealthmate on 16/11/06 0006.
  */
@@ -34,12 +37,12 @@ public class SentenceEntry implements Entry {
         this.tr = "";
     }
 
-    public SentenceEntry(Language from, Language to, String keyword, String ex, String tr) {
+    public SentenceEntry(@NonNull Language from, @NonNull Language to, @Nullable String keyword, @NonNull String ex, @Nullable String tr) {
         this.from = from;
         this.to = to;
-        this.keyword = keyword;
+        this.keyword = keyword != null ? keyword : keyword;
         this.ex = ex;
-        this.tr = tr;
+        this.tr = tr != null ? tr : "";
     }
 
 

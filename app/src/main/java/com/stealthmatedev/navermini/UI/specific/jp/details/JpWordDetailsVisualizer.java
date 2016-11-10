@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,16 +22,23 @@ import android.widget.Toast;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
-import com.stealthmatedev.navermini.UI.specific.en.details.EnWordDetailsVisualizer;
-import com.stealthmatedev.navermini.data.DetailedEntry;
+import com.stealthmatedev.navermini.data.CallbackAsyncTask;
+import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.jp.JpWord.WordClassGroup.Meaning;
+import com.stealthmatedev.navermini.state.StateManager;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
+import static com.stealthmatedev.navermini.data.SentenceEntry.Language.JP;
+import static com.stealthmatedev.navermini.data.SentenceEntry.Language.KR;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.
@@ -37,8 +46,8 @@ import java.util.LinkedHashMap;
 
 public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
-    private static final int CONTEXT_MENU_ID_DEFS = 0;
-    private static final int CONTEXT_MENU_ID_EX = 1;
+    private static final int CONTEXT_MENU_ID_COPY = 0;
+    private static final int CONTEXT_MENU_ID_SAVE = 1;
 
 
     private WCGAdapter makeWCGAdapter(ViewGroup parent, JpWord details) {
@@ -174,31 +183,47 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
     @Override
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
         ListAdapter adapter = ((ListView) view).getAdapter();
-        if (adapter instanceof JpWordDetailsVisualizer.GlossAdapter) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, android.R.string.copy);
-        } else if (adapter.getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position) instanceof JpWord.WordClassGroup.Meaning) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0, android.R.string.copy);
-        }
+
+        ListView lv = (ListView) view;
+        menu.add(Menu.NONE, CONTEXT_MENU_ID_COPY, 0, android.R.string.copy).setActionView(view);
+        if (lv.getId() == R.id.view_generic_detail_word_defex_list && adapter.getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position) instanceof TranslatedExample)
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_SAVE, 0, R.string.label_menu_save).setActionView(view);
     }
 
     @Override
-    public boolean onContextItemSelected(Fragment containerFragment, MenuItem menuItem) {
+    public boolean onContextItemSelected(final Fragment containerFragment, MenuItem menuItem) {
         String text = "WHAT THE FUCK";
 
         switch (menuItem.getItemId()) {
-            case CONTEXT_MENU_ID_DEFS: {
+            case CONTEXT_MENU_ID_COPY: {
                 int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
-                Object item = meaningAdapter.getItem(pos);
-                if (item instanceof EnWord.WordClassGroup)
-                    text = ((EnWord.WordClassGroup) item).wclass;
-                else if (item instanceof EnWord.WordClassGroup.Meaning)
-                    text = ((EnWord.WordClassGroup.Meaning) item).m;
+                Object item = ((ListView) menuItem.getActionView()).getAdapter().getItem(pos);
+                if (item instanceof Meaning.Gloss) text = ((Meaning.Gloss) item).g;
+                else if (item instanceof Meaning) text = ((Meaning) item).m;
             }
             break;
-            case CONTEXT_MENU_ID_EX: {
+            case CONTEXT_MENU_ID_SAVE: {
                 int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
-                Object item = glossAdapter.getItem(pos);
-                text = ((Meaning.Gloss) item).g;
+                TranslatedExample item = (TranslatedExample) ((ListView) menuItem.getActionView()).getAdapter().getItem(pos);
+
+                SentenceEntry.Language from, to;
+                String word = ((JpWord) getDetails()).word;
+                String kanji = ((JpWord) getDetails()).kanji;
+                if(item.ex.contains(JpWord.stripFurigana(word))) {
+                    from = KR;
+                    to = JP;
+                } else {
+                    from = JP;
+                    to = KR;
+                }
+                SentenceEntry sent = new SentenceEntry(from, to, kanji, item.ex, item.tr);
+                StateManager.getState(containerFragment.getContext()).sentenceStore().put(sent, new CallbackAsyncTask.Callback() {
+                    @Override
+                    public void callback(Object param) {
+                        Toast.makeText(containerFragment.getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return true;
             }
         }
 
@@ -206,7 +231,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         ClipboardManager cbm = (ClipboardManager) containerFragment.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cbm.setPrimaryClip(ClipData.newPlainText(null, text));
 
-        Toast.makeText(containerFragment.getContext(), "Copied", Toast.LENGTH_SHORT).show();
+        Toast.makeText(containerFragment.getContext(), R.string.toast_copied, Toast.LENGTH_SHORT).show();
 
         return true;
     }

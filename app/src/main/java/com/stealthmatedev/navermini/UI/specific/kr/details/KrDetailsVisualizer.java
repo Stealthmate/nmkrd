@@ -20,8 +20,11 @@ import android.widget.Toast;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
+import com.stealthmatedev.navermini.data.CallbackAsyncTask;
+import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.kr.KrWord;
+import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
 
@@ -66,7 +69,7 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
 
         final KrWord details = (KrWord) getDetails();
 
-        if(details == null) return view;
+        if (details == null) return view;
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
@@ -110,24 +113,45 @@ public class KrDetailsVisualizer extends DetailsVisualizer {
         return view;
     }
 
+    private static final int MENU_OPTION_COPY = 0;
+    private static final int MENU_OPTION_SAVE = 1;
+
     @Override
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
-        int menuid = view.getId();
-        menu.add(Menu.NONE, menuid, 0, android.R.string.copy).setActionView(view);
+        menu.add(Menu.NONE, MENU_OPTION_COPY, 0, android.R.string.copy).setActionView(view);
+        if(view.getId() == R.id.view_generic_detail_word_defex_list) menu.add(Menu.NONE, MENU_OPTION_SAVE, 0, R.string.label_menu_save).setActionView(view);
     }
 
     @Override
-    public boolean onContextItemSelected(Fragment containerFragment, MenuItem menuItem) {
+    public boolean onContextItemSelected(final Fragment containerFragment, MenuItem menuItem) {
         int position = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
 
         ListView lv = (ListView) menuItem.getActionView();
 
-        String text = (String) lv.getAdapter().getItem(position);
+        switch (menuItem.getItemId()) {
+            case MENU_OPTION_COPY: {
+                String text = (String) lv.getAdapter().getItem(position);
 
-        ClipboardManager cbm = (ClipboardManager) containerFragment.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-        cbm.setPrimaryClip(ClipData.newPlainText(null, text));
+                ClipboardManager cbm = (ClipboardManager) containerFragment.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                cbm.setPrimaryClip(ClipData.newPlainText(null, text));
 
-        Toast.makeText(containerFragment.getContext(), "Copied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(containerFragment.getContext(), R.string.toast_copied, Toast.LENGTH_SHORT).show();
+            }
+            break;
+            case MENU_OPTION_SAVE: {
+
+                KrWord entry = (KrWord) getDetails();
+                String text = (String) lv.getAdapter().getItem(position);
+                SentenceEntry sent = new SentenceEntry(SentenceEntry.Language.KR, SentenceEntry.Language.KR, entry.word, text, null);
+                StateManager.getState(containerFragment.getContext()).sentenceStore().put(sent, new CallbackAsyncTask.Callback() {
+                    @Override
+                    public void callback(Object param) {
+                        Toast.makeText(containerFragment.getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            break;
+        }
 
         return true;
     }

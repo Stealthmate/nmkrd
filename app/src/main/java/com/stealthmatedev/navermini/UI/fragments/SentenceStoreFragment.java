@@ -125,7 +125,10 @@ public class SentenceStoreFragment extends Fragment {
             original.setText(item.ex);
 
             TextView translated = (TextView) convertView.findViewById(R.id.view_listitem_sentence_translated);
-            if (item.tr.length() > 0) translated.setText(item.tr);
+            if (item.tr.length() > 0) {
+                translated.setText(item.tr);
+                translated.setVisibility(View.VISIBLE);
+            }
             else {
                 translated.setVisibility(View.GONE);
             }
@@ -180,7 +183,10 @@ public class SentenceStoreFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 0) return;
+                if (s.length() == 0) {
+                    update();
+                    return;
+                }
                 ((ArrayAdapter) list.getAdapter()).getFilter().filter(s);
                 waitForData();
             }
