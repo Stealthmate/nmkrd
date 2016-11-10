@@ -21,11 +21,19 @@ import android.widget.Toast;
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
+import com.stealthmatedev.navermini.data.CallbackAsyncTask;
+import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
 import com.stealthmatedev.navermini.data.en.EnWord;
+import com.stealthmatedev.navermini.data.jp.JpWord;
+import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+
+import static com.stealthmatedev.navermini.data.SentenceEntry.Language.EN;
+import static com.stealthmatedev.navermini.data.SentenceEntry.Language.JP;
+import static com.stealthmatedev.navermini.data.SentenceEntry.Language.KR;
 
 /**
  * Created by Stealthmate on 16/10/30 0030.
@@ -33,8 +41,8 @@ import java.util.LinkedHashMap;
 
 public class EnWordDetailsVisualizer extends DetailsVisualizer {
 
-    private static final int CONTEXT_MENU_ID_DEFS = 0;
-    private static final int CONTEXT_MENU_ID_EX = 1;
+    private static final int CONTEXT_MENU_ID_COPY = 0;
+    private static final int CONTEXT_MENU_ID_SAVE = 1;
 
     private WCGAdapter makeAdapter(ViewGroup parent, EnWord details) {
         LinkedHashMap<EnWord.WordClassGroup, ArrayList<EnWord.WordClassGroup.Meaning>> map = new LinkedHashMap<>();
@@ -133,33 +141,49 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
     @Override
     public void onCreateContextMenu(Fragment containerFragment, ContextMenu menu, View view, ContextMenu.ContextMenuInfo menuInfo) {
 
-        ListAdapter adapter = ((ListView) view).getAdapter();
-        if (adapter instanceof ExAdapter) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_EX, 0, android.R.string.copy);
-        } else if (adapter.getItem(((AdapterView.AdapterContextMenuInfo) menuInfo).position) instanceof EnWord.WordClassGroup.Meaning) {
-            menu.add(Menu.NONE, CONTEXT_MENU_ID_DEFS, 0,android.R.string.copy);
+        menu.add(Menu.NONE, CONTEXT_MENU_ID_COPY, 0, android.R.string.copy).setActionView(view);
+        if (view.getId() == R.id.view_generic_detail_word_defex_list) {
+            menu.add(Menu.NONE, CONTEXT_MENU_ID_SAVE, 0, R.string.label_menu_save).setActionView(view);
         }
     }
 
     @Override
-    public boolean onContextItemSelected(Fragment containerFragment, MenuItem menuItem) {
+    public boolean onContextItemSelected(final Fragment containerFragment, MenuItem menuItem) {
 
         String text = "WHAT THE FUCK";
 
         switch (menuItem.getItemId()) {
-            case CONTEXT_MENU_ID_DEFS: {
+            case CONTEXT_MENU_ID_COPY: {
                 int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
-                Object item = wcgadapter.getItem(pos);
-                if (item instanceof EnWord.WordClassGroup)
-                    text = ((EnWord.WordClassGroup) item).wclass;
-                else if (item instanceof EnWord.WordClassGroup.Meaning)
+                Object item = ((ListView) menuItem.getActionView()).getAdapter().getItem(pos);
+                if (item instanceof EnWord.WordClassGroup.Meaning)
                     text = ((EnWord.WordClassGroup.Meaning) item).m;
+                else if (item instanceof String) text = (String) item;
             }
             break;
-            case CONTEXT_MENU_ID_EX: {
+            case CONTEXT_MENU_ID_SAVE: {
                 int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
-                Object item = exadapter.getItem(pos);
-                text = (String) item;
+                String item = (String) ((ListView) menuItem.getActionView()).getAdapter().getItem(pos);
+
+                SentenceEntry.Language from, to;
+                String word = ((EnWord) getDetails()).word;
+                String ex = item.split(" - ")[0];
+                String tr = item.split(" - ")[1];
+                if (ex.contains(word)) {
+                    from = KR;
+                    to = EN;
+                } else {
+                    from = EN;
+                    to = KR;
+                }
+                SentenceEntry sent = new SentenceEntry(from, to, word, ex, tr);
+                StateManager.getState(containerFragment.getContext()).sentenceStore().put(sent, new CallbackAsyncTask.Callback() {
+                    @Override
+                    public void callback(Object param) {
+                        Toast.makeText(containerFragment.getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return true;
             }
         }
 
@@ -167,7 +191,7 @@ public class EnWordDetailsVisualizer extends DetailsVisualizer {
         ClipboardManager cbm = (ClipboardManager) containerFragment.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
         cbm.setPrimaryClip(ClipData.newPlainText(null, text));
 
-        Toast.makeText(containerFragment.getContext(), "Copied", Toast.LENGTH_SHORT).show();
+        Toast.makeText(containerFragment.getContext(), R.string.toast_copied, Toast.LENGTH_SHORT).show();
 
         return true;
     }

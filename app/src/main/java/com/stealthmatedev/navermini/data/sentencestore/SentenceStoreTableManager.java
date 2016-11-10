@@ -67,7 +67,6 @@ public class SentenceStoreTableManager extends DBHelper.TableManager {
                 values.put(COLUMN_LANG_TO, params[0].to.name());
                 values.put(COLUMN_SENTENCE, params[0].ex);
                 values.put(COLUMN_TRANSLATION, params[0].tr);
-                Log.d(APPTAG, values.toString());
                 db.replace(TABLE_NAME, null, values);
                 return null;
             }
