@@ -29,6 +29,7 @@
     <string name="label_menu_sentence_store">Sentence Store</string>
     <string name="label_menu_clear_sentence_store">Clear sentence store</string>
     <string name="label_menu_clear_history">Clear history</string>
+    <string name="label_menu_about">About app</string>
 
     <string name="label_menu_save">Save</string>
     <string name="label_menu_sentence_copy_original">Copy sentence</string>

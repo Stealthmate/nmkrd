@@ -14,7 +14,7 @@ Added autocomplete, support for saving example sentences and copying (how-to inc
     - Sentence store initially displays all saved sentences, but is searchable
 
  - Copying - you can now copy meanings and sentences from word definitions by long clicking on them
-
+ 
 ####Bug fixes
  - Fixed a bug where some words in English would crash the app.
     - **IMPORTANT!** If your history is corrupted and is crashing, this update will remove the crash but all corrupted entries will be deleted

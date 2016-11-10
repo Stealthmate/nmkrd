@@ -36,6 +36,7 @@
     <string name="label_menu_sentence_copy_original">Копирай изречението</string>
     <string name="label_menu_sentence_copy_translation">Копирай превода</string>
     <string name="label_menu_delete">Изтрий</string>
+    <string name="label_menu_about">За приложението</string>
 
     <string name="toast_deleted">Изтрито</string>
     <string name="toast_copied">Копирано</string>
