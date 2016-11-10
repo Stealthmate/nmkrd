@@ -1,3 +1,7 @@
+##2016-11-10 v2.2.2
+###Summary
+Fixed bugs with example sentences and improved layout of history and sentence store
+
 ##2016-11-10 - v2.2.1
 
 ###Summary
