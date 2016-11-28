@@ -8,27 +8,56 @@ android {
         applicationId "com.stealthmateoriginal.navermini"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 13
-        versionName "2.2.2"
+        versionCode 14
+        versionName "2.2.2.1"
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+        }
+    }
+
     buildTypes {
 
         debug {
             buildConfigField "String", "HOST", "\"http://naver-mini-dev.herokuapp.com\""
-            buildConfigField "String", "ADMOB_PUB_ID", "" + APP_ADMOB_PUB_ID
-            buildConfigField "String", "ADMOB_UNIT_ID", "" + APP_ADMOB_ADUNIT_ID
-            buildConfigField "String", "TEST_DEVICES", "" + APP_TEST_DEVICES
+        }
+
+        rc {
+            signingConfig signingConfigs.debug
+            buildConfigField "String", "HOST", "\"http://naver-mini.herokuapp.com\""
         }
 
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "HOST", "\"http://naver-mini.herokuapp.com\""
-            buildConfigField "String", "ADMOB_PUB_ID", "" + APP_ADMOB_PUB_ID
-            buildConfigField "String", "ADMOB_UNIT_ID", "" + APP_ADMOB_ADUNIT_ID
-            buildConfigField "String", "TEST_DEVICES", "" + APP_TEST_DEVICES
         }
     }
+
+    if (project.hasProperty("KEYSTORE_INFO_DEBUG")
+            && new File(project.property("KEYSTORE_INFO_DEBUG").toString()).exists()) {
+        def Properties props = new Properties()
+        def propFile = new File(project.property("KEYSTORE_INFO_DEBUG").toString())
+        if(propFile.canRead()) {
+            props.load(new FileInputStream(propFile))
+            if (props!=null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+                    props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+                android.signingConfigs.debug.storeFile = file(props['STORE_FILE'])
+                android.signingConfigs.debug.storePassword = props['STORE_PASSWORD']
+                android.signingConfigs.debug.keyAlias = props['KEY_ALIAS']
+                android.signingConfigs.debug.keyPassword = props['KEY_PASSWORD']
+            } else {
+                println 'androidproject.properties found but some entries are missing'
+                android.buildTypes.debug.signingConfig = null
+            }
+        } else {
+            println 'androidproject.properties file not found'
+            android.buildTypes.debug.signingConfig = null
+        }
+    }
+
 }
 
 dependencies {

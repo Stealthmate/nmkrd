@@ -6,10 +6,6 @@ package com.stealthmatedev.navermini;
 
 public class App {
 
-    public static final String MY_PUB_ID = BuildConfig.ADMOB_PUB_ID;
-    public static final String ADUNIT = BuildConfig.ADMOB_UNIT_ID;
-    public static final String[] TEST_DEVICES = BuildConfig.TEST_DEVICES.split(";");
-
     public static final String HOST = BuildConfig.HOST;
     public static final String APPTAG = "NaverMini";
     public static boolean DEBUG_TEST = false;
