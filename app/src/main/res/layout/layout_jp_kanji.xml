@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/label_jp_kanji_strokes"
+            android:text="@string/label_strokes"
 
             android:textSize="13sp" />
 
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/label_jp_kanji_radical"
+            android:text="@string/label_radical"
 
             android:textSize="13sp" />
 

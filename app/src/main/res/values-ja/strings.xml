@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">NMKRD</string>
-    <string name="cc_kr">韓</string>
-    <string name="cc_jp">日</string>
-    <string name="cc_en">英</string>
+    <string name="dict_name_kr">韓国語</string>
+    <string name="dict_name_jp">日韓韓日</string>
+    <string name="dict_name_en">英韓韓英</string>
+    <string name="dict_name_hj">漢字</string>
 
     <string name="subdict_words">単語</string>
     <string name="subdict_ex">例文</string>
@@ -14,8 +15,8 @@
 
     <string name="label_search_more">更にロード</string>
 
-    <string name="label_jp_kanji_strokes">画数: </string>
-    <string name="label_jp_kanji_radical">部首: </string>
+    <string name="label_strokes">画数: </string>
+    <string name="label_radical">部首: </string>
     <string name="label_jp_kanji_onyomi">音読み: </string>
     <string name="label_jp_kanji_kunyomi">訓読み: </string>
     <string name="label_jp_kanji_meaning">意味: </string>

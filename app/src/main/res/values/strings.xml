@@ -1,11 +1,13 @@
 <resources>
     <string name="app_name">NMKRD</string>
-    <string name="cc_kr">KR</string>
-    <string name="cc_jp">JP</string>
-    <string name="cc_en">EN</string>
+    <string name="dict_name_kr">KR-KR</string>
+    <string name="dict_name_jp">KR&lt;-&gt;JP</string>
+    <string name="dict_name_en">KR&lt;-&gt;EN</string>
+    <string name="dict_name_hj">Hanja</string>
 
     <string name="subdict_words">Words</string>
     <string name="subdict_ex">Examples</string>
+    <string name="subdict_hanja">Hanja</string>
 
     <string name="label_search_hint">Search...</string>
     <string name="label_search_more">Load more</string>
@@ -13,8 +15,10 @@
 
     <string name="label_details_def_ex">Definition and Examples</string>
 
-    <string name="label_jp_kanji_strokes">Strokes: </string>
-    <string name="label_jp_kanji_radical">Radical: </string>
+    <string name="label_strokes">Strokes: </string>
+    <string name="label_radical">Radical: </string>
+    <string name="label_readings">Readings: </string>
+    <string name="label_saseongeum">Saseongeum: </string>
     <string name="label_jp_kanji_onyomi">Onyomi: </string>
     <string name="label_jp_kanji_kunyomi">Kunyomi: </string>
     <string name="label_jp_kanji_meaning">Meaning: </string>

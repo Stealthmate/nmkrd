@@ -1,9 +1,9 @@
 <resources>
 
     <string name="app_name">NMKRD</string>
-    <string name="cc_kr">KR</string>
-    <string name="cc_jp">JP</string>
-    <string name="cc_en">EN</string>
+    <string name="dict_name_kr">KR</string>
+    <string name="dict_name_jp">JP</string>
+    <string name="dict_name_en">EN</string>
 
     <string name="subdict_words">Думи</string>
     <string name="subdict_ex">Примери</string>
@@ -14,8 +14,8 @@
 
     <string name="label_details_def_ex">Дефиниции и примери</string>
 
-    <string name="label_jp_kanji_strokes">Черти: </string>
-    <string name="label_jp_kanji_radical">Радикал: </string>
+    <string name="label_strokes">Черти: </string>
+    <string name="label_radical">Радикал: </string>
     <string name="label_jp_kanji_onyomi">Он-йоми: </string>
     <string name="label_jp_kanji_kunyomi">Кун-йоми: </string>
     <string name="label_jp_kanji_meaning">Значение: </string>

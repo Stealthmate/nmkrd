@@ -37,7 +37,7 @@ android {
 
         }
 
-        initSignConfig("KEYSTORE_INFO_DEBUG", signingConfigs.debug);
+        initSignConfig("KEYSTORE_INFO_DEBUG", signingConfigs.release);
         initSignConfig("KEYSTORE_INFO_RELEASE", signingConfigs.release);
 
     }

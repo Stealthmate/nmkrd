@@ -8,9 +8,10 @@ import com.stealthmatedev.navermini.serverapi.EntryListDictionary;
  */
 
 public enum Dictionary {
-    KR(R.string.cc_kr, R.drawable.ic_kr_48dp, R.drawable.ic_kr_24dp, R.drawable.ic_kr_18dp, EntryListDictionary.KOREAN),
-    JP(R.string.cc_jp, R.drawable.ic_jp_48dp, R.drawable.ic_jp_24dp, R.drawable.ic_jp_18dp, EntryListDictionary.JAPANESE),
-    EN(R.string.cc_en, R.drawable.ic_en_48dp, R.drawable.ic_en_24dp, R.drawable.ic_en_18dp, EntryListDictionary.ENGLISH);
+    KR(R.string.dict_name_kr, R.drawable.ic_kr_48dp, R.drawable.ic_kr_24dp, R.drawable.ic_kr_18dp, EntryListDictionary.KOREAN),
+    JP(R.string.dict_name_jp, R.drawable.ic_jp_48dp, R.drawable.ic_jp_24dp, R.drawable.ic_jp_18dp, EntryListDictionary.JAPANESE),
+    EN(R.string.dict_name_en, R.drawable.ic_en_48dp, R.drawable.ic_en_24dp, R.drawable.ic_en_18dp, EntryListDictionary.ENGLISH),
+    HJ(R.string.dict_name_hj, R.drawable.ic_hj_48dp, R.drawable.ic_hj_24dp, R.drawable.ic_hj_18dp, EntryListDictionary.HANJA);
 
     public final int name;
     public final int icon_large;

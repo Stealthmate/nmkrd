@@ -7,7 +7,8 @@ package com.stealthmatedev.navermini.serverapi;
 public enum DetailsDictionary {
     KOREAN_WORDS_DETAILS("/kr/details"),
     JAPANESE_DETAILS("/jp/details"),
-    ENGLISH_WORDS_DETAILS("/en/details");
+    ENGLISH_WORDS_DETAILS("/en/details"),
+    HANJA_DETAILS("/hj/details");
 
     public final String path;
 

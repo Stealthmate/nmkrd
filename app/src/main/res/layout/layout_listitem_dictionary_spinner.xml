@@ -15,18 +15,20 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_jp_48dp"
-        android:contentDescription="@string/cc_jp"/>
+        android:contentDescription="@string/dict_name_jp"/>
 
 
     <TextView
         android:id="@+id/view_listitem_dictionary_spinner_name"
-        android:layout_width="36dp"
+        android:layout_width="wrap_content"
         android:layout_height="36dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@id/view_listitem_dictionary_spinner_icon"
+        android:layout_toEndOf="@id/view_listitem_dictionary_spinner_icon"
         android:layout_centerVertical="true"
-        android:gravity="center"
+        android:gravity="right"
         android:textSize="18sp"
-        android:text="JP"/>
+        android:text="@string/dict_name_en"/>
 
 </RelativeLayout>

@@ -1,9 +1,10 @@
 package com.stealthmatedev.navermini.UI.specific;
 
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
-import com.stealthmatedev.navermini.UI.specific.EntryVisualizer;
 import com.stealthmatedev.navermini.UI.specific.en.details.EnWordDetailsVisualizer;
 import com.stealthmatedev.navermini.UI.specific.en.search.EnWordEntryVisualizer;
+import com.stealthmatedev.navermini.UI.specific.hj.details.HjHanjaDetailsVisualizer;
+import com.stealthmatedev.navermini.UI.specific.hj.search.HjHanjaEntryVisualizer;
 import com.stealthmatedev.navermini.UI.specific.jp.details.JpKanjiDetailsVisualizer;
 import com.stealthmatedev.navermini.UI.specific.jp.details.JpWordDetailsVisualizer;
 import com.stealthmatedev.navermini.UI.specific.jp.search.JpKanjiEntryVisualizer;
@@ -13,6 +14,7 @@ import com.stealthmatedev.navermini.UI.specific.kr.search.KrWordEntryVisualizer;
 import com.stealthmatedev.navermini.UI.specific.kr.details.KrDetailsVisualizer;
 import com.stealthmatedev.navermini.data.Entry;
 import com.stealthmatedev.navermini.data.en.EnWord;
+import com.stealthmatedev.navermini.data.hj.HjHanja;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.data.kr.KrExample;
@@ -31,7 +33,9 @@ public class EntryUIMapper {
         JP_WORD(JpWord.class, JpWordEntryVisualizer.class, JpWordDetailsVisualizer.class),
         JP_KANJI(JpKanji.class, JpKanjiEntryVisualizer.class, JpKanjiDetailsVisualizer.class),
 
-        EN_WORD(EnWord.class, EnWordEntryVisualizer.class, EnWordDetailsVisualizer.class);
+        EN_WORD(EnWord.class, EnWordEntryVisualizer.class, EnWordDetailsVisualizer.class),
+
+        HJ_HANJA(HjHanja.class, HjHanjaEntryVisualizer.class, HjHanjaDetailsVisualizer.class);
 
 
         public final Class<? extends Entry> entryClass;
@@ -46,11 +50,10 @@ public class EntryUIMapper {
     }
 
     public static EntryUI forEntry(Entry entry) {
-        if(entry.getClass().equals(KrWord.class)) return EntryUI.KR_WORD;
-        if(entry.getClass().equals(KrExample.class)) return EntryUI.KR_EXAMPLE;
-        if(entry.getClass().equals(JpWord.class)) return EntryUI.JP_WORD;
-        if(entry.getClass().equals(JpKanji.class)) return EntryUI.JP_KANJI;
-        if(entry.getClass().equals(EnWord.class)) return EntryUI.EN_WORD;
+
+        for(EntryUI entryUI : EntryUI.values()) {
+            if(entry.getClass().equals(entryUI.entryClass)) return entryUI;
+        }
 
         return null;
     }

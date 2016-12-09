@@ -40,7 +40,7 @@
                     style="@style/textH2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_jp_kanji_strokes" />
+                    android:text="@string/label_strokes" />
 
                 <TextView
                     android:id="@+id/view_jp_details_kanji_strokes"
@@ -68,7 +68,7 @@
                     style="@style/textH2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_jp_kanji_radical" />
+                    android:text="@string/label_radical" />
 
                 <TextView
                     android:id="@+id/view_detail_jp_kanji_radical"

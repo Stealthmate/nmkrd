@@ -27,6 +27,7 @@ public class DictionarySpinnerAdapter extends BaseAdapter {
         this.dicts.add(Dictionary.KR);
         this.dicts.add(Dictionary.JP);
         this.dicts.add(Dictionary.EN);
+        this.dicts.add(Dictionary.HJ);
     }
 
     @Override

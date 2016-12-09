@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.stealthmatedev.navermini.R;
 import com.stealthmatedev.navermini.data.en.EnAutocompleter;
+import com.stealthmatedev.navermini.data.hj.HjAutocompleter;
 import com.stealthmatedev.navermini.data.jp.JpAutocompleter;
 import com.stealthmatedev.navermini.data.kr.KrAutocompleter;
 import com.stealthmatedev.navermini.serverapi.en.EnWordResponseTranslator;
+import com.stealthmatedev.navermini.serverapi.hj.HjHanjaResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.jp.JpWordKanjiResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.kr.KrExampleResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.kr.KrWordResponseTranslator;
@@ -22,7 +24,9 @@ public enum EntryListDictionary {
     JAPANESE("/jp", new SubDictionary[]{
             new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator())}, new JpAutocompleter()),
     ENGLISH("/en", new SubDictionary[]{
-            new SubDictionary("ENGLISH", R.string.subdict_words, "", new EnWordResponseTranslator())}, new EnAutocompleter());
+            new SubDictionary("ENGLISH", R.string.subdict_words, "", new EnWordResponseTranslator())}, new EnAutocompleter()),
+    HANJA("/hj", new SubDictionary[] {
+            new SubDictionary("HANJA", R.string.subdict_hanja, "", new HjHanjaResponseTranslator())}, new HjAutocompleter());
 
     public static class SubDictionary {
 

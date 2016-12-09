@@ -144,6 +144,7 @@ public class SearchFragment extends Fragment {
         state.getSearchEngine().queryResultList(query, new SearchEngine.OnResponse() {
             @Override
             public void responseReady(String response) {
+                clear();
                 populate(NetworkEntryListAdapter.mapFromSearch(state, query, response));
             }
 
@@ -202,9 +203,6 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         this.dictAdapter = new DictionarySpinnerAdapter();
-
-
-
     }
 
     @Override
