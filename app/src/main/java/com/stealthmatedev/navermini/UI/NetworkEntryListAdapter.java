@@ -41,9 +41,8 @@ public class NetworkEntryListAdapter extends EntryListAdapter {
 
         ArrayList<Entry> entries = query.getSubDictionary().translator.translate(response);
         if (entries.size() == 0) return null;
-        NetworkEntryListAdapter adapter = new NetworkEntryListAdapter(state, entries, query);
 
-        return adapter;
+        return new NetworkEntryListAdapter(state, entries, query);
     }
 
 
@@ -80,7 +79,7 @@ public class NetworkEntryListAdapter extends EntryListAdapter {
         super(new ArrayListEntryProvider(entries));
         this.query = query;
         this.state = state;
-        this.hasMore = true;
+        this.hasMore = entries.size() >= this.query.pagesize;
         this.loading = false;
     }
 
