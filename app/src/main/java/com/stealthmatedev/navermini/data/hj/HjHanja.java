@@ -15,14 +15,20 @@ import java.util.ArrayList;
 public class HjHanja implements DetailedEntry {
 
     public static class RelatedHanja implements Serializable {
+        public final ArrayList<String> diffForm;
         public final ArrayList<String> relShape;
         public final ArrayList<String> relMean;
         public final ArrayList<String> oppMean;
 
         public RelatedHanja() {
+            this.diffForm = new ArrayList<>(0);
             relShape = new ArrayList<>(0);
             relMean = new ArrayList<>(0);
             oppMean = new ArrayList<>(0);
+        }
+
+        public boolean hasAny() {
+            return diffForm.size() > 0 || relShape.size() > 0 || relMean.size() > 0 || oppMean.size() > 0;
         }
     }
 
@@ -47,12 +53,12 @@ public class HjHanja implements DetailedEntry {
     public final ArrayList<String> meanings;
     public final ArrayList<String> expl;
     public final String glyphexpl;
+    public final String reference;
     public final RelatedHanja relHanja;
     public final ArrayList<String> strokeDiagram;
     public final ArrayList<HanjaWord> relWords;
     public final ArrayList<HanjaWord> relIdioms;
     public final boolean partial;
-
 
     public HjHanja() {
 
@@ -65,6 +71,25 @@ public class HjHanja implements DetailedEntry {
         meanings = new ArrayList<>(0);
         expl = new ArrayList<>(0);
         glyphexpl = "";
+        reference = "";
+        relHanja = new RelatedHanja();
+        strokeDiagram = new ArrayList<>(0);
+        relWords = new ArrayList<>(0);
+        relIdioms = new ArrayList<>(0);
+        partial = true;
+    }
+
+    public HjHanja(String hanja) {
+        this.hanja = hanja;
+        readings = new ArrayList<>(0);
+        radical = '\0';
+        strokes = 0;
+        saseongeum = new ArrayList<>(0);
+        difficulty = "";
+        meanings = new ArrayList<>(0);
+        expl = new ArrayList<>(0);
+        glyphexpl = "";
+        reference = "";
         relHanja = new RelatedHanja();
         strokeDiagram = new ArrayList<>(0);
         relWords = new ArrayList<>(0);

@@ -6,7 +6,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,26 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.flexbox.FlexboxLayout;
 import com.stealthmatedev.navermini.R;
-import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
+import com.stealthmatedev.navermini.UI.generic.CustomizableArrayAdapter;
 import com.stealthmatedev.navermini.UI.generic.FixedListView;
-import com.stealthmatedev.navermini.UI.generic.ListLayout;
+import com.stealthmatedev.navermini.UI.generic.UIUtils;
 import com.stealthmatedev.navermini.data.TranslatedExample;
-import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
 import com.stealthmatedev.navermini.data.jp.JpWord;
 import com.stealthmatedev.navermini.state.StateManager;
 
 import java.util.ArrayList;
-
-import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/09/30 0030.
@@ -125,12 +121,23 @@ public class JpKanjiDetailsVisualizer extends DetailsVisualizer {
         TextView radical = (TextView) view.findViewById(R.id.view_detail_jp_kanji_radical);
         radical.setText(String.valueOf(details.radical));
 
-        ListView krlist = (ListView) view.findViewById(R.id.view_detail_jp_kanji_kr_readings);
+        FlexboxLayout krlist = (FlexboxLayout) view.findViewById(R.id.view_detail_jp_kanji_kr_readings);
         if (details.kr.size() == 0) {
             krlist.setVisibility(View.GONE);
             view.findViewById(R.id.view_detail_jp_kanji_kr_readings).setVisibility(View.GONE);
         } else {
-            krlist.setAdapter(new ArrayAdapter<>(container.getContext(), R.layout.view_listitem_minimal, details.kr));
+            krlist.removeAllViewsInLayout();
+            UIUtils.populateViewGroup(krlist, new ArrayAdapter<String>(container.getContext(), R.layout.view_listitem_minimal, details.kr) {
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                    TextView v = (TextView) super.getView(position, convertView, parent);
+
+                    v.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+                    return v;
+                }
+            });
             containerFragment.registerForContextMenu(krlist);
         }
 

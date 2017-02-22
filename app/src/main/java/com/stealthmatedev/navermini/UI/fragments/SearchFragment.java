@@ -288,10 +288,12 @@ public class SearchFragment extends Fragment {
 
                 if(currentDictionary.autocompleter == null) return;
                 acloadingView.setVisibility(View.VISIBLE);
+                Log.i(APPTAG, "onTextChanged");
 
                 currentDictionary.autocompleter.getSuggestions(state, s.toString(), new Autocompleter.OnSuggestions() {
                     @Override
                     public void received(final ArrayList<AutocompleteSuggestion> suggestions) {
+                        Log.i(APPTAG, "Got suggestions");
                         final ArrayAdapter<AutocompleteSuggestion> adapter = (ACSuggestionAdapter) searchBox.getAdapter();
                         acloadingView.setVisibility(View.GONE);
                         adapter.clear();
@@ -302,6 +304,7 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void error(VolleyError error) {
                         acloadingView.setVisibility(View.GONE);
+                        Log.e(APPTAG, error.getMessage());
                     }
                 });
             }

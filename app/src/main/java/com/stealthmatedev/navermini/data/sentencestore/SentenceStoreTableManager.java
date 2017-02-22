@@ -11,6 +11,7 @@ import com.stealthmatedev.navermini.data.SentenceEntry;
 
 import java.util.ArrayList;
 
+import static android.R.attr.entries;
 import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
@@ -82,10 +83,12 @@ public class SentenceStoreTableManager extends DBHelper.TableManager {
                 Cursor c = db.query(TABLE_NAME, null, null, null, null, null, null);
                 ArrayList<SentenceEntry> entries = new ArrayList<>(c.getCount());
                 c.moveToFirst();
-                do {
-                    entries.add(new SentenceEntry(SentenceEntry.Language.valueOf(c.getString(1)), SentenceEntry.Language.valueOf(c.getString(2)), c.getString(0), c.getString(3), c.getString(4)));
+                if (c.getCount() > 0) {
+                    do {
+                        entries.add(new SentenceEntry(SentenceEntry.Language.valueOf(c.getString(1)), SentenceEntry.Language.valueOf(c.getString(2)), c.getString(0), c.getString(3), c.getString(4)));
+                    }
+                    while (c.moveToNext());
                 }
-                while (c.moveToNext());
                 c.close();
                 return entries;
             }

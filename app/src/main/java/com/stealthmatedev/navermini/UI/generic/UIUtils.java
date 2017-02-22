@@ -1,11 +1,17 @@
 package com.stealthmatedev.navermini.UI.generic;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
+
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 /**
  * Created by Stealthmate on 16/09/24 0024.
@@ -53,5 +59,19 @@ public class UIUtils {
             return false;
         }
 
+    }
+
+    public static void populateViewGroup(ViewGroup container, ArrayList<View> views) {
+        int count = views.size();
+        for (int i = 0; i <= count - 1; i++) {
+            container.addView(views.get(i));
+        }
+    }
+
+    public static void populateViewGroup(ViewGroup container, Adapter adapter) {
+        int count = adapter.getCount();
+        for (int i = 0; i <= count - 1; i++) {
+            container.addView(adapter.getView(i, null, container));
+        }
     }
 }
