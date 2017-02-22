@@ -4,9 +4,11 @@
     <string name="dict_name_kr">KR</string>
     <string name="dict_name_jp">JP</string>
     <string name="dict_name_en">EN</string>
+    <string name="dict_name_hj">Ханджа</string>
 
     <string name="subdict_words">Думи</string>
     <string name="subdict_ex">Примери</string>
+    <string name="subdict_hanja">Ханджа</string>
 
     <string name="label_search_hint">Търсене...</string>
     <string name="label_search_more">Зареди повече</string>
@@ -16,12 +18,19 @@
 
     <string name="label_strokes">Черти: </string>
     <string name="label_radical">Радикал: </string>
+    <string name="label_readings">Четения: </string>
+    <string name="label_saseongeum">Saseongeum: </string>
     <string name="label_jp_kanji_onyomi">Он-йоми: </string>
     <string name="label_jp_kanji_kunyomi">Кун-йоми: </string>
     <string name="label_jp_kanji_meaning">Значение: </string>
 
     <string name="label_kunyomi_ex">Примери с он-йоми</string>
     <string name="label_onyomi_ex">Пример с кун-йоми</string>
+
+    <string name="label_hj_relhj_diffForm">Други форми: </string>
+    <string name="label_hj_relhj_relShape">Близка форма: </string>
+    <string name="label_hj_relhj_relMean">Близко значение: </string>
+    <string name="label_hj_relhj_oppMean">Обратно значение: </string>
 
     <string name="label_heading_history">История</string>
 
@@ -36,6 +45,8 @@
     <string name="label_menu_sentence_copy_original">Копирай изречението</string>
     <string name="label_menu_sentence_copy_translation">Копирай превода</string>
     <string name="label_menu_delete">Изтрий</string>
+    <string name="label_menu_copy_hanja">Копирай ханджа</string>
+    <string name="label_menu_copy_hangeul">Копирай хангъл</string>
     <string name="label_menu_about">За приложението</string>
 
     <string name="toast_deleted">Изтрито</string>

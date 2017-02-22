@@ -8,6 +8,7 @@
 
     <string name="subdict_words">単語</string>
     <string name="subdict_ex">例文</string>
+    <string name="subdict_hanja">漢字</string>
 
     <string name="label_search_hint">検索...</string>
     <string name="label_details_def_ex">意味・例</string>
@@ -17,12 +18,19 @@
 
     <string name="label_strokes">画数: </string>
     <string name="label_radical">部首: </string>
+    <string name="label_readings">読み方: </string>
+    <string name="label_saseongeum">Saseongeum: </string>
     <string name="label_jp_kanji_onyomi">音読み: </string>
     <string name="label_jp_kanji_kunyomi">訓読み: </string>
     <string name="label_jp_kanji_meaning">意味: </string>
 
     <string name="label_kunyomi_ex">訓読み例</string>
     <string name="label_onyomi_ex">音読み例</string>
+
+    <string name="label_hj_relhj_diffForm">異体字: </string>
+    <string name="label_hj_relhj_relShape">似た形: </string>
+    <string name="label_hj_relhj_relMean">似た意味: </string>
+    <string name="label_hj_relhj_oppMean">反対: </string>
 
     <string name="label_heading_history">履歴</string>
 
@@ -45,6 +53,8 @@
     <string name="label_menu_sentence_copy_original">文をコピー</string>
     <string name="label_menu_sentence_copy_translation">翻訳をコピー</string>
     <string name="label_menu_delete">削除</string>
+    <string name="label_menu_copy_hanja">漢字をコピー</string>
+    <string name="label_menu_copy_hangeul">ハングルをコピー</string>
 
     <string name="toast_deleted">削除しました</string>
     <string name="toast_copied">コピーしました</string>
