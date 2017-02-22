@@ -26,6 +26,11 @@
     <string name="label_kunyomi_ex">Kunyomi examples</string>
     <string name="label_onyomi_ex">Onyomi examples</string>
 
+    <string name="label_hj_relhj_diffForm">Different forms: </string>
+    <string name="label_hj_relhj_relShape">Related shape: </string>
+    <string name="label_hj_relhj_relMean">Related meaning: </string>
+    <string name="label_hj_relhj_oppMean">Opposite meaning: </string>
+
     <string name="label_heading_history">History</string>
 
     <string name="label_menu_home">Home</string>
@@ -39,6 +44,8 @@
     <string name="label_menu_sentence_copy_original">Copy sentence</string>
     <string name="label_menu_sentence_copy_translation">Copy translation</string>
     <string name="label_menu_delete">Delete</string>
+    <string name="label_menu_copy_hanja">Copy hanja</string>
+    <string name="label_menu_copy_hangeul">Copy hangeul</string>
 
     <string name="toast_deleted">Deleted</string>
     <string name="toast_copied">Copied</string>

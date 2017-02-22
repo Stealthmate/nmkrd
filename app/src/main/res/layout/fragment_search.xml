@@ -17,17 +17,27 @@
             android:layout_height="50dp"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/view_search_select_dict"
+            <LinearLayout
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:background="@color/nm_colorPrimary" />
+                android:background="@color/nm_colorPrimary">
 
-            <Spinner
-                android:id="@+id/spinner_select_enigne"
+                <Spinner
+                    android:id="@+id/view_search_select_dict"
+                    android:layout_width="60dp"
+                    android:layout_height="match_parent"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="90dp"
                 android:layout_height="match_parent"
-                android:background="@color/nm_colorPrimaryLight" />
+                android:background="@color/nm_colorPrimaryLight">
+                <Spinner
+                    android:id="@+id/spinner_select_enigne"
+                    android:layout_width="90dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -61,7 +71,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </RelativeLayout>
         </LinearLayout>

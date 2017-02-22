@@ -18,6 +18,28 @@
         <item name="android:itemTextAppearance">@style/actionMenuTextStyle</item>
     </style>
 
+    <style name="section">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+
+    <style name="sectionHeading">
+        <item name="android:textSize">@dimen/textSizeH2</item>
+        <item name="android:textColor">@color/nm_colorH2</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@color/nm_colorPrimaryLight</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="sectionContent">
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="label">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

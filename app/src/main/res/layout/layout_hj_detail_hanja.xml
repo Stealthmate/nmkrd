@@ -1,287 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_hj_hanja"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="5dp">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/view_hj_hanja"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-
-        android:layout_alignParentTop="true"
-
-        android:layout_marginEnd="5dp"
-
-        android:layout_marginRight="5dp"
-        android:gravity="center"
-        android:text="生"
-        android:textColor="@color/nm_colorTextAccent"
-        android:textSize="60sp" />
-
-    <LinearLayout
-        android:id="@+id/view_hj_hanja_group_strokes"
-
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentEnd="true"
-
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:gravity="end">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout_hj_hanja"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="1dp"
+        android:paddingEnd="7dp"
+        android:paddingStart="7dp">
 
         <TextView
-            android:id="@+id/view_hj_hanja_strokes_label"
+            android:id="@+id/view_hj_hanja"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/label_strokes"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
 
-            android:textSize="13sp" />
+            android:layout_alignParentTop="true"
 
-        <TextView
-            android:id="@+id/view_hj_hanja_strokes"
+            android:layout_marginEnd="5dp"
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="13"
-
-            android:textSize="13sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/view_hj_hanja_group_radical"
-
-        android:layout_width="90dp"
-        android:layout_height="wrap_content"
-
-        android:layout_alignEnd="@id/view_hj_hanja_group_strokes"
-
-        android:layout_alignRight="@id/view_hj_hanja_group_strokes"
-        android:layout_below="@id/view_hj_hanja_group_strokes"
-        android:gravity="end">
-
-        <TextView
-            android:id="@+id/view_hj_hanja_radical_label"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:text="@string/label_radical"
-
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/view_hj_hanja_radical"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
+            android:layout_marginRight="5dp"
+            android:gravity="center"
             android:text="生"
+            android:textColor="@color/nm_colorTextAccent"
+            android:textSize="60sp" />
 
-            android:textSize="13sp" />
+        <LinearLayout
+            android:id="@+id/view_hj_hanja_group_strokes"
 
-    </LinearLayout>
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/view_hj_hanja_readings"
+            android:layout_alignParentEnd="true"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="end">
 
-        android:layout_alignTop="@id/view_hj_hanja"
-        android:layout_toEndOf="@id/view_hj_hanja"
-        android:layout_toLeftOf="@id/view_hj_hanja_group_strokes"
-        android:layout_toRightOf="@id/view_hj_hanja"
-        android:layout_toStartOf="@id/view_hj_hanja_group_strokes"
+            <TextView
+                android:id="@+id/view_hj_hanja_strokes_label"
 
-        android:text="かたかなかたかなかたかなかたかな"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        android:textColor="@color/nm_colorTextAccent"
-        android:textSize="15sp" />
+                android:text="@string/label_strokes"
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_hanja_group_saseongeum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/view_hj_hanja_readings"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@id/view_hj_hanja"
-        android:layout_toRightOf="@id/view_hj_hanja">
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/view_hj_hanja_strokes"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="13"
+
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/view_hj_hanja_group_radical"
+
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+
+            android:layout_alignEnd="@id/view_hj_hanja_group_strokes"
+
+            android:layout_alignRight="@id/view_hj_hanja_group_strokes"
+            android:layout_below="@id/view_hj_hanja_group_strokes"
+            android:gravity="end">
+
+            <TextView
+                android:id="@+id/view_hj_hanja_radical_label"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="@string/label_radical"
+
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/view_hj_hanja_radical"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="生"
+
+                android:textSize="15sp" />
+
+        </LinearLayout>
 
         <TextView
+            android:id="@+id/view_hj_hanja_readings"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Saseongeum: " />
 
-        <TextView
-            android:id="@+id/view_hj_hanja_saseongeum"
+            android:layout_alignTop="@id/view_hj_hanja"
+            android:layout_toEndOf="@id/view_hj_hanja"
+            android:layout_toLeftOf="@id/view_hj_hanja_group_strokes"
+            android:layout_toRightOf="@id/view_hj_hanja"
+            android:layout_toStartOf="@id/view_hj_hanja_group_strokes"
+
+            android:text="かたかなかたかなかたかなかたかな"
+
+            android:textColor="@color/nm_colorTextAccent"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/view_hj_detail_hanja_group_saseongeum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="gu gu han hen ke si zi"
-            android:textSize="13sp" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/view_hj_hanja_readings"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/view_hj_hanja"
+            android:layout_toRightOf="@id/view_hj_hanja">
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_hanja_group_difficulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/view_hj_detail_hanja_group_saseongeum"
-        android:layout_toEndOf="@id/view_hj_hanja"
-        android:layout_toRightOf="@id/view_hj_hanja">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saseongeum: " />
 
-        <TextView
-            android:id="@+id/view_hj_hanja_label_difficulty"
+            <TextView
+                android:id="@+id/view_hj_hanja_saseongeum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="gu gu han hen ke si zi"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/view_hj_detail_hanja_group_difficulty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Difficulty: " />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/view_hj_detail_hanja_group_saseongeum"
+            android:layout_toEndOf="@id/view_hj_hanja"
+            android:layout_toRightOf="@id/view_hj_hanja">
 
-        <TextView
-            android:id="@+id/view_hj_hanja_difficulty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ASDAFADGDAG ADGADGA DG3 3434 ADG"
-            android:textSize="13sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/view_hj_hanja_label_difficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Difficulty: " />
 
-    <com.stealthmatedev.navermini.UI.generic.FixedListView
-        android:id="@+id/view_hj_detail_hanja_meanings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/view_hj_hanja" />
+            <TextView
+                android:id="@+id/view_hj_hanja_difficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ASDAFADGDAG ADGADGA DG3 3434 ADG"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/view_hj_detail_group_stroke_diag"
+            style="@style/section"
+            android:layout_below="@id/view_hj_hanja"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/view_hj_detail_label_stroke_diag"
+                style="@style/sectionHeading"
+                android:text="Stroke Diagram" />
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/view_hj_detail_stroke_diag"
+                style="@style/sectionContent"
+                app:alignContent="flex_start"
+                app:alignItems="flex_start"
+                app:flexDirection="row"
+                app:flexWrap="wrap" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linlay_hj_detail_section_meanings"
+            style="@style/section"
+            android:layout_below="@id/view_hj_detail_group_stroke_diag"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/view_hj_detail_label_meanings"
+                style="@style/sectionHeading"
+                android:text="Meanings" />
+
+            <com.stealthmatedev.navermini.UI.generic.FixedListView
+                android:id="@+id/view_hj_detail_hanja_meanings"
+                style="@style/sectionContent" />
+
+        </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_group_expl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_hj_detail_hanja_meanings"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/view_hj_detail_group_expl"
+            style="@style/section"
+            android:layout_below="@id/linlay_hj_detail_section_meanings"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/view_hj_detail_label_expl"
-            style="@style/textH2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Explanation" />
+            <TextView
+                android:id="@+id/view_hj_detail_label_expl"
+                style="@style/sectionHeading"
+                android:text="Explanation" />
 
-        <TextView
-            android:id="@+id/view_hj_detail_expl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/view_hj_detail_expl"
+                style="@style/sectionContent" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_group_glyphexpl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_hj_detail_group_expl"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/view_hj_detail_group_glyphexpl"
+            style="@style/section"
+            android:layout_below="@id/view_hj_detail_group_expl"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/view_hj_detail_label_glyphexpl"
-            style="@style/textH2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Glyph explanation" />
+            <TextView
+                android:id="@+id/view_hj_detail_label_glyphexpl"
+                style="@style/sectionHeading"
+                android:text="Glyph explanation" />
 
-        <TextView
-            android:id="@+id/view_hj_detail_glyphexpl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/view_hj_detail_glyphexpl"
+                style="@style/sectionContent" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_group_reference"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_hj_detail_group_glyphexpl"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/view_hj_detail_group_reference"
+            style="@style/section"
+            android:layout_below="@id/view_hj_detail_group_glyphexpl"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/view_hj_detail_label_reference"
-            style="@style/textH2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reference" />
+            <TextView
+                android:id="@+id/view_hj_detail_label_reference"
+                style="@style/sectionHeading"
+                android:text="Reference" />
 
-        <TextView
-            android:id="@+id/view_hj_detail_reference"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/view_hj_detail_reference"
+                style="@style/sectionContent" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_group_relhanja"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_hj_detail_group_reference"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/view_hj_detail_group_relhanja"
+            style="@style/section"
+            android:layout_below="@id/view_hj_detail_group_reference"
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/textH2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Related Hanja" />
+            <TextView
+                style="@style/sectionHeading"
+                android:text="Related Hanja" />
 
-        <com.stealthmatedev.navermini.UI.generic.FixedListView
-            android:id="@+id/view_hj_detail_list_relhanja"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <com.stealthmatedev.navermini.UI.generic.ListLayout
+                android:id="@+id/view_hj_detail_list_relhanja"
+                style="@style/sectionContent"
+                app:flexDirection="column" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_group_relwords"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_hj_detail_group_relhanja"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/view_hj_detail_group_relwords"
+            style="@style/section"
+            android:layout_below="@id/view_hj_detail_group_relhanja"
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/textH2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Related Words" />
+            <TextView
+                style="@style/sectionHeading"
+                android:text="Related Words" />
 
-        <com.stealthmatedev.navermini.UI.generic.FixedListView
-            android:id="@+id/view_hj_detail_list_relwords"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <com.stealthmatedev.navermini.UI.generic.FixedListView
+                android:id="@+id/view_hj_detail_list_relwords"
+                style="@style/sectionContent" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/view_hj_detail_group_relidioms"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_hj_detail_group_relwords"
-        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/view_hj_detail_group_relidioms"
+            style="@style/section"
+            android:layout_below="@id/view_hj_detail_group_relwords"
+            android:orientation="vertical">
 
-        <TextView
-            style="@style/textH2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Related Hanja" />
+            <TextView
+                style="@style/sectionHeading"
+                android:text="Related Idioms" />
 
-        <com.stealthmatedev.navermini.UI.generic.FixedListView
-            android:id="@+id/view_hj_detail_list_relidioms"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <com.stealthmatedev.navermini.UI.generic.FixedListView
+                android:id="@+id/view_hj_detail_list_relidioms"
+                style="@style/sectionContent" />
+        </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>
