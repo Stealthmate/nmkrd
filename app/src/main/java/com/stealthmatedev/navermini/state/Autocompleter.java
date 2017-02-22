@@ -1,6 +1,7 @@
 package com.stealthmatedev.navermini.state;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -19,6 +20,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
+import static com.stealthmatedev.navermini.App.APPTAG;
 
 /**
  * Created by Stealthmate on 16/11/07 0007.
@@ -45,6 +48,8 @@ public abstract class Autocompleter {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+                            Log.i(APPTAG, "LOOOOOOOOOOOOOOOL");
+                            Log.i(APPTAG, response);
                             new AsyncTask<String, Void, ArrayList<AutocompleteSuggestion>>() {
                                 @Override
                                 protected ArrayList<AutocompleteSuggestion> doInBackground(String... params) {

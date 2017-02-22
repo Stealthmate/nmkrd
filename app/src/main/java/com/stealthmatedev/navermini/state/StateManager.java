@@ -20,11 +20,22 @@ import com.stealthmatedev.navermini.data.sentencestore.SentenceStoreTableManager
  */
 public class StateManager {
 
+    private static StateManager state;
+
+    public static StateManager createState(MainActivity activity) {
+        if(state != null) {
+            throw new RuntimeException("State has already been initialized!");
+        }
+
+        state = new StateManager(activity);
+        return state;
+    }
+
     private MainActivity activity;
     private SearchEngine searchEngine;
     private DBHelper dbHelper;
 
-    public StateManager(MainActivity activity) {
+    private StateManager(MainActivity activity) {
         this.activity = activity;
         this.searchEngine = new SearchEngine(this);
         this.dbHelper = new DBHelper(activity);
@@ -117,5 +128,8 @@ public class StateManager {
         return ((MainActivity) context).getState();
     }
 
+    public static StateManager getState() {
+        return state;
+    }
 
 }
