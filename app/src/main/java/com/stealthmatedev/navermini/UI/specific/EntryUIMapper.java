@@ -13,6 +13,7 @@ import com.stealthmatedev.navermini.UI.specific.kr.search.KrExampleEntryVisualiz
 import com.stealthmatedev.navermini.UI.specific.kr.search.KrWordEntryVisualizer;
 import com.stealthmatedev.navermini.UI.specific.kr.details.KrDetailsVisualizer;
 import com.stealthmatedev.navermini.data.Entry;
+import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.data.en.EnWord;
 import com.stealthmatedev.navermini.data.hj.HjHanja;
 import com.stealthmatedev.navermini.data.jp.JpKanji;
@@ -32,6 +33,7 @@ public class EntryUIMapper {
 
         JP_WORD(JpWord.class, JpWordEntryVisualizer.class, JpWordDetailsVisualizer.class),
         JP_KANJI(JpKanji.class, JpKanjiEntryVisualizer.class, JpKanjiDetailsVisualizer.class),
+        SENTENCE_ENTRY(SentenceEntry.class, SentenceEntryVisualizer.class, null),
 
         EN_WORD(EnWord.class, EnWordEntryVisualizer.class, EnWordDetailsVisualizer.class),
 

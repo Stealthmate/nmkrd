@@ -110,11 +110,18 @@ public class EntryListAdapter extends BaseAdapter implements ListAdapter {
 
         EntryVisualizer visualizer = null;
         try {
-            visualizer = EntryUIMapper.forEntry(entry).entryVisualizerClass.newInstance();
+            EntryUIMapper.EntryUI visClass = EntryUIMapper.forEntry(entry);
+            if(visClass == null) {
+                Log.e(APPTAG, "Could not find EntryVisualizer for class " + entry.getClass().getName());
+                Toast.makeText(parent.getContext(), "Internal Error!", Toast.LENGTH_SHORT);
+                return new Space(parent.getContext());
+            }
+            visualizer = visClass.entryVisualizerClass.newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
         }
 
         try {

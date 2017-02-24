@@ -21,8 +21,7 @@
             android:focusable="true"
             android:gravity="bottom"
             android:text="もつ"
-            android:textColor="@color/nm_colorTextAccent"
-            android:textIsSelectable="true" />
+            android:textColor="@color/nm_colorTextAccent" />
 
         <TextView
             style="@style/detailsItemExtra"
@@ -35,7 +34,7 @@
             android:layout_toEndOf="@id/view_generic_detail_word_word"
             android:layout_toRightOf="@id/view_generic_detail_word_word"
             android:focusable="true"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
             android:text="持つ" />
 
     </RelativeLayout>

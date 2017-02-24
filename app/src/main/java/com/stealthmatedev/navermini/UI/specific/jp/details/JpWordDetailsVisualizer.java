@@ -20,8 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.stealthmatedev.navermini.R;
+import com.stealthmatedev.navermini.UI.CopyOnLongClickListener;
 import com.stealthmatedev.navermini.UI.DetailsVisualizer;
 import com.stealthmatedev.navermini.UI.SectionedListAdapter;
+import com.stealthmatedev.navermini.UI.TextViewCopyOnLongClickListener;
 import com.stealthmatedev.navermini.data.CallbackAsyncTask;
 import com.stealthmatedev.navermini.data.SentenceEntry;
 import com.stealthmatedev.navermini.data.TranslatedExample;
@@ -158,9 +160,11 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
         TextView name = (TextView) view.findViewById(R.id.view_generic_detail_word_word);
         name.setText(details.word);
+        name.setOnLongClickListener(new TextViewCopyOnLongClickListener());
 
         TextView kanji = (TextView) view.findViewById(R.id.view_generic_detail_word_extra);
         kanji.setText(details.kanji);
+        kanji.setOnLongClickListener(new TextViewCopyOnLongClickListener());
 
         final ListView deflist = (ListView) view.findViewById(R.id.view_generic_detail_word_deflist);
         deflist.getLayoutTransition().enableTransitionType(LayoutTransition.CHANGING);
@@ -170,7 +174,6 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
         deflist.setAdapter(meaningAdapter);
         deflist.setOnItemClickListener(meaningAdapter.getSubitemClickListener());
         containerFragment.registerForContextMenu(deflist);
-
 
         ListView glossList = (ListView) view.findViewById(R.id.view_generic_detail_word_defex_list);
         containerFragment.registerForContextMenu(glossList);
@@ -192,14 +195,20 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
 
     @Override
     public boolean onContextItemSelected(final Fragment containerFragment, MenuItem menuItem) {
-        String text = "WHAT THE FUCK";
+        String text = "Something went wrong";
 
         switch (menuItem.getItemId()) {
             case CONTEXT_MENU_ID_COPY: {
                 int pos = ((AdapterView.AdapterContextMenuInfo) menuItem.getMenuInfo()).position;
                 Object item = ((ListView) menuItem.getActionView()).getAdapter().getItem(pos);
+                Log.i(APPTAG, item.getClass().getName());
                 if (item instanceof Meaning.Gloss) text = ((Meaning.Gloss) item).g;
-                else if (item instanceof Meaning) text = ((Meaning) item).m;
+                else if (item instanceof Meaning) {
+                    Meaning m = (Meaning) item;
+                    if (m.m.length() > 0) text = ((Meaning) item).m;
+                    else text = m.glosses.get(0).g;
+                } else if (item instanceof JpWord.WordClassGroup)
+                    text = ((JpWord.WordClassGroup) item).wclass;
             }
             break;
             case CONTEXT_MENU_ID_SAVE: {
@@ -209,7 +218,7 @@ public class JpWordDetailsVisualizer extends DetailsVisualizer {
                 SentenceEntry.Language from, to;
                 String word = ((JpWord) getDetails()).word;
                 String kanji = ((JpWord) getDetails()).kanji;
-                if(item.ex.contains(JpWord.stripFurigana(word))) {
+                if (item.ex.contains(JpWord.stripFurigana(word))) {
                     from = KR;
                     to = JP;
                 } else {

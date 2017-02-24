@@ -9,6 +9,7 @@ import com.stealthmatedev.navermini.data.jp.JpAutocompleter;
 import com.stealthmatedev.navermini.data.kr.KrAutocompleter;
 import com.stealthmatedev.navermini.serverapi.en.EnWordResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.hj.HjHanjaResponseTranslator;
+import com.stealthmatedev.navermini.serverapi.jp.JpExampleResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.jp.JpWordKanjiResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.kr.KrExampleResponseTranslator;
 import com.stealthmatedev.navermini.serverapi.kr.KrWordResponseTranslator;
@@ -22,7 +23,8 @@ public enum EntryListDictionary {
             new SubDictionary("KOREAN", R.string.subdict_words, "", new KrWordResponseTranslator()),
             new SubDictionary("KOREAN", R.string.subdict_ex, "/ex", new KrExampleResponseTranslator())}, new KrAutocompleter()),
     JAPANESE("/jp", new SubDictionary[]{
-            new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator())}, new JpAutocompleter()),
+            new SubDictionary("JAPANESE", R.string.subdict_words, "", new JpWordKanjiResponseTranslator()),
+            new SubDictionary("JAPANESE", R.string.subdict_ex, "/ex", new JpExampleResponseTranslator())}, new JpAutocompleter()),
     ENGLISH("/en", new SubDictionary[]{
             new SubDictionary("ENGLISH", R.string.subdict_words, "", new EnWordResponseTranslator())}, new EnAutocompleter()),
     HANJA("/hj", new SubDictionary[] {
